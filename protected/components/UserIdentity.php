@@ -7,6 +7,9 @@
  */
 class UserIdentity extends CUserIdentity
 {
+	
+	private $_id;
+	
 	/**
 	 * Authenticates a user.
 	 * The example implementation makes sure if the username and password
@@ -17,17 +20,45 @@ class UserIdentity extends CUserIdentity
 	 */
 	public function authenticate()
 	{
-		$users=array(
-			// username => password
-			//'demo'=>'demo',
-			'admin'=>'*zelnik123',
-		);
-		if(!isset($users[$this->username]))
+		$dovoljeni=array("admin", "Brozzy", "bizgec");
+		
+		if(in_array($this->username, $dovoljeni)){			
+			//če je uporabnik med dovoljenimi uporabniki
+			// dobi userja iz baze glede na uporabnisko ime
+			$user=Users::model()->findByAttributes(array('username'=>$this->username));
+			if($user){
+				//ce user obstaja preveri ce se gelo ujema
+				//echo $user->username;
+				//echo $user->password;
+				$parts	= explode( ':', $user->password );
+				$crypt	= $parts[0];
+				$salt	= @$parts[1];
+				
+				$testcrypt = JUserHelper::getCryptedPassword($this->password, $salt);
+				if ($crypt == $testcrypt) {
+					//geslo se ujema
+					$this->_id = $user->id;
+					$this->errorCode=self::ERROR_NONE;
+				} else {
+					//geslo se ne ujema
+					$this->errorCode=self::ERROR_PASSWORD_INVALID;
+				}
+			}
+			else{
+				//uporabnika ni v bazi
+				$this->errorCode=self::ERROR_USERNAME_INVALID;
+			}
+		}else {
+			//uporabnika ni med dovoljenimi
 			$this->errorCode=self::ERROR_USERNAME_INVALID;
-		else if($users[$this->username]!==$this->password)
-			$this->errorCode=self::ERROR_PASSWORD_INVALID;
-		else
-			$this->errorCode=self::ERROR_NONE;
+		
+		}
+			
 		return !$this->errorCode;
 	}
+	
+	public function getId()
+    {
+        return $this->_id;
+    }
 }

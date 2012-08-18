@@ -142,9 +142,9 @@ class JeventsVevent extends CActiveRecord
 		$this->uid = $vsebina->global_id; 
 		$this->refreshed = ZDate::dbDateTime_php(time());
 		$this->created = $this->refreshed;
-		$this->created_by = 62;
+		$this->created_by = Yii::app()->user->id;
 		$this->created_by_alias = $vsebina->author;
-		$this->modified_by = 62;
+		$this->modified_by = Yii::app()->user->id;
 		//$this->rawdata =
 		//$this->detail_id = //se vpiše posebej
 		$this->state=1; //published
