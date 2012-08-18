@@ -35,7 +35,7 @@ function poll(i, step){
     	    			$('#import-report').html($('#import-report').html()+'Končano. <a href="" onclick="pocisti();return false;">Počisti.</a><br/>');
     	    			jQuery.ajaxSetup({async:true});
     	    			$.fn.yiiListView.update('vsebine-list-view') //posodobi list view
-    	    			
+    	    			//window.fireEvent('domready'); //še enkrat požene domready event
     	    		}
 	    		}
     	);
@@ -74,4 +74,16 @@ function zavrzi(element){
 
 function osvezi(){
 	$.fn.yiiListView.update('vsebine-list-view') //posodobi list view
+	//window.dispatchEvent('domready'); //še enkrat požene domready event
+	$("#vsebine-list-view div.items").infinitescroll("destroy");
+	$("#vsebine-list-view div.items").removeData('infinitescroll');
+	//$("#vsebine-list-view div.items").data('infinitescroll', null);
+	$('#vsebine-list-view div.items').infinitescroll({
+		navSelector  : "div.infinite_navigation",
+		nextSelector : "div.infinite_navigation a:first",
+		itemSelector : "div.view",
+		bufferPx     : "300",
+		pathParse    : "/index.php?Vsebine_page=2"
+	});
+	$('#vsebine-list-view div.items').infinitescroll('bind');
 }
