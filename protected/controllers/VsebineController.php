@@ -32,7 +32,7 @@ class VsebineController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'loadCategories', 'zavrzi', 'izvoz'),
+				'actions'=>array('create','update', 'loadCategories', 'zavrzi', 'izvoz', 'aclist'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -266,6 +266,18 @@ class VsebineController extends Controller
 			Yii::app()->end();
 		}
 	}
+	
+	public function actions(){
+		return array(
+			'aclist'=>array(
+				'class' => 'application.extensions.EAutoCompleteAction',
+				'model' => 'Tags',
+				'attribute' => 'tag'
+			)
+		);
+			
+	}
+	
 	
 	
 }

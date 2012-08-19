@@ -112,7 +112,8 @@
 					
 					<div class="row">
 						<?php echo $form->labelEx($model,'tags'); ?>
-						<?php echo $form->textField($model,'tags',array('size'=>60)); ?>
+						<?php //echo $form->textField($model,'tags',array('size'=>60)); ?>
+						<?php $form->autocompleteField($model,'tags', 'Vsebine/aclist',  array('size'=>60)); ?>
 						<?php echo $form->error($model,'tags'); ?>
 					</div>
 					<div class="row">

@@ -49,3 +49,10 @@ function endDateChanged(dateText, inst){
 		$('#Vsebine_publish_down').val(date.format('d.m.Y'));
 	}	
 }
+
+function split(val) {
+	return val.split(/,\s*/);
+}
+function extractLast(term) {
+	return split(term).pop();
+}

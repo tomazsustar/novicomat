@@ -55,4 +55,45 @@ class ZActiveForm extends CActiveForm{
                         )
                       );
 	}
+	
+	public function autocompleteField($model, $attribute, $sourceUrl, $htmlOptions){
+		return	$this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+	      'attribute'=>$attribute,
+	      'model'=>$model,
+//	      'sourceUrl'=>array($sourceUrl),
+		  'source'=>"js:function(request, response) {
+		  			var tag = extractLast( request.term );
+					if ( tag.length < 3 ) {
+						return false;
+					}
+			        $.getJSON('".Yii::app()->createUrl($sourceUrl)."', {
+			            term: tag
+			        }, response);
+			    }",
+	
+	      'name' => $attribute,
+	      'options'=>array(
+	          'minLength'=>'3',
+			 'delay'=>300,
+	        'showAnim'=>'fold',
+			'focus' => 'js:function() {
+					// prevent value inserted on focus
+					return false;
+				}',
+	        'select'=>"js:function(event, ui) {
+		            var terms = split(this.value);
+		            // remove the current input
+		            terms.pop();
+		            // add the selected item
+		            terms.push( ui.item.value );
+		            // add placeholder to get the comma-and-space at the end
+		            terms.push('');
+		            this.value = terms.join(', ');
+		            return false;
+		            }"
+		        ),
+	        'htmlOptions'=>$htmlOptions
+	  	)
+	  );
+	}
 }

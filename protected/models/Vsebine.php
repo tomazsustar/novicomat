@@ -293,5 +293,17 @@ class Vsebine extends CActiveRecord
 //    ....your code
 //	}
 	
+	public function onAfterSave($event){
+		// posodobi seznam ključnih besed
+		$non_existing_tags = Tags::model()->findNonExistingTags($this->tags);
+		//die(print_r($non_existing_tags, true));
+		foreach ($non_existing_tags as $tag){
+			echo $tag;
+			$model= new Tags;
+			$model->tag=$tag;
+			$model->save(false);
+		}		
+		parent::onAfterSave($event);
+	}
 	
 }
