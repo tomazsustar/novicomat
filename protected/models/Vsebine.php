@@ -298,7 +298,7 @@ class Vsebine extends CActiveRecord
 		$non_existing_tags = Tags::model()->findNonExistingTags($this->tags);
 		//die(print_r($non_existing_tags, true));
 		foreach ($non_existing_tags as $tag){
-			echo $tag;
+			
 			$model= new Tags;
 			$model->tag=$tag;
 			$model->save(false);
