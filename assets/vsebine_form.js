@@ -34,17 +34,25 @@ function startDateChanged(dateText, inst){
 	
 	if(dateText.length >= 10){
 		var date = new Date();
+		var start_date = new Date();
 		var today = new Date();
-		date.setDateFromForm(dateText);
-		date.setDate(date.getDate()-5);
-		if (date>today){
+		//spremeni datum objave na pet dni pred dogodkom
+		start_date.setDateFromForm(dateText);
+		date.setDate(start_date.getDate()-5);
+		if (date>today){			
 			var target = $('#Vsebine_publish_up');
 			target.val(date.format('d.m.Y')+target.val().substr(10));
 		}
+		//spremeni datum konca objave na dan po dogodku
+		date.setDate(start_date.getDate()+1);
+		$('#Vsebine_publish_down').val(date.format('d.m.Y'));
+		//nastavi začetno vrednost koledarja na datumu konca dogodka
+		$('#Vsebine_end_date').datepicker("option", "defaultDate", start_date);
 	}	
 }
 
 function endDateChanged(dateText, inst){
+	//spremeni datum konca objave na dan po dogodku
 	if(dateText.length >= 10){
 		var date = new Date();
 		date.setDateFromForm(dateText);

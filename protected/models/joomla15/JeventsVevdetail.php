@@ -200,7 +200,7 @@ class JeventsVevdetail extends CActiveRecord
 		$this->location=$vsebina->lokacija;
 		$this->priority=0;
 		$this->status='';
-		$this->summary = $vsebina->title;
+		$this->summary = $vsebina->koledar_naslov;
 		$this->contact = '';
 		$this->organizer = '';
 		$this->url = '';

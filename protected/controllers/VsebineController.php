@@ -70,29 +70,26 @@ class VsebineController extends Controller
 		if(isset($_POST['Vsebine']))
 		{
 			$model->attributes=$_POST['Vsebine'];
-			if(isset($_POST['zavrzi'])){
-				if($model->save(false)){
-					//if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
-					//else $this->redirect(array('index'));
-					//$this->redirect(array('index'));
-				}
+			if(isset($_POST['zavrzi'])){				
+				if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
+				else $this->redirect(array('index'));
+				//$this->redirect(array('index'));			
+			
 			}elseif (isset($_POST['joomla'])){
 				if($model->save()){
 					$this->izvoziVsebino($model);
-					//if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
-					//else $this->redirect(array('index'));
+					if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
+					else $this->redirect(array('index'));
 					//$this->redirect(array('index'));
 				}
-			}else{
-				
-				if($model->save()){
+			}else{				
+				if($model->save())
 					//die("start_date:".$model->start_date);
-					//$this->redirect(array('view','id'=>$model->id));
-				}
+					$this->redirect(array('update','id'=>$model->id));
 			}
 			
-			$this->redirect(array('view','id'=>$model->id));
 		}
+		//prikaz
 
 		$this->render('create',array(
 			'model'=>$model,

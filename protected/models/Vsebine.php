@@ -311,4 +311,11 @@ class Vsebine extends CActiveRecord
 		parent::onAfterSave($event);
 	}
 	
+public function afterConstruct(){
+		//navadne vrednosti
+		$this->frontpage = 1;
+		
+		parent::afterConstruct();
+	}
+	
 }
