@@ -232,7 +232,7 @@ class VsebineController extends Controller
 	public function actionLoadCategories(){
 		//please enter current controller name because yii send multi dim array 
 	    $data=Categories::listBySection((int) $_POST['Vsebine']['sectionid']);
-	 
+	 	echo('<option value="">Izberi kategorijo:</option>');
 	    foreach($data as $value=>$name)
 	    {
 	        echo CHtml::tag('option',
