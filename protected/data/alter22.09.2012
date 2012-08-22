@@ -1,0 +1,2 @@
+ALTER TABLE  `vs_vsebine` ADD  `koledar` BOOLEAN NOT NULL ,
+ADD  `koledar_naslov` TEXT NULL
