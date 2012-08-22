@@ -56,3 +56,27 @@ function split(val) {
 function extractLast(term) {
 	return split(term).pop();
 }
+
+function addTag(element, tag) {
+	 var terms = split(element.value);
+     // remove the current input
+     terms.pop();
+     // add the selected item
+     //if not exists in array already
+     if(terms.indexOf(tag) == -1 ){
+    	 terms.push( tag );
+     }
+     // add placeholder to get the comma-and-space at the end
+     terms.push('');
+     element.value = terms.join(', ');
+     
+}
+
+function addTagFromSelect(element, selectList){
+	tag = selectList.options[selectList.selectedIndex].text; //preberi vrednost
+	trimmed = $.trim(element.value); //počisti space
+	if(trimmed.length > 0 && trimmed.substr(trimmed.length - 1) != ','){ //če ni vejice, jo dodaj
+		element.value=element.value+',';
+	}
+	addTag(element, tag);
+}

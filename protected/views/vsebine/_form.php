@@ -137,7 +137,8 @@
 											//'data'=>'js:javascript statement' 
 											//leave out the data key to pass all form values through
 											),
-										'prompt'=>'Izberi sekcijo:'
+										'prompt'=>'Izberi sekcijo:',
+										'onchange' => 'addTagFromSelect(document.getElementById("tags"), this)'
 									));  ?>
 					<?php echo $form->error($model,'sectionid'); ?>
 				</div>
