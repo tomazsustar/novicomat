@@ -32,6 +32,21 @@
 		<tr>
 			<td>
 				<div class="row" >
+					<?php echo $form->labelEx($model,'koledar'); ?>
+					<?php echo $form->checkbox($model, 'koledar', array('onchange'=>'checkKoledar()')); ?>
+					<?php echo $form->error($model,'koledar'); ?>
+				</div>
+			</td>
+			<td colspan="2">
+				<div class="row">
+					<?php echo $form->labelEx($model,'koledar_naslov'); ?>
+					<?php echo $form->textField($model,'koledar_naslov',array('style'=>'width:100%;') ); ?>
+					<?php echo $form->error($model,'koledar_naslov'); ?>
+				</div>
+			</td>
+		
+			<td>
+				<div class="row" >
 					<?php echo $form->labelEx($model,'start_date'); ?>
 					<?php //echo ZDate::dbDateTime_php('10.11.2008 14:30')?>
 					<?php $form->dateTimePicker($model,'start_date', false, "startDateChanged");?>
@@ -44,6 +59,15 @@
 					<?php echo $form->labelEx($model,'end_date'); ?>
 					<?php $form->dateTimePicker($model,'end_date', false, "endDateChanged");?>
 					<?php echo $form->error($model,'end_date'); ?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="row" style="width:60px;" >
+					<?php echo $form->labelEx($model,'frontpage'); ?>
+					<?php echo $form->checkbox($model, 'frontpage'); ?>
+					<?php echo $form->error($model,'frontpage'); ?>
 				</div>
 			</td>
 			<td>
@@ -64,6 +88,14 @@
 					<?php $form->dateTimePicker($model,'publish_down');?>
 					<?php echo $form->error($model,'publish_down'); ?>
 				</div>
+			</td>
+			<td>
+				<div class="row" >
+					<?php echo $form->labelEx($model,'show_intro'); ?>
+					<?php //echo $form->dropDownList($model, 'catid', array()); ?>
+					<?php echo $form->checkbox($model, 'show_intro'); ?>
+					<?php echo $form->error($model,'show_intro'); ?>
+				</div> 
 			</td>
 		</tr>
 	</table>
@@ -90,20 +122,7 @@
 		<tr>
 		<td style="width:400px;">
 		
-				<div style="width:100%;height:42px;display:block;">
-					<div class="row" style="width:100px;float:left;">
-						<?php echo $form->labelEx($model,'show_intro'); ?>
-						<?php //echo $form->dropDownList($model, 'catid', array()); ?>
-						<?php echo $form->checkbox($model, 'show_intro'); ?>
-						<?php echo $form->error($model,'show_intro'); ?>
-					</div> 
-					<div class="row" style="float:left;">
-						<?php echo $form->labelEx($model,'frontpage'); ?>
-						<?php echo $form->checkbox($model, 'frontpage'); ?>
-						<?php echo $form->error($model,'frontpage'); ?>
-					</div>
-				</div>
-				<div class="row" >
+				<div class="row">
 					<?php echo $form->labelEx($model,'author_alias'); ?>
 					<?php echo $form->textField($model,'author_alias',array('size'=>60,'maxlength'=>256)); ?>
 					<br><?php echo $model->getAttributeLabel('author'); ?>:&nbsp;<?php echo $model->author; ?>
@@ -147,7 +166,8 @@
 					<?php echo $form->labelEx($model,'catid'); ?>
 					<?php //echo $form->dropDownList($model, 'catid', array()); ?>
 					<?php echo $form->dropDownList($model, 'catid', Categories::listBySection($model->sectionid),
-								array('prompt'=>'Izberi kategorijo:')); ?>
+								array('prompt'=>'Izberi kategorijo:',
+									'onchange' => 'addTagFromSelect(document.getElementById("tags"), this)')); ?>
 					<?php echo $form->error($model,'catid'); ?>
 				</div>
 			

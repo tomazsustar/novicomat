@@ -31,6 +31,9 @@
  * @property string $params
  * @property string $vir_url
  * @property string $lokacija
+ * @property string $koledar_naslov
+ * @property integer $koledar
+ * @property integer $frontpage
  */
 class Vsebine extends CActiveRecord
 {
@@ -111,16 +114,16 @@ class Vsebine extends CActiveRecord
 			array('publish_up, publish_down, start_date, end_date','dateOrTime'),
 			array('publish_down','later', 'then'=>'publish_up'),
 			array('end_date','later', 'then'=>'start_date'),
-			array('title, text', 'required'),
-			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
-			array('event_cat, lokacija', 'requiredIf', 'isset'=>'start_date'),
-			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
-			array('tags', 'safe'),
+			array('title, text, sectionid, catid, publish_up, tags', 'required'),
+//			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
+			array('event_cat, lokacija, start_date, koledar_naslov', 'requiredIf', 'isset'=>'koledar'),
+//			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
+//			array('tags', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>true, 'on'=>'insert'),
 			array('event_cat,state', 'default', 'value'=>0, 'setOnEmpty'=>true, 'on'=>'insert'),
 			
 			
-			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, show_intro', 'numerical', 'integerOnly'=>true),
+			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, show_intro, frontpage, koledar', 'numerical', 'integerOnly'=>true),
 			array('author, author_alias, global_id', 'length', 'max'=>256),
 			array('import_checksum, export_checksum', 'length', 'max'=>32),
 			
@@ -153,7 +156,7 @@ class Vsebine extends CActiveRecord
 	public function requiredIf($attribute, $params = array()){
 		//echo $attribute;
 		if(key_exists('isset', $params)){
-			if(trim($this->$params['isset'])!=""){
+			if(trim($this->$params['isset'])!="" && $this->$params['isset']!=0){ //če je prazen, ali če je 0
 				$val = CValidator::createValidator('required', $this, $attribute);
 				$val->validate($this);
 			}
@@ -198,26 +201,26 @@ class Vsebine extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'title' => 'Title',
-			'introtext' => 'Introtext',
-			'fulltext' => 'Fulltext',
+			'title' => 'Naslov',
+			'introtext' => 'Uvodno besedilo',
+			'fulltext' => 'Polno bededilo',
 			'state' => 'State',
-			'sectionid' => 'Sectionid',
-			'catid' => 'Catid',
+			'sectionid' => 'Sekcija',
+			'catid' => 'Kategorija',
 			'author' => 'Avtor izvirnika',
 			'author_alias' => 'Avtor',
-			'created' => 'Created',
-			'imported' => 'Imported',
+			'created' => 'Ustvarjeno',
+			'imported' => 'Uvoženo',
 			'checked_out' => 'Checked Out',
 			'checked_out_time' => 'Checked Out Time',
 			'edited' => 'Edited',
 			'edited_by' => 'Edited By',
-			'publish_up' => 'Publish Up',
-			'publish_down' => 'Publish Down',
-			'tags' => 'Tags',
+			'publish_up' => 'Začetek objave',
+			'publish_down' => 'Konec objave',
+			'tags' => 'Ključne besede',
 			'site_id' => 'Site',
-			'start_date' => 'Start Date',
-			'end_date' => 'End Date',
+			'start_date' => 'Začetek dogodka',
+			'end_date' => 'Konec dogodka',
 			'import_checksum' => 'Import Checksum',
 			'original_changed' => 'Original Changed',
 			'export_checksum' => 'Export Checksum',
@@ -230,7 +233,9 @@ class Vsebine extends CActiveRecord
 			'frontpage'=>'Prva stran',
 			'event_cat' => 'Kategorija v koledarju',
 			'show_intro' => 'Pokaži uvod',
-			'Lokacija' => 'lokacija',
+			'Lokacija' => 'Lokacija',
+			'koledar' => 'Koledar',
+			'koledar_naslov' => 'Naslov za koledar'
 		);
 	}
 

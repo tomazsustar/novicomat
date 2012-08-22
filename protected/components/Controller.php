@@ -29,13 +29,13 @@ class Controller extends CController
 	protected function izvoziVsebino(&$vsebina){
 		
 		//zastavice
-		$is_content = false;
+		$is_content = true;
 		$is_event = false;
 		$content_saved =false;
 		$event_saved=false;	
 		
-		if(isset($vsebina->publish_up)) $is_content = true;
-		if(isset($vsebina->start_date)) $is_event = true;
+//		if(isset($vsebina->publish_up)) $is_content = true;
+		if($vsebina->koledar) $is_event = true;
 		$content = new Content();
 		$event = new JeventsVevent();
 		$evdet = new JeventsVevdetail(); 
