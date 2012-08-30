@@ -55,6 +55,7 @@ class JeventsVevent extends CActiveRecord
 			array('created_by_alias', 'length', 'max'=>100),
 			array('recurrence_id', 'length', 'max'=>30),
 			array('refreshed, created', 'safe'),
+			array('uid', 'default', 'value'=>ZDate::dbNow().'@zelnik.net', 'setOnEmpty'=>true, 'on'=>'insert'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('ev_id, icsid, catid, uid, refreshed, created, created_by, created_by_alias, modified_by, rawdata, recurrence_id, detail_id, state, lockevent, author_notified, access', 'safe', 'on'=>'search'),
@@ -139,7 +140,7 @@ class JeventsVevent extends CActiveRecord
 	public function mapVsebine(&$vsebina){
 		$this->icsid = 1;
 		$this->catid = $vsebina->event_cat;
-		$this->uid = $vsebina->global_id; 
+		$this->uid = $vsebina->global_id !='' ? $vsebina->global_id : ZDate::dbNow().'@zelnik.net';  
 		$this->refreshed = ZDate::dbDateTime_php(time());
 		$this->created = $this->refreshed;
 		$this->created_by = Yii::app()->user->id;
