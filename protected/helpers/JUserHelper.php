@@ -103,7 +103,7 @@ class JUserHelper
 	 *
 	 * @return string  The encrypted password.
 	 */
-	function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false)
+	static function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false)
 	{
 		// Get the salt to use.
 		$salt = JUserHelper::getSalt($encryption, $salt, $plaintext);
@@ -198,7 +198,7 @@ class JUserHelper
 	 *
 	 * @return string  The generated or extracted salt.
 	 */
-	function getSalt($encryption = 'md5-hex', $seed = '', $plaintext = '')
+	static function getSalt($encryption = 'md5-hex', $seed = '', $plaintext = '')
 	{
 		// Encrypt the password.
 		switch ($encryption)

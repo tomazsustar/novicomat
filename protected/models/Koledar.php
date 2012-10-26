@@ -1,18 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "{{tags}}".
+ * This is the model class for table "{{koledar}}".
  *
- * The followings are the available columns in table '{{tags}}':
+ * The followings are the available columns in table '{{koledar}}':
  * @property integer $id
- * @property integer $parent
- * @property string $tag
+ * @property string $naslov
+ * @property integer $id_vsebine
+ * @property string $zacetek
+ * @property string $konec
+ * @property string $lokacija
+ * @property integer $id_lokacija
  */
-class Tags extends CActiveRecord
+class Koledar extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
-	 * @return Tags the static model class
+	 * @param string $className active record class name.
+	 * @return Koledar the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -24,7 +29,7 @@ class Tags extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{tags}}';
+		return '{{koledar}}';
 	}
 
 	/**
@@ -35,12 +40,12 @@ class Tags extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('tag', 'required'),
-			array('parent', 'numerical', 'integerOnly'=>true),
-			array('tag', 'length', 'max'=>256),
+			array('naslov, id_vsebine, zacetek, lokacija', 'required'),
+			array('id_vsebine, id_lokacija', 'numerical', 'integerOnly'=>true),
+			array('konec', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, parent, tag', 'safe'),
+			array('id, naslov, id_vsebine, zacetek, konec, lokacija, id_lokacija', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,8 +67,12 @@ class Tags extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'parent' => 'Parent',
-			'tag' => 'Tag',
+			'naslov' => 'Naslov',
+			'id_vsebine' => 'Id Vsebine',
+			'zacetek' => 'Zacetek',
+			'konec' => 'Konec',
+			'lokacija' => 'Lokacija',
+			'id_lokacija' => 'Id Lokacija',
 		);
 	}
 
@@ -79,26 +88,15 @@ class Tags extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('parent',$this->parent);
-		$criteria->compare('tag',$this->tag,true);
+		$criteria->compare('naslov',$this->naslov,true);
+		$criteria->compare('id_vsebine',$this->id_vsebine);
+		$criteria->compare('zacetek',$this->zacetek,true);
+		$criteria->compare('konec',$this->konec,true);
+		$criteria->compare('lokacija',$this->lokacija,true);
+		$criteria->compare('id_lokacija',$this->id_lokacija);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
-	}
-	
-	/**
-	 * 
-	 * Najde ključne besede, ki jih še ni v databazi
-	 * @param array $allTags
-	 */
-	public function findNonExistingTags($tags_string){
-		$all_tags = explode(',', addslashes($tags_string)); // v zbirko + addslashes
-		$trimed_tags=array();
-		foreach ($all_tags as $tag) $trimed_tags[] = trim($tag); 
-		$existing_tags=Tags::model()->findAll("tag IN ('".implode("','", $trimed_tags)."')"); // najde vse besede, ki že obstajajo
-		$existing_tags_simple_array = array();
-		foreach ($existing_tags as $tag) $existing_tags_simple_array[]=$tag->tag; // to simple array
-		return array_diff($trimed_tags, $existing_tags_simple_array) ; // poišče razliko in vrne
 	}
 }
