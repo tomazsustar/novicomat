@@ -55,9 +55,11 @@ class Controller extends CController
 				$izvoz->id_clanka_izvoz = $content->getPrimaryKey(); //poveži izhodno tabelo z glavno				
 			}
 		}
-		if($is_event){  // vpiši v koledar
+		foreach($vsebina->dogodki as $dogodek){
+		//if($is_event){  // vpiši v koledar
 			 //najprej uredimo detaile
-			$evdet->mapVsebine($vsebina);
+			//$evdet->mapVsebine($vsebina);
+			$evdet->mapVsebine($dogodek, $vsebina);
 			if ($evdet->save(false)){ //če so detajli shranjeni shranimo še dogodek
 				$event->mapVsebine($vsebina);
 				$event->detail_id = $evdet->getPrimaryKey(); //povežemo z detajli

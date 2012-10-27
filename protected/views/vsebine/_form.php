@@ -6,7 +6,9 @@
 
 <div class="form">
 
-<?php $form=$this->beginWidget('ZActiveForm', array(
+<?php 
+
+$form=$this->beginWidget('ZActiveForm', array(
 	'id'=>'vsebine-form',
 	'enableAjaxValidation'=>false,
 	'focus' => '#Vsebine_title',
@@ -27,10 +29,95 @@
 		<?php echo $form->textField($model,'title',array('style'=>'width:100%;') ); ?>
 		<?php echo $form->error($model,'title'); ?>
 	</div>
+
+
+	<?php 
+
+
+	$memberFormConfig = array(
+      'elements'=>array(
+        'naslov'=>array(
+            'type'=>'text',
+            'maxlength'=>40,
+        ),
+        'zacetek'=>array(
+            'type'=>'application.extensions.timepicker.EJuiDateTimePicker',
+            	'options' => array(
+     		 // 'ampm' => true,
+		//'stepMinute' => 10,
+		//'appendText'=>'dd.MM.LLLL UU:mm',
+		'alwaysSetTime'=> false,
+		'timeFormat' => 'hh:mm',
+		'dateFormat' => 'dd.mm.yy',
+		'showHour' => false,
+		'showMinute' => false,
+	       //'timeOnly' => true,
+	       //'onSelect'=>"js:function(dateText, inst){calendarSelect(dateText, inst);}",
+		// 'onClose'=>"js:function(dateText, inst){".$onchange.";}",
+	    ),
+	),
+        'konec'=>array(
+		'type'=>'application.extensions.timepicker.EJuiDateTimePicker',
+            	'options' => array(
+     		 // 'ampm' => true,
+		//'stepMinute' => 10,
+		//'appendText'=>'dd.MM.LLLL UU:mm',
+		'alwaysSetTime'=> false,
+		'timeFormat' => 'hh:mm',
+		'dateFormat' => 'dd.mm.yy',
+		'showHour' => false,
+		'showMinute' => false,
+	       //'timeOnly' => true,
+	       //'onSelect'=>"js:function(dateText, inst){calendarSelect(dateText, inst);}",
+		// 'onClose'=>"js:function(dateText, inst){".$onchange.";}",
+	    ),
+	),
+
+ 	/*'id_vsebine'=>array(
+            'type'=>'text',
+            'maxlength'=>40,
+        ),
+	'lokacija'=>array(
+            'type'=>'text',
+            'maxlength'=>40,
+        ),
+	'id_lokacija'=>array(
+            'type'=>'text',
+            'maxlength'=>40,
+        ),*/
+    ));	
 	
-	<table>
-		<tr>
-			<td>
+	$this->widget('ext.multimodelform.MultiModelForm',array(
+	'tableView' => true,
+        'id' => 'id_jajca', //the unique widget id
+        'formConfig' => $memberFormConfig, //the form configuration array
+        'model' => $member, //instance of the form model
+ 	'addItemText' => 'Dodaj dogodek',
+        //if submitted not empty from the controller,
+        //the form will be rendered with validation errors
+        'validatedItems' => $validatedMembers,
+ 
+        //array of member instances loaded from db
+        'data' => $member->findAll('id_vsebine=:groupId', array(':groupId'=>$model->id)),
+	'hideCopyTemplate' => false, //should be set to false
+
+	'jsAfterNewId' => MultiModelForm::afterNewIdDateTimePicker($memberFormConfig['elements']['zacetek']),
+    ));
+
+
+/*
+$this->widget('ext.jqrelcopy.JQRelcopy',
+                 array(
+                       'id' => 'copylink',
+                       'removeText' => 'remove' //uncomment to add remove link
+                       )
+);
+<a id="copylink" href="#" rel="div.kopiraj">Copy</a>
+*/
+?>
+<?php /*	
+	 <table>
+		<tr >
 				<div class="row" >
 					<?php echo $form->labelEx($model,'koledar'); ?>
 					<?php echo $form->checkbox($model, 'koledar', array('onchange'=>'checkKoledar()')); ?>
@@ -62,6 +149,10 @@
 				</div>
 			</td>
 		</tr>
+</table>
+*/ ?>
+ 
+<table>
 		<tr>
 			<td>
 				<div class="row" style="width:60px;" >
@@ -116,7 +207,8 @@
 			    'editorTemplate'=>'full',			
 			)); ?>
 	</div>
-	
+
+
 	
 		<table>
 		<tr>

@@ -214,4 +214,39 @@ class JeventsVevdetail extends CActiveRecord
 		else $this->noendtime=1;
 		$this->modified=ZDate::dbDateTime_php(time()); // zdaj
 	}
+	public function mapKoledar(&$dogodek, &$vsebina){
+		$this->rawdata='';
+		$this->dtstart = strtotime($dogodek->zacetek);
+		$this->dtstartraw='';
+		$this->duration=0;
+		$this->durationraw='';
+		if(isset($dogodek->konec))$this->dtend = strtotime($dogodek->konec);
+		else $this->dtend = strtotime(ZDate::setTime($dogodek->zacetek, '23:59:59'));
+		$this->dtendraw='';
+		$this->dtstamp ='';
+		$this->class='';
+		$this->categories='';
+		$this->color='';
+		//if(isset($vsebina->publish_up)) $this->description ='';
+		//else $this->description = $vsebina->text;
+		$this->description = $vsebina->text;
+		$this->geolon=0;
+		$this->geolat=0;
+		$this->location=$vsebina->lokacija;
+		$this->priority=0;
+		$this->status='';
+		$this->summary = $dogodek->naslov;
+		$this->contact = '';
+		$this->organizer = '';
+		$this->url = '';
+		$this->extra_info = '';
+		$this->created='';
+		$this->sequence=0;
+		$this->state=1; //published
+		$this->multiday=1;
+		$this->hits=0;
+		if(isset($dogodek->konec) || ZDate::getTime($dogodek->zacetek)=='00:00:00') $this->noendtime=0;
+		else $this->noendtime=1;
+		$this->modified=ZDate::dbDateTime_php(time()); // zdaj
+	}
 }

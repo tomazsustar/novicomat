@@ -40,9 +40,11 @@ class Koledar extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('naslov, id_vsebine, zacetek, lokacija', 'required'),
-			array('id_vsebine, id_lokacija', 'numerical', 'integerOnly'=>true),
-			array('konec', 'safe'),
+			array('naslov', 'required'),
+			array('id_vsebine', 'numerical', 'integerOnly'=>true),
+			array('konec, zacetek', 'ext.myvalidators.DateOrTime'), 
+			array('konec','ext.myvalidators.Later', 'then'=>'zacetek'),
+			array('lokacija', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, naslov, id_vsebine, zacetek, konec, lokacija, id_lokacija', 'safe', 'on'=>'search'),
@@ -56,8 +58,15 @@ class Koledar extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
+		
 		return array(
+			'vsebina'    => array(self::BELONGS_TO, 'Vsebine',    'vsebina_id'),
 		);
+	}
+	
+	public function behaviors()
+	{
+	    return array('datetimeDBBehavior' => array('class' => 'ext.DateTimeDBBehavior')); // uredi datum, da je pravega formata za v bazo in iz nje
 	}
 
 	/**

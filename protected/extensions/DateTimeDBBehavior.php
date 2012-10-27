@@ -81,7 +81,7 @@ class DateTimeDBBehavior  extends CActiveRecordBehavior
 		return true;
 	}*/
 	
-	/*public function afterFind($event){
+	public function afterFind($event){
 					
 		foreach($event->sender->tableSchema->columns as $columnName => $column){
 						
@@ -93,15 +93,17 @@ class DateTimeDBBehavior  extends CActiveRecordBehavior
 			}
 			
 			if ($column->dbType == 'date'){				
-				$event->sender->$columnName = Yii::app()->dateFormatter->formatDateTime(
-								CDateTimeParser::parse($event->sender->$columnName, $this->dateIncomeFormat),'medium',null);
+				//$event->sender->$columnName = Yii::app()->dateFormatter->formatDateTime(
+				//				CDateTimeParser::parse($event->sender->$columnName, $this->dateIncomeFormat),'medium',null);
+				$event->sender->$columnName = ZDate::formDate_php($event->sender->$columnName);
 			}else{				
-				$event->sender->$columnName = 
-					Yii::app()->dateFormatter->formatDateTime(
-							CDateTimeParser::parse($event->sender->$columnName,	$this->dateTimeIncomeFormat), 
-							'medium', 'medium');
+				//$event->sender->$columnName = 
+				//	Yii::app()->dateFormatter->formatDateTime(
+				//			CDateTimeParser::parse($event->sender->$columnName,	$this->dateTimeIncomeFormat), 
+				//			'medium', 'medium');
+				$event->sender->$columnName = ZDate::formDateTime_php($event->sender->$columnName);
 			}
 		}
 		return true;
-	}*/
+	}
 }

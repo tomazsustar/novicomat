@@ -67,33 +67,14 @@ class VsebineController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Vsebine']))
-		{
-			$model->attributes=$_POST['Vsebine'];
-			if(isset($_POST['zavrzi'])){				
-				if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
-				else $this->redirect(array('index'));
-				//$this->redirect(array('index'));			
-			
-			}elseif (isset($_POST['joomla'])){
-				if($model->save()){
-					$this->izvoziVsebino($model);
-					if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
-					else $this->redirect(array('index'));
-					//$this->redirect(array('index'));
-				}
-			}else{				
-				if($model->save())
-					//die("start_date:".$model->start_date);
-					$this->redirect(array('update','id'=>$model->id));
-			}
-			
-		}
-		//prikaz
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+		if(isset($_POST['zavrzi'])){				
+			if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
+			else $this->redirect(array('index'));
+		}
+			
+		
+		$this->saveVsebine($model, 'create');
 	}
 
 	/**
@@ -105,9 +86,17 @@ class VsebineController extends Controller
 	{
 		$model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->saveVsebine($model, 'update');
 
+		
+	}
+	
+	private function saveVsebine(&$model, $action){
+		Yii::import('ext.multimodelform.MultiModelForm');
+
+		$member = new Koledar;
+		$validatedMembers = array(); //ensure an empty array
+		
 		if(isset($_POST['Vsebine']))
 		{
 			$model->attributes=$_POST['Vsebine'];
@@ -118,26 +107,36 @@ class VsebineController extends Controller
 					else $this->redirect(array('index'));
 					//$this->redirect(array('index'));
 				}
-			}elseif (isset($_POST['joomla'])){
-				if($model->save()){
-					$this->izvoziVsebino($model);
-					if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
-					else $this->redirect(array('index'));
-					//$this->redirect(array('index'));
+			}else{	
+		
+				if(MultiModelForm::validate($member,$validatedMembers,$deleteItems) && $model->save()){ //validate detail before saving the master
+					
+					
+            				$masterValues = array('id_vsebine'=>$model->id);
+					 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
+						if(isset($_POST['joomla'])){ 
+							//če gre v joomlo
+							$this->izvoziVsebino($model);
+							if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
+							else $this->redirect(array('index'));
+						}else{
+							//samo shrani
+							$this->redirect(array('update','id'=>$model->id));
+						}
+					}
 				}
-			}else{
-				
-				if($model->save())
-					//die("start_date:".$model->start_date);
-					$this->redirect(array('update','id'=>$model->id));
 			}
 			
 		}
 
-		$this->render('update',array(
+		$this->render($action,array(
 			'model'=>$model,
+			
+			//submit the member and validatedItems to the widget in the edit form
+			'member'=>$member,
+			'validatedMembers' => $validatedMembers,
 		));
-	}
+	}	
 	
 	public function actionZavrzi($id)
 	{

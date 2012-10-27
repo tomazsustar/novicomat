@@ -111,12 +111,12 @@ class Vsebine extends CActiveRecord
 		return array(
 			//array('title, introtext, fulltext, state, sectionid, catid, author, created, imported, checked_out, checked_out_time, edited, edited_by, publish_up, publish_down, tags, site_id, start_date, end_date, import_checksum, original_changed, export_checksum, global_id, params, vir_url', 'required'),
 			
-			array('publish_up, publish_down, start_date, end_date','dateOrTime'),
-			array('publish_down','later', 'then'=>'publish_up'),
-			array('end_date','later', 'then'=>'start_date'),
+			array('publish_up, publish_down, start_date, end_date','ext.myvalidators.DateOrTime'),
+			array('publish_down','ext.myvalidators.Later', 'then'=>'publish_up'),
+			array('end_date','ext.myvalidators.Later', 'then'=>'start_date'),
 			array('title, text, sectionid, catid, publish_up, tags', 'required'),
 //			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
-			array('event_cat, lokacija, start_date, koledar_naslov', 'requiredIf', 'isset'=>'koledar'),
+			array('event_cat, lokacija, start_date, koledar_naslov', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar'),
 //			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
 //			array('tags', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>true, 'on'=>'insert'),
@@ -134,53 +134,6 @@ class Vsebine extends CActiveRecord
 		);
 	}
 	
-	// dovoli dva različna formata
-	public function dateOrTime($attribute, $params = array()){
-		if(!trim($this->$attribute)==""){ //če je prazen ga ne glej
-			$validator = CValidator::createValidator('date', $this, $attribute, array('format'=>ZDate::FORM_DATE_FORMAT_YII));
-			$validator->validate($this);
-			$validator = CValidator::createValidator('date', $this, $attribute, array('format'=>ZDate::FORM_DATETIME_FORMAT_YII));
-			$validator->validate($this);
-			if(count($this->getErrors($attribute))!=2){ //če je prišel vsaj skozi en validator
-				$this->clearErrors($attribute);
-			}
-			else{
-				$this->clearErrors($attribute);
-				$this->addError($attribute, $this->getAttributeLabel($attribute)." je napačnega formata.");
-			}
-		}
-		
-	}
-	
-	// zahtevaj če je vnešen publish _up
-	public function requiredIf($attribute, $params = array()){
-		//echo $attribute;
-		if(key_exists('isset', $params)){
-			if(trim($this->$params['isset'])!="" && $this->$params['isset']!=0){ //če je prazen, ali če je 0
-				$val = CValidator::createValidator('required', $this, $attribute);
-				$val->validate($this);
-			}
-		}
-		if(key_exists('notset', $params)){
-			if(trim($this->$params['notset'])==""){
-				$message = 'Vsaj en izmed '.$this->getAttributeLabel($attribute).' ali '.$this->getAttributeLabel($this->$params['notset']). ' mora biti vnešen.';
-				$val = CValidator::createValidator('required', $this, $attribute, array('message'=>$message));
-				$val = CValidator::createValidator('required', $this, $this->$params['notset'], array('message'=>$message));
-				$val->validate($this);
-			}
-		}
-		
-	}
-	
-	//preveri, da je en datum ksnejši od drugega
-	public function later($attribute, $params = array()){
-		//echo strtotime($this->$params['compareTo']) > strtotime($this->$attribute);
-		if(trim($this->$attribute)!=""){
-			if(strtotime($this->$params['then']) > strtotime($this->$attribute)){
-				$this->addError($attribute, $this->getAttributeLabel($attribute)." mora biti kasnejši od ".$this->getAttributeLabel($params['then']).".");
-			}
-		}
-	}
 
 	/**
 	 * @return array relational rules.

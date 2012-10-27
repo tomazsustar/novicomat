@@ -6,7 +6,7 @@ class ZActiveForm extends CActiveForm{
 	public function datePicker($model, $attribute, $value=false){		
 		
 		if(!$value)
-			$value = ZDate::formDate($model->$attribute);
+			$value = $model->$attribute;
 			
 		return $this->widget('zii.widgets.jui.CJuiDatePicker', array(
 									   //'model'=>$model,
@@ -26,7 +26,8 @@ class ZActiveForm extends CActiveForm{
 	
 	public function dateTimePicker($model, $attribute, $value=false, $onchange=""){	
 		if(!$value)
-			$value = ZDate::formDateTime_php($model->$attribute);
+			//$value = ZDate::formDateTime_php($model->$attribute);
+			$value = $model->$attribute;
 		if($onchange!="")
 			$onchange.="(dateText, inst)";
 		//echo get_class($model)."[$attribute]";
