@@ -216,12 +216,12 @@ class JeventsVevdetail extends CActiveRecord
 	}
 	public function mapKoledar(&$dogodek, &$vsebina){
 		$this->rawdata='';
-		$this->dtstart = strtotime($dogodek->zacetek);
+		$this->dtstart = strtotime(ZDate::dbDateTime_php($dogodek->zacetek));
 		$this->dtstartraw='';
 		$this->duration=0;
 		$this->durationraw='';
-		if(isset($dogodek->konec))$this->dtend = strtotime($dogodek->konec);
-		else $this->dtend = strtotime(ZDate::setTime($dogodek->zacetek, '23:59:59'));
+		if(isset($dogodek->konec))$this->dtend = strtotime(ZDate::dbDateTime_php($dogodek->konec));
+		else $this->dtend = strtotime(ZDate::setTime(ZDate::dbDateTime_php($dogodek->zacetek), '23:59:59'));
 		$this->dtendraw='';
 		$this->dtstamp ='';
 		$this->class='';
@@ -245,7 +245,7 @@ class JeventsVevdetail extends CActiveRecord
 		$this->state=1; //published
 		$this->multiday=1;
 		$this->hits=0;
-		if(isset($dogodek->konec) || ZDate::getTime($dogodek->zacetek)=='00:00:00') $this->noendtime=0;
+		if(isset($dogodek->konec) || ZDate::getTime(ZDate::dbDateTime_php($dogodek->zacetek))=='00:00:00') $this->noendtime=0;
 		else $this->noendtime=1;
 		$this->modified=ZDate::dbDateTime_php(time()); // zdaj
 	}

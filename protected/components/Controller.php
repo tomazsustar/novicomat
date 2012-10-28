@@ -42,7 +42,7 @@ class Controller extends CController
 		//if($is_content){ // vpiši med članke
 		$content->mapVsebine($vsebina); // prepiši vrednosti v joomlino tabelo
 		if($content->save(false)){ //shrani
-			//$content_saved=true;
+			$content_saved=true;
 			if($vsebina->frontpage){
 				//prva stran
 				$fp = new ContentFrontpage();
@@ -77,7 +77,7 @@ class Controller extends CController
 						$repetition->eventid=$event->getPrimaryKey();
 						$repetition->eventdetail_id=$evdet->getPrimaryKey();
 						$repetition->duplicatecheck=md5($event->getPrimaryKey().$evdet->dtstart);
-						$repetition->startrepeat=$dogodek->zacetek;
+						$repetition->startrepeat=ZDate::dbDateTime_php($dogodek->zacetek);
 						$repetition->endrepeat=date(ZDate::DB_DATETIME_FORMAT_PHP, $evdet->dtend);
 						if($repetition->save(false)){
 												
