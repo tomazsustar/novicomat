@@ -267,7 +267,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					<?php echo $form->labelEx($model,'event_cat'); ?>
 					<?php //echo $form->dropDownList($model, 'catid', array()); ?>
 					<?php echo $form->dropDownList($model, 'event_cat', Categories::listJevCat(),
-								array('prompt'=>'Izberi kategorijo:')); ?>
+								array('prompt'=>'Izberi kategorijo:', 'style'=>'width:250px;')); ?>
 					<?php echo $form->error($model,'event_cat'); ?>
 				</div>
 			</td>

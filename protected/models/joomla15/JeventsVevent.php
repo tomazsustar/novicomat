@@ -153,4 +153,20 @@ class JeventsVevent extends CActiveRecord
 		$this->lockevent=0;
 		$this->author_notified=0;
 	}
+	public function mapKoledar(&$dogodek, &$vsebina){
+		$this->icsid = 1;
+		$this->catid = $vsebina->event_cat;
+		$this->uid = $vsebina->global_id !='' ? $vsebina->global_id.'#'.$dogodek->id : ZDate::dbNow().'_'.$dogodek->id.'@zelnik.net';  
+		$this->refreshed = ZDate::dbDateTime_php(time());
+		$this->created = $this->refreshed;
+		$this->created_by = Yii::app()->user->id;
+		$this->created_by_alias = $vsebina->author;
+		$this->modified_by = Yii::app()->user->id;
+		//$this->rawdata =
+		//$this->detail_id = //se vpiše posebej
+		$this->state=1; //published
+		$this->access=0;
+		$this->lockevent=0;
+		$this->author_notified=0;
+	}
 }

@@ -10,7 +10,7 @@
     return true;
 }*/
 $(document).ready(function() {
-  checkKoledar();
+  //checkKoledar();
 });
 
 // Simulates PHP's date function

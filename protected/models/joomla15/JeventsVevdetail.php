@@ -232,7 +232,7 @@ class JeventsVevdetail extends CActiveRecord
 		$this->description = $vsebina->text;
 		$this->geolon=0;
 		$this->geolat=0;
-		$this->location=$vsebina->lokacija;
+		$this->location = $vsebina->lokacija;
 		$this->priority=0;
 		$this->status='';
 		$this->summary = $dogodek->naslov;

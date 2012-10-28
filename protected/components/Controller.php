@@ -35,33 +35,37 @@ class Controller extends CController
 		$event_saved=false;	
 		
 //		if(isset($vsebina->publish_up)) $is_content = true;
-		if($vsebina->koledar) $is_event = true;
+		//if($vsebina->koledar) $is_event = true;
 		$content = new Content();
-		$event = new JeventsVevent();
-		$evdet = new JeventsVevdetail(); 
 		$izvoz = new Izvoz();
 		
-		if($is_content){ // vpiši med članke
-			$content->mapVsebine($vsebina); // prepiši vrednosti v joomlino tabelo
-			if($content->save(false)){ //shrani
-				$content_saved=true;
-				if($vsebina->frontpage){
-					//prva stran
-					$fp = new ContentFrontpage();
-					$fp->content_id = $content->getPrimaryKey();
-					$fp->save(false);
-				}
-				$izvoz->je_clanek = 1;					
-				$izvoz->id_clanka_izvoz = $content->getPrimaryKey(); //poveži izhodno tabelo z glavno				
+		//if($is_content){ // vpiši med članke
+		$content->mapVsebine($vsebina); // prepiši vrednosti v joomlino tabelo
+		if($content->save(false)){ //shrani
+			//$content_saved=true;
+			if($vsebina->frontpage){
+				//prva stran
+				$fp = new ContentFrontpage();
+				$fp->content_id = $content->getPrimaryKey();
+				$fp->save(false);
 			}
+			$izvoz->je_clanek = 1;					
+			$izvoz->id_clanka_izvoz = $content->getPrimaryKey(); //poveži izhodno tabelo z glavno				
 		}
+		//}
 		foreach($vsebina->dogodki as $dogodek){
 		//if($is_event){  // vpiši v koledar
 			 //najprej uredimo detaile
 			//$evdet->mapVsebine($vsebina);
-			$evdet->mapVsebine($dogodek, $vsebina);
+
+			// novi objekti za vsako iteracijo
+			$event = new JeventsVevent();
+			$evdet = new JeventsVevdetail();
+
+			$evdet->mapKoledar($dogodek, $vsebina);
 			if ($evdet->save(false)){ //če so detajli shranjeni shranimo še dogodek
-				$event->mapVsebine($vsebina);
+				//$event->mapVsebine($vsebina);
+				$event->mapKoledar($dogodek, $vsebina);
 				$event->detail_id = $evdet->getPrimaryKey(); //povežemo z detajli
 				if($event->save(false)){
 					$rrule = new JeventsRrule(); // potreben je še zapis v rrule, sicer se dogodki nočejo prikazovati
@@ -73,7 +77,7 @@ class Controller extends CController
 						$repetition->eventid=$event->getPrimaryKey();
 						$repetition->eventdetail_id=$evdet->getPrimaryKey();
 						$repetition->duplicatecheck=md5($event->getPrimaryKey().$evdet->dtstart);
-						$repetition->startrepeat=$vsebina->start_date;
+						$repetition->startrepeat=$dogodek->zacetek;
 						$repetition->endrepeat=date(ZDate::DB_DATETIME_FORMAT_PHP, $evdet->dtend);
 						if($repetition->save(false)){
 												
@@ -84,18 +88,20 @@ class Controller extends CController
 					}
 					
 				}
+				// na koncu še povežemo dogodek in novico
+				
+				$agenda = new JevAgendaminutes();
+				$agenda->evdet_id = $evdet->getPrimaryKey();
+				$agenda->agenda_id = $content->getPrimaryKey();
+				//echo $evdet->getPrimaryKey();
+				$agenda->save(false);
 			}
 		}
 		
-		// na koncu še povežemo dogodek in novico
-		if($content_saved && $event_saved){
-			$agenda = new JevAgendaminutes();
-			$agenda->evdet_id = $evdet->getPrimaryKey();
-			$agenda->agenda_id = $content->getPrimaryKey();
-			$agenda->save(false);
-		}
 		
-		if($content_saved || $event_saved){ //posodobi status in shrani še v tabelo izvoz
+
+		
+		if($content_saved){ //posodobi status in shrani še v tabelo izvoz
 			$izvoz->id_vsebine = $vsebina->id;
 			$izvoz->cilj='zelnik';
 			if($izvoz->save(false)){
