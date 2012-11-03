@@ -19,10 +19,10 @@ $form=$this->beginWidget('ZActiveForm', array(
 )); ?>
 
 	<p class="note">Vir: <?php echo $model->virLink;?>, 
-				uvožen: <?php echo ZDate::formDateTime_php($model->imported);?>, 
-				datum izvirnika: <?php echo ZDate::formDateTime_php($model->created)?></p>
+				uvožen: <?php echo $model->imported;?>, 
+				datum izvirnika: <?php $model->created;?></p>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary(array_merge(array($model),$validatedMembers)); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>

@@ -108,27 +108,38 @@ class VsebineController extends Controller
 					//$this->redirect(array('index'));
 				}
 			}else{	
-		
-				if(MultiModelForm::validate($member,$validatedMembers,$deleteItems) && $model->save()){ //validate detail before saving the master
-					
-					
-            				$masterValues = array('id_vsebine'=>$model->id);
-					 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
-						if(isset($_POST['joomla'])){ 
-							//če gre v joomlo
-							$this->izvoziVsebino($model);
-							if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
-							else $this->redirect(array('index'));
-						}else{
-							//samo shrani
-							$this->redirect(array('update','id'=>$model->id));
+				$MMvalidated = false;
+				if(MultiModelForm::validate($member,$validatedMembers,$deleteItems)) $MMvalidated = true;
+
+				if(count($validatedMembers)) $model->koledar=1;
+				else $model->koledar=0; //zaradi validacije zapiši, če ima vsebina pripete dogodke.
+				
+				if($MMvalidated){
+					if($model->save()){ //validate detail before saving the master
+				
+		    				$masterValues = array('id_vsebine'=>$model->id);
+						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
+							if(isset($_POST['joomla'])){ 
+								//če gre v joomlo
+								$this->izvoziVsebino($model);
+								if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
+								else $this->redirect(array('index'));
+							}else{
+								//samo shrani
+								$this->redirect(array('update','id'=>$model->id));
+							}
 						}
 					}
+				}else{
+					$model->validate();
 				}
+				
 			}
 			
 		}
-
+		//echo "<pre>";
+		//print_r($validatedMembers);
+		//echo "</pre>";
 		$this->render($action,array(
 			'model'=>$model,
 			

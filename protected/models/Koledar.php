@@ -40,7 +40,7 @@ class Koledar extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('naslov', 'required'),
+			array('naslov, zacetek', 'required'),
 			array('id_vsebine', 'numerical', 'integerOnly'=>true),
 			array('konec, zacetek', 'ext.myvalidators.DateOrTime'), 
 			array('konec','ext.myvalidators.Later', 'then'=>'zacetek'),

@@ -116,7 +116,7 @@ class Vsebine extends CActiveRecord
 			array('end_date','ext.myvalidators.Later', 'then'=>'start_date'),
 			array('title, text, sectionid, catid, publish_up, tags', 'required'),
 //			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
-			array('event_cat, lokacija, start_date, koledar_naslov', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar'),
+			array('event_cat, lokacija', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar'),
 //			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
 //			array('tags', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>true, 'on'=>'insert'),
