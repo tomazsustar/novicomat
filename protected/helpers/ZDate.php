@@ -74,7 +74,7 @@ class ZDate{
 						 
 		if ($format=='dd. month yyyy'){
 			//$regex ="^(0[1-9]|[12][0-9]|3[01])/..[a-zA-Z]*.(19|20)\d\d^";
-			$regex ="^(0[1-9]|[12][0-9]|3[01])\..?([a-zA-Z]*).((19|20)\d\d)^";
+			$regex ="^(0[1-9]|[12][0-9]|3[01]|)\..?([a-zA-Z]*).((19|20)\d\d)^";
 			if (preg_match($regex, $string, $matches))
         	return $matches[3].'-'.self::stMeseca($matches[2]).'-'.$matches[1];
 		}
@@ -95,8 +95,39 @@ class ZDate{
 						 '12'=>'december');
 	}
 	
-	public static function stMeseca($imeMeseca){
-		return array_search($imeMeseca, self::MESECI());
+	public static function MESECI_ROD(){
+		return 	$meseci = array('01'=>'januarja', 
+						 '02'=>'februarja',
+						 '03'=> 'marca',
+						 '04'=>'aprila',
+						 '05'=>'maja',
+						 '06'=>'junija',
+						 '07'=>'julija',
+						 '08'=>'augusta',
+						 '09'=>'septembra',
+						 '10'=>'oktobra',
+						 '11'=>'novembra',
+						 '12'=>'decembra');
 	}
 	
+	public static function MESECI_KRATKO(){
+		return 	$meseci = array('01'=>'jan', 
+						 '02'=>'feb',
+						 '03'=> 'mar',
+						 '04'=>'apr',
+						 '05'=>'maj',
+						 '06'=>'jun',
+						 '07'=>'jul',
+						 '08'=>'aug',
+						 '09'=>'sep',
+						 '10'=>'okt',
+						 '11'=>'nov',
+						 '12'=>'dec');
+	}
+	
+	public static function stMeseca($imeMeseca){
+		if($mesec=array_search($imeMeseca, self::MESECI())) return $mesec;
+		if($mesec=array_search($imeMeseca, self::MESECI_ROD())) return $mesec;
+		if($mesec=array_search($imeMeseca, self::MESECI_KRATKO())) return $mesec;
+	}
 }
