@@ -38,7 +38,7 @@ $form=$this->beginWidget('ZActiveForm', array(
       'elements'=>array(
         'naslov'=>array(
             'type'=>'text',
-            'maxlength'=>40,
+			'size'=>50,
         ),
         'zacetek'=>array(
             'type'=>'application.extensions.timepicker.EJuiDateTimePicker',
@@ -92,16 +92,20 @@ $form=$this->beginWidget('ZActiveForm', array(
         'id' => 'id_jajca', //the unique widget id
         'formConfig' => $memberFormConfig, //the form configuration array
         'model' => $member, //instance of the form model
- 	'addItemText' => 'Dodaj dogodek',
+ 		'addItemText' => 'Dodaj dogodek',
+		'removeText' => 'Odstrani',
         //if submitted not empty from the controller,
         //the form will be rendered with validation errors
         'validatedItems' => $validatedMembers,
- 
+ 		
         //array of member instances loaded from db
         'data' => $member->findAll('id_vsebine=:groupId', array(':groupId'=>$model->id)),
-	'hideCopyTemplate' => false, //should be set to false
+	//'hideCopyTemplate' => false, //should be set to false
 
 	'jsAfterNewId' => MultiModelForm::afterNewIdDateTimePicker($memberFormConfig['elements']['zacetek']),
+	'onAddItemClick' => 'kopirajNaslov();',
+	//'jsAfterClone' => 'alert(this);'
+		'options'=>array('clearInputs'=>false),
     ));
 
 

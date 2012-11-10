@@ -152,6 +152,8 @@ class MultiModelForm extends CWidget
      */
     public $sortAttribute;
 
+    
+    public $onAddItemClick;
 
     /**
      * The options property of the zii.widgets.jui.CJuiSortable
@@ -668,6 +670,7 @@ class MultiModelForm extends CWidget
 
         if($isCopyTemplate && $this->hideCopyTemplate)
         {
+        	//return '';
              $copyId = $this->getCopyFieldsetId();
              $onClick = 'if($(this).parent().parent().attr("id")=="'.$copyId.'") {clearAllInputs($("#'.$copyId.'"));$(this).parent().parent().hide()} else ' . $onClick;
         }
@@ -745,7 +748,7 @@ class MultiModelForm extends CWidget
         if (empty($this->options))
             $this->options = array();
 
-        if (!empty($this->removeText))
+        if (!empty($this->removeText) && !$this->hideCopyTemplate) //dodano by me hehehe
         {
             $append = $this->getRemoveLink();
             $this->options['append'] = empty($this->options['append']) ? $append : $append . ' ' . $this->options['append'];
@@ -1176,7 +1179,8 @@ class MultiModelRenderForm extends CForm
         return CHtml::tag('a',
             array('id' => $this->parentWidget->id,
                 'href' => '#',
-                'rel' => '.' . $this->parentWidget->getCopyClass()
+                'rel' => '.' . $this->parentWidget->getCopyClass(),
+            	'onclick'=>$this->parentWidget->onAddItemClick,
             ),
             $this->parentWidget->addItemText
         );

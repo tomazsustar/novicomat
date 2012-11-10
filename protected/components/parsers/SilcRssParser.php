@@ -98,8 +98,8 @@ class SilcRssParser extends RssParser {
         
         private function smiselnoLeto($pubDate, $mesec){
         	
-        	if(intval($mesec) < 5 && date('n', strtotime($pubdate)) > 9){
-        		return date('Y', strtotime($pubDate))+1;
+        	if(intval($mesec) < 5 && date('n', strtotime($pubDate)) > 9){
+        		return intval(date('Y', strtotime($pubDate)))+1;
         	}else return date('Y', strtotime($pubDate));
         }
 

@@ -110,3 +110,9 @@ function checkKoledar(chbox){
 		$("#Vsebine_event_cat").attr("disabled", "disabled");
 	}
 }
+
+function kopirajNaslov(){
+	input = $("#id_jajca_copytemplate td:first input");
+	if(!$.trim(input.val()).length)
+		input.val($("#Vsebine_title").val());
+}
