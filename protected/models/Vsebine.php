@@ -254,14 +254,33 @@ class Vsebine extends CActiveRecord
 	
 	public function onAfterSave($event){
 		// posodobi seznam ključnih besed
-		$non_existing_tags = Tags::model()->findNonExistingTags($this->tags);
+		$tags_array = Tags::model()->str_to_array($this->tags);
+		
+		$non_existing_tags = Tags::model()->findNonExistingTags($tags_array);
 		//die(print_r($non_existing_tags, true));
 		foreach ($non_existing_tags as $tag){
 			
 			$model= new Tags;
 			$model->tag=$tag;
 			$model->save(false);
-		}		
+		}
+		
+		// poveži članek in značke
+		
+		// izbriši obstoječe povezave za ta članek
+		TagsVsebina::model()->deleteAllByAttributes(array('id_vsebine'=>$this->id));
+		
+		// poveži članek in značke
+		$tags=Tags::model()->findAll("tag IN ('".implode("','", $tags_array)."')"); // najde značke
+		
+		foreach ($tags as $tag){
+			
+			$model= new TagsVsebina();
+			$model->id_vsebine=$this->id;
+			$model->id_tag = $tag->id;
+			$model->save(false);
+		}
+				
 		parent::onAfterSave($event);
 	}
 	

@@ -87,15 +87,19 @@ class Tags extends CActiveRecord
 		));
 	}
 	
+	public function str_to_array($tags_string){
+		$all_tags = explode(',', addslashes($tags_string)); // v zbirko + addslashes
+		$trimed_tags=array();
+		foreach ($all_tags as $tag) $trimed_tags[] = trim($tag); 
+		return $trimed_tags;
+	}
+	
 	/**
 	 * 
 	 * Najde ključne besede, ki jih še ni v databazi
 	 * @param array $allTags
 	 */
-	public function findNonExistingTags($tags_string){
-		$all_tags = explode(',', addslashes($tags_string)); // v zbirko + addslashes
-		$trimed_tags=array();
-		foreach ($all_tags as $tag) $trimed_tags[] = trim($tag); 
+	public function findNonExistingTags($trimed_tags){
 		$existing_tags=Tags::model()->findAll("tag IN ('".implode("','", $trimed_tags)."')"); // najde vse besede, ki že obstajajo
 		$existing_tags_simple_array = array();
 		foreach ($existing_tags as $tag) $existing_tags_simple_array[]=$tag->tag; // to simple array
