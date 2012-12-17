@@ -193,10 +193,10 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 			</td>
 			<td>
 				<div class="row" >
-					<?php echo $form->labelEx($model,'show_intro'); ?>
+					<?php //echo $form->labelEx($model,'show_intro'); ?>
 					<?php //echo $form->dropDownList($model, 'catid', array()); ?>
-					<?php echo $form->checkbox($model, 'show_intro'); ?>
-					<?php echo $form->error($model,'show_intro'); ?>
+					<?php //echo $form->checkbox($model, 'show_intro'); ?>
+					<?php //echo $form->error($model,'show_intro'); ?>
 				</div> 
 			</td>
 		</tr>

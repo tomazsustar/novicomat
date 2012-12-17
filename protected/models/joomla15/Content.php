@@ -181,8 +181,8 @@ class Content extends CActiveRecord
 								   array('-','s','c','z','dz','c','s','c','z','dz','c'), 
 								   strtolower(trim($vsebineModel->title)));
 		$this->title_alias = '';
-		$this->introtext = $vsebineModel->introtext;
-		$this->fulltext = $vsebineModel->fulltext;
+		$this->introtext = CHTML::image($vsebineModel->slika, $vsebineModel->slika, array('style'=>'margin:5px;float:left;width:150px')).$vsebineModel->introtext;
+		$this->fulltext = CHTML::image($vsebineModel->slika, $vsebineModel->slika, array('style'=>'margin:5px;float:left;width:250px')).$vsebineModel->fulltext;
 		$this->state = 1; // 1 - published
 		$this->sectionid = $vsebineModel->sectionid;
 		$this->mask = 0;

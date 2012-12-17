@@ -43,6 +43,7 @@ abstract class Parser extends CComponent
 		$vsebina->site_id=$this->stran_model->id; //id strani
 		$vsebina->import_checksum = md5($vsebina->introtext); //checksum  
 		$vsebina->imported = ZDate::dbNow(); //datum uvoza
+		$vsebina->params='show_intro=0\n';
 		
 		//default values
 		if(trim($vsebina->author_alias) == "") $vsebina->author_alias =$this->stran_model->author_alias;
@@ -71,7 +72,8 @@ abstract class Parser extends CComponent
 		$html = str_get_html($vsebina->fulltext);
 		
 			if (is_object($html)){
-				$this->processImages($html);
+				$this->processImages($html, $vsebina);
+				$this->processLinks($html);
 				$vsebina->fulltext=$html;
 			}
 			else{
@@ -85,7 +87,7 @@ abstract class Parser extends CComponent
 	 * Enter description here ...
 	 * @param Vsebine $vsebina
 	 */
-	protected function processImages( & $html){
+	protected function processImages( & $html, & $vsebina){
 		
 		//echo '<pre>';print_r($html->find('img'));echo'</pre>';
 		foreach ($html->find('img') as $e){
@@ -98,6 +100,7 @@ abstract class Parser extends CComponent
 			if(substr($e->src, 0,4)!="http"){
 				$e->src=$this->stran_model->home_url.'/'.$e->src;
 			}
+			if(!$vsebina->slika) $vsebina->slika=$e->src;
 		}
 		
 		

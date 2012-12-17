@@ -79,7 +79,7 @@ class Vsebine extends CActiveRecord
 	{
 		$params = new ZParams($this->params);
 		if(trim($params->show_intro)=="")
-				return 1;
+				return 0;
 		else 
 			return $params->show_intro;
 	}
@@ -116,23 +116,24 @@ class Vsebine extends CActiveRecord
 			array('publish_up, publish_down, start_date, end_date','ext.myvalidators.DateOrTime'),
 			array('publish_down','ext.myvalidators.Later', 'then'=>'publish_up'),
 			array('end_date','ext.myvalidators.Later', 'then'=>'start_date'),
-			array('title, text, sectionid, catid, publish_up, tags', 'required'),
+			array('title, fulltext, introtext, sectionid, catid, publish_up, tags', 'required'),
 //			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
 			array('event_cat, lokacija', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar'),
 //			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
 			array('slika', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>true, 'on'=>'insert'),
 			array('event_cat,state', 'default', 'value'=>0, 'setOnEmpty'=>true, 'on'=>'insert'),
+			array('params', 'default', 'value'=>'show_intro=0\n', 'setOnEmpty'=>true, 'on'=>'insert'),
 			
 			
-			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, show_intro, frontpage, koledar', 'numerical', 'integerOnly'=>true),
+			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, frontpage, koledar', 'numerical', 'integerOnly'=>true),
 			array('author, author_alias, global_id', 'length', 'max'=>256),
 			array('import_checksum, export_checksum', 'length', 'max'=>32),
 			
 			//array('start_date', 'date','format'=>'dd.MM.yyyy H:m'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, introtext, fulltext, state, sectionid, catid, author, created, imported, checked_out, checked_out_time, edited, edited_by, publish_up, publish_down, tags, site_id, start_date, end_date, import_checksum, original_changed, export_checksum, global_id, params, vir_url, stran.naslov', 'safe', 'on'=>'search'),
+			array('id, title, state, sectionid, catid, author, created, imported, checked_out, checked_out_time, edited, edited_by, publish_up, publish_down, tags, site_id, start_date, end_date, import_checksum, original_changed, export_checksum, global_id, params, vir_url, stran.naslov', 'safe', 'on'=>'search'),
 		);
 	}
 	

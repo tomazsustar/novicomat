@@ -120,7 +120,7 @@ class VsebineController extends Controller
 				
 				if($MMvalidated){
 					if($model->save()){ //validate detail before saving the master
-							 $uploadedFile->saveAs(Yii::app()->params['imgDir'].$filename);  	//shrani sliko
+						if($uploadedFile) $uploadedFile->saveAs(Yii::app()->params['imgDir'].$filename);  	//shrani sliko
 						
 		    				$masterValues = array('id_vsebine'=>$model->id);
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){

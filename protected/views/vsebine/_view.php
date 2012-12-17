@@ -41,7 +41,8 @@
 	
 	<?php //echo CHtml::encode($data->introtext);
 			
-			echo ZString::truncate(strip_tags($data->text, '<strong><ul><li><img>'), 400); ?>
+			echo CHTML::image($data->slika, "ni slike", array('style'=>'width:150px;margin:5px;float:left;'));
+			echo ZString::truncate(strip_tags($data->text, '<strong><ul><li>'), 400); ?>
 	
 	
 			
