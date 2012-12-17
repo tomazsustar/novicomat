@@ -75,10 +75,11 @@ class SDKompoljeParser extends Parser {
         	}       	
         	elseif(isset($fc2)){
         		if($fc2->tag=='img'){ //slika
-        			$fc2->style="width:150px;float:left;";
-        			$fc2->width=null;
-        			$fc2->height = null;
-        			$this->currentItem->introtext.=$fc2; //če je slika jo damo kar v introtext
+        			$this->currentItem->slika=$fc2->src;
+//        			$fc2->style="width:150px;float:left;";
+//        			$fc2->width=null;
+//        			$fc2->height = null;
+//        			$this->currentItem->introtext.=$fc2; //če je slika jo damo kar v introtext
         			//$this->parser_state=1;
         			//self::Log($this->currentItem->introtext);
         		}else if($fc2->tag=='strong'){ //naslov
@@ -120,7 +121,7 @@ class SDKompoljeParser extends Parser {
         			$ch->class=null;
         			$ch->style=null;
         		}
-        		$this->currentItem->introtext.=$item;
+        		$this->currentItem->fulltext.=$item;
         		
         		$this->beforeInsert($this->currentItem);
 				

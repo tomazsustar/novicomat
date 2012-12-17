@@ -67,7 +67,7 @@ class OSDobrepoljeParser extends RssParser{
 //						 
 //					    //daj slike nazaj v vsebino
 //						$vsebina->text = $first_image.$html->find('div[class=rt-article]', 0)->innertext.$rest;
-						$vsebina->text = $html->find('div[class=rt-article]', 0)->innertext;
+						$vsebina->fulltext = $html->find('div[class=rt-article]', 0)->innertext;
 
 						
 						self::Log("Prebrano. "/*.$vsebina->text*/ ,$vsebina);

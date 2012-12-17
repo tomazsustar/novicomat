@@ -30,9 +30,9 @@ class ZeleniValParser extends RssParser{
 			if($item->pubDate())$vsebina->created = date('Y-m-d H:i:s', strtotime($item->pubDate())); //datum objave originalne vsebine
 			if($item->author())$vsebina->author = $item->author(); //avtor
         	if($item->description()){ 
-        		$vsebina->introtext = strip_tags($item->description(), '<em><br><p><a><strong><ul><li><img>');
-        		$vsebina->introtext = str_replace('{rokbox}', '<img src="', $vsebina->introtext);
-        		$vsebina->introtext = str_replace('{/rokbox}', '" style="float:left;width:150px;" />', $vsebina->introtext);
+        		$vsebina->fulltext = strip_tags($item->description(), '<em><br><p><a><strong><ul><li><img>');
+        		$vsebina->fulltext = str_replace('{rokbox}', '<img src="', $vsebina->fulltext);
+        		$vsebina->fulltext = str_replace('{/rokbox}', '" style="float:left;width:150px;" />', $vsebina->fulltext);
         	}
 			if($item->link()){
 				$vsebina->vir_url = $item->link(); //link
@@ -77,7 +77,7 @@ class ZeleniValParser extends RssParser{
 //					    //daj slike nazaj v vsebino
 //						$vsebina->text = $first_image.$html->find('div[class=rt-article]', 0)->innertext.$rest;
 
-					    $vsebina->fulltext = $html->find('div[class=main-article]', 0)->innertext;
+					    $vsebina->fulltext.= $html->find('div[class=main-article]', 0)->innertext;
 
 						
 						self::Log("Prebrano. "/*.$vsebina->text*/ ,$vsebina);

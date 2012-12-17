@@ -74,7 +74,7 @@ class ParnasParser extends Parser {
 				
 				$vsebina->title = trim($html->find('td[class=capmain]',0)->innertext); //naslov
 				$vsebina->vir_url = $this->stran_model->home_url.'/'.$item->href; //link
-				$vsebina->text = $html->find('td[class=main-body]',0)->innertext; //text
+				$vsebina->fulltext = $html->find('td[class=main-body]',0)->innertext; //text
 				$vsebina->author = $html->find('td[class=news-footer]',0)->find('a',0)->innertext; //avtor
 				
 				preg_match(ZDate::DATETIME_REGEX, $html->find('td[class=news-footer]',0), $matches);

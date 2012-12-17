@@ -3,6 +3,12 @@
 	CClientScript::POS_HEAD
 	);
 	?>
+<?php 
+
+ $s="var ajax_url = '".Yii::app()->createAbsoluteUrl("vsebine/naloziSliko")."'; 
+	";
+
+	Yii::app()->clientScript->registerScript('import-global-vars',$s, CClientScript::POS_HEAD );?>
 
 <div class="form">
 
@@ -12,6 +18,7 @@ $form=$this->beginWidget('ZActiveForm', array(
 	'id'=>'vsebine-form',
 	'enableAjaxValidation'=>false,
 	'focus' => '#Vsebine_title',
+	'htmlOptions' => array('enctype' => 'multipart/form-data'),
       //'clientOptions' => array(
       //                  'validateOnSubmit' => true,
       //                  'beforeValidate' => 'js:beforeValidate',
@@ -194,20 +201,54 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 			</td>
 		</tr>
 	</table>
-	
-	
+	<table>
+		<tr>
+			<td>
+				<?php echo CHTML::label("Uvodna slika", "slika")?>	
+				<?php echo CHTML::image($model->slika, "Naloži ali izberi sliko", array('style'=>'width:264px;', 'id'=>'slika'))  ?>
+			</td>
+			<td style="vertical-align:top;">
+				<?php echo $form->labelEx($model,'introtext'); ?>		
+				<?php echo $form->textArea($model,'introtext',array('rows'=>5, 'cols'=>40)); ?>
+				<?php echo $form->error($model,'introtext'); ?>
+				
+			</td>
+			
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>
+				<div class="row">
+					<?php echo $form->labelEx($model,'slika'); ?>
+					<?php echo $form->textField($model,'slika',array('style'=>'width:100%;') ); ?>
+					<?php echo $form->error($model,'slika'); ?>
+				</div>
+			</td>
+			<td>
+				<?php echo $form->labelEx($model,'activeFile'); ?>
+				<?php echo CHtml::activeFileField($model,'activeFile',array('style'=>'width:100%;') ); ?>
+				<?php echo $form->error($model,'activeFile'); ?>
+				
+			</td>
+			<td style="vertical-align:bottom;">
+				<?php //echo $form->labelEx('&nbsp;'); ?>
+				<?php //echo CHtml::button("Naloži", array('onclick'=>'js:nalozi_sliko()'));?>
+			</td>
+		</tr>
+	</table>
 
 	
 	
 	<div class="row">
-		<?php echo $form->labelEx($model,'text'); ?>		
+		<?php echo $form->labelEx($model,'fulltext'); ?>		
 		<?php //echo $form->textArea($model,'text',array('rows'=>20, 'cols'=>90)); ?>
-		<?php echo $form->error($model,'text'); ?>
+		<?php echo $form->error($model,'fulltext'); ?>
 		<?php 
 		$options;
 		$form->widget('application.extensions.tinymce.ETinyMce', 
 			array('model'=>$model,
-				'attribute'=>'text',
+				'attribute'=>'fulltext',
 			    'editorTemplate'=>'full',			
 			)); ?>
 	</div>

@@ -72,7 +72,7 @@ class FutsalParser extends Parser {
 				
 				$vsebina->title = trim($html->find('h1[class=entry-title]',0)->title); //naslov
 				$vsebina->vir_url = $item->href; //link
-				$vsebina->text = $html->find('div[class=entry-content]',0)->innertext; //text
+				$vsebina->fulltext = $html->find('div[class=entry-content]',0)->innertext; //text
 				$vsebina->author = $html->find('address[class=vcard]',0)->find('a',0)->innertext; //avtor
 				
 				//preg_match(ZDate::DATETIME_REGEX, $html->find('td[class=news-footer]',0), $matches);
@@ -84,10 +84,10 @@ class FutsalParser extends Parser {
 				
 				//slika
 				$img = $html->find('div[class=the-post-image]',0)->find('img',0);
-				$img->width=null;
-				$img->height=null;
-				$img->style="width:150px;margin:5px;float:right;";
-				$vsebina->text = $img.trim($vsebina->text); //slika
+				$vsebina->slika = $img->src;
+//				$img->height=null;
+//				$img->style="width:150px;margin:5px;float:right;";
+				//$vsebina->fulltext = $img.trim($vsebina->text); //slika
 				//self::Log($vsebina->text);
 				//interne vrednosti
 				$this->beforeInsert($vsebina);

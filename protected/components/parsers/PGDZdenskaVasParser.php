@@ -86,7 +86,7 @@ class PGDZdenskaVasParser extends Parser {
         		$this->currentItem->created=ZDate::parseDate($item->find('td[class=createdate]',0));
 				//self::Log($this->currentItem->created);
         		
-        		$this->currentItem->introtext=$item->children[2]->firstChild()->innertext;
+        		$this->currentItem->fulltext=$item->children[2]->firstChild()->innertext;
         		//self::Log($this->currentItem->introtext);
         		
         		$this->currentItem->vir_url=$this->stran_model->url;
@@ -97,7 +97,7 @@ class PGDZdenskaVasParser extends Parser {
         			$this->currentItem->vir_url=$preberiVec->href;
         			$preberiVec->class=null;
         			$preberiVec->innertext="Več na strani PGD Zdenska vas..."; 
-        			$this->currentItem->fulltext=$preberiVec;
+        			$this->currentItem->fulltext.=$preberiVec;
         			//echo $html;
         			//self::Log($html->find('table[class=contentpaneopen]',1));
         		}

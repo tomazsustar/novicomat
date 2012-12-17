@@ -32,7 +32,7 @@ class VsebineController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'loadCategories', 'zavrzi', 'izvoz', 'aclist'),
+				'actions'=>array('create','update', 'loadCategories', 'zavrzi', 'izvoz', 'aclist', 'naloziSliko'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -100,7 +100,11 @@ class VsebineController extends Controller
 		if(isset($_POST['Vsebine']))
 		{
 			$model->attributes=$_POST['Vsebine'];
-			
+			//nalaganje slike
+			if($uploadedFile=CUploadedFile::getInstance($model,'activeFile')){
+				$filename = urldecode($uploadedFile);
+				$model->slika = Yii::app()->params['imgUrl'].$filename;
+			}
 			if(isset($_POST['zavrzi'])){
 				if($model->save(false)){
 					if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
@@ -116,7 +120,8 @@ class VsebineController extends Controller
 				
 				if($MMvalidated){
 					if($model->save()){ //validate detail before saving the master
-				
+							 $uploadedFile->saveAs(Yii::app()->params['imgDir'].$filename);  	//shrani sliko
+						
 		    				$masterValues = array('id_vsebine'=>$model->id);
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
 							if(isset($_POST['joomla'])){ 
@@ -246,6 +251,27 @@ class VsebineController extends Controller
 	                   array('value'=>$value),CHtml::encode($name),true);
 	                   
 	    }
+	}
+	
+	public function actionNaloziSliko(){
+				
+		
+			foreach ($_FILES["images"]["error"] as $key => $error) {
+				if ($error == UPLOAD_ERR_OK) {
+					$name = $_FILES["images"]["name"][$key];
+					//echo  $_FILES["images"]["tmp_name"][$key];
+					//move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->basePath.'/../slike/' . $_FILES['images']['name'][$key]);
+					move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->basePath.'/../../slike/'. $_FILES['images']['name'][$key]);
+				}
+			}
+			//echo "<h2>Successfully Uploaded Images</h2>";
+			
+//			$uploadedFile=CUploadedFile::getInstanceByName('files[0]');
+//			echo "ha";print_r($uploadedFile);
+//			$filepath = Yii::app()->basePath.'/../slike/'.$uploadedFile;
+//			$uploadedFile->saveAs($filepath);  
+//			echo $filepath;
+		
 	}
 
 	/**

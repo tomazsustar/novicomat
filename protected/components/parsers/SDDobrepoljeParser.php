@@ -80,7 +80,7 @@ class SDDobrepoljeParser extends Parser {
 				 //$this->Log($this->html->find('span[class=subHeader]',0));
 				 $this->Log($html->find('div[style=display:]',0));
 				
-				$vsebina->introtext = $html->find('div[style=display:]',0)->innertext; //text
+				$vsebina->fulltext = $html->find('div[style=display:]',0)->innertext; //text
 				//$vsebina->author = $html->find('td[class=news-footer]',0)->find('a',0)->innertext; //avtor
 				
 //				preg_match(ZDate::DATETIME_REGEX, $html->find('td[class=news-footer]',0), $matches);

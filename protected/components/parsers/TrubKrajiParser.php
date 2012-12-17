@@ -49,8 +49,10 @@ class TrubKrajiParser extends RssParser{
 					    foreach ($html->find('img') as $e) {
 					    		//prvi sliki dodaj float left
 					    		if ($is_first){
-					    			$e->style='float:left;';
-					    			$first_image = (string) $e;
+					    			$vsebina->slika = $e->src;
+//					    			$e->style='float:left;';
+//					    			$first_image = (string) $e;
+
 					    		}
 					    		$rest.= (string) $e;
 					    		
@@ -66,7 +68,7 @@ class TrubKrajiParser extends RssParser{
 					    					    
 						 
 					    //daj slike nazaj v vsebino
-						$vsebina->text = $first_image.$html->find('div[class=rt-article]', 0)->innertext.$rest;
+						$vsebina->fulltext = $html->find('div[class=rt-article]', 0)->innertext.$rest;
 
 						
 						self::Log("Prebrano. "/*.$vsebina->text*/ ,$vsebina);

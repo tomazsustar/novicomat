@@ -53,7 +53,7 @@ abstract class Parser extends CComponent
 		
 		$this->processHtml($vsebina);
 		
-		$vsebina->text.='<br><span style="float:right;font-style:italic">(Vir: '.$vsebina->virLink.')</span>';
+		$vsebina->fulltext.='<br><span style="float:right;font-style:italic">(Vir: '.$vsebina->virLink.')</span>';
 	}
 	
 	public function afterProcess(){
@@ -67,12 +67,12 @@ abstract class Parser extends CComponent
 	
 	private function processHtml(& $vsebina){
 		
-		if(trim($vsebina->text)!=""){ 
-		$html = str_get_html($vsebina->text);
+		if(trim($vsebina->fulltext)!=""){ 
+		$html = str_get_html($vsebina->fulltext);
 		
 			if (is_object($html)){
 				$this->processImages($html);
-				$vsebina->text=$html;
+				$vsebina->fulltext=$html;
 			}
 			else{
 				self::Log("html objekt ni bil ustvarjen", $vsebina);

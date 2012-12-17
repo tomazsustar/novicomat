@@ -39,6 +39,8 @@ class Vsebine extends CActiveRecord
 {
 	
 	
+	public $activeFile;
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Vsebine the static model class
@@ -63,15 +65,15 @@ class Vsebine extends CActiveRecord
 		return $return;
 	}
 	
-	public function setText($value)
-	{
-		//echo 'AAAAAAAAAAAAAAAAAAAaa';
-		// če najde readmore, razdeli na dva dela
-		$arr = explode('<hr id="system-readmore" />', $value, 2); //besedilo	
-		$this->introtext = $arr[0];
-		if(count($arr)==2) $this->fulltext = $arr[1];
-		else $this->fulltext ="";
-	}
+//	public function setText($value)
+//	{
+//		//echo 'AAAAAAAAAAAAAAAAAAAaa';
+//		// če najde readmore, razdeli na dva dela
+//		$arr = explode('<hr id="system-readmore" />', $value, 2); //besedilo	
+//		$this->introtext = $arr[0];
+//		if(count($arr)==2) $this->fulltext = $arr[1];
+//		else $this->fulltext ="";
+//	}
 	
 	public function getShow_intro()
 	{
@@ -118,7 +120,7 @@ class Vsebine extends CActiveRecord
 //			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
 			array('event_cat, lokacija', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar'),
 //			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
-//			array('tags', 'safe'),
+			array('slika', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>true, 'on'=>'insert'),
 			array('event_cat,state', 'default', 'value'=>0, 'setOnEmpty'=>true, 'on'=>'insert'),
 			
@@ -157,7 +159,7 @@ class Vsebine extends CActiveRecord
 			'id' => 'ID',
 			'title' => 'Naslov',
 			'introtext' => 'Uvodno besedilo',
-			'fulltext' => 'Polno bededilo',
+			'fulltext' => 'Besedilo',
 			'state' => 'State',
 			'sectionid' => 'Sekcija',
 			'catid' => 'Kategorija',
@@ -189,7 +191,9 @@ class Vsebine extends CActiveRecord
 			'show_intro' => 'Pokaži uvod',
 			'Lokacija' => 'Lokacija',
 			'koledar' => 'Koledar',
-			'koledar_naslov' => 'Naslov za koledar'
+			'koledar_naslov' => 'Naslov za koledar',
+			'slika' => 'URL slike',
+			'activeFile' => 'Naloži sliko'
 		);
 	}
 
@@ -256,6 +260,7 @@ class Vsebine extends CActiveRecord
 		// posodobi seznam ključnih besed
 		$tags_array = Tags::model()->str_to_array($this->tags);
 		
+		//shrani v bazo tiste značke, ki jih v bazi še ni
 		$non_existing_tags = Tags::model()->findNonExistingTags($tags_array);
 		//die(print_r($non_existing_tags, true));
 		foreach ($non_existing_tags as $tag){
@@ -278,6 +283,7 @@ class Vsebine extends CActiveRecord
 			$model= new TagsVsebina();
 			$model->id_vsebine=$this->id;
 			$model->id_tag = $tag->id;
+			$model->tip_vsebine = 'vsebina';
 			$model->save(false);
 		}
 				

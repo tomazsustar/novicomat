@@ -41,7 +41,7 @@
 	
 	<?php //echo CHtml::encode($data->introtext);
 			
-			echo ZString::truncate(strip_tags($data->introtext, '<strong><ul><li><img>'), 400); ?>
+			echo ZString::truncate(strip_tags($data->text, '<strong><ul><li><img>'), 400); ?>
 	
 	
 			

@@ -14,6 +14,7 @@ $cs->scriptMap=array(
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+
 	'name'=>'Zelnik - Novicomat',
 	//'theme'=>'twitter_fluid',	
 
@@ -108,5 +109,7 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
+		'imgUrl'=>'http://localhost/slike/',
+		'imgDir'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'slike/',
 	),
 );

@@ -55,11 +55,13 @@ class RssParser extends Parser {
 			//vir
 			if($item->title()) $vsebina->title = $item->title(); //naslov
 			if($item->link())$vsebina->vir_url = $item->link(); //link
-			if($item->description()){ $vsebina->text = $item->description();} //r_replace(array('{','}'), '', $item->description());}
+			
+			if($item->description()){ 
+				$vsebina->fulltext = $item->description();} //r_replace(array('{','}'), '', $item->description());}
 			if($item->guid())$vsebina->global_id = $item->guid(); //globalni id
 			if($item->pubDate())$vsebina->created = date('Y-m-d H:i:s', strtotime($item->pubDate())); //datum objave originalne vsebine
 			if($item->author())$vsebina->author = $item->author(); //avtor
-			if($item->content())$vsebina->fulltext = $item->content(); //vsebina
+			if($item->content())$vsebina->fulltext.= $item->content(); //vsebina
 			
 			//interne vrednosti
 			$this->beforeInsert($vsebina);

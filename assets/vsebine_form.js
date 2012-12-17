@@ -116,3 +116,80 @@ function kopirajNaslov(){
 	if(!$.trim(input.val()).length)
 		input.val($("#Vsebine_title").val());
 }
+
+function nalozi_sliko(){
+	extension = $('#Vsebine_activeFile').val().split('.').pop().toLowerCase(); //preberi extension
+	if($.inArray(extension, ['gif','png','jpg','jpeg']) == -1) {                       //preveri, če gre za sliko
+	    alert('To pa že ni slika!');
+	    return false;
+	}
+	
+	var input = document.getElementById("Vsebine_activeFile"),  
+    formdata = false;  
+	 if (window.FormData) {  
+	     formdata = new FormData();  
+	     formdata.append("images[]", input.files[0]);
+	     //document.getElementById("btn").style.display = "none";  
+	 } 
+	 //alert(formdata);
+	//var data={activeFile: encodeURIComponent($('#Vsebine_activeFile').val())};
+	//$.post(ajax_url, data, function(data){alert(data);})
+	 if (formdata) {
+			$.ajax({
+				url: ajax_url,
+				type: "POST",
+				data: formdata,
+				processData: false,
+				contentType: false,
+				success: function (res) {
+					alert(res);
+					//document.getElementById("response").innerHTML = res; 
+				}
+			});
+		}
+	  
+}
+
+$(document).ready(function () {
+	var input = document.getElementById("Vsebine_activeFile");
+		//formdata = false;
+	//alert(input);
+	function showUploadedItem (source) {
+  		var img  = document.getElementById("slika");
+  		img.src = source;
+	}   
+
+//	if (window.FormData) {
+//  		formdata = new FormData();
+//  		document.getElementById("btn").style.display = "none";
+//	}
+	
+ 	input.addEventListener("change", function (evt) {
+ 		//document.getElementById("response").innerHTML = "Uploading . . ."
+ 		var i = 0, len = this.files.length, img, reader, file;
+	
+		for ( ; i < len; i++ ) {
+			file = this.files[i];
+	
+			if (!!file.type.match(/image.*/)) {
+				if ( window.FileReader ) {
+					reader = new FileReader();
+					reader.onloadend = function (e) { 
+						showUploadedItem(e.target.result);
+					};
+					reader.readAsDataURL(file);
+				}
+//				if (formdata) {
+//					formdata.append("images[]", file);
+//				}
+			}	
+		}
+		
+		$("#Vsebine_slika").val("");
+	}, false);
+ 	
+ 	$("#Vsebine_slika").change(function(){
+ 		$("#slika").attr('src', $("#Vsebine_slika").val());
+ 		$("#Vsebine_activeFile").val("");
+ 	});
+});

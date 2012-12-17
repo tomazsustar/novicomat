@@ -45,7 +45,7 @@ class SilcRssParser extends RssParser {
 							//self::Log($dogodek->zacetek, $vsebina);
 						}else $this->dogodek=false;
 						
-						$vsebina->text= strip_tags($html);
+						$vsebina->introtext= strip_tags($html);
 					}
 			
 			};
