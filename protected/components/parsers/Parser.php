@@ -43,7 +43,7 @@ abstract class Parser extends CComponent
 		$vsebina->site_id=$this->stran_model->id; //id strani
 		$vsebina->import_checksum = md5($vsebina->introtext); //checksum  
 		$vsebina->imported = ZDate::dbNow(); //datum uvoza
-		$vsebina->params='show_intro=0\n';
+		$vsebina->params='show_intro=0';
 		
 		//default values
 		if(trim($vsebina->author_alias) == "") $vsebina->author_alias =$this->stran_model->author_alias;

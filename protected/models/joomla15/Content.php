@@ -182,7 +182,7 @@ class Content extends CActiveRecord
 								   strtolower(trim($vsebineModel->title)));
 		$this->title_alias = '';
 		$this->introtext = CHTML::image($vsebineModel->slika, $vsebineModel->slika, array('style'=>'margin:5px;float:left;width:150px')).$vsebineModel->introtext;
-		$this->fulltext = CHTML::image($vsebineModel->slika, $vsebineModel->slika, array('style'=>'margin:5px;float:left;width:250px')).$vsebineModel->fulltext;
+		$this->fulltext = $vsebineModel->fulltext;
 		$this->state = 1; // 1 - published
 		$this->sectionid = $vsebineModel->sectionid;
 		$this->mask = 0;
@@ -198,7 +198,7 @@ class Content extends CActiveRecord
 		$this->publish_down = ZDate::dbModify($vsebineModel->publish_down, '- 1 hour');
 		$this->images = '';
 		$this->urls = '';
-		$this->attribs = $vsebineModel->params;
+		$this->attribs = "show_intro=0\n"; //$vsebineModel->params;
 		$this->version = 1;
 		$this->parentid = 0;
 		$this->ordering = 0;

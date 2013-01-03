@@ -101,10 +101,10 @@ class VsebineController extends Controller
 		{
 			$model->attributes=$_POST['Vsebine'];
 			//nalaganje slike
-			if($uploadedFile=CUploadedFile::getInstance($model,'activeFile')){
-				$filename = urldecode($uploadedFile);
-				$model->slika = Yii::app()->params['imgUrl'].$filename;
-			}
+//			if($uploadedFile=CUploadedFile::getInstance($model,'activeFile')){
+//				$filename = urldecode($uploadedFile);
+//				$model->slika = Yii::app()->params['imgUrl'].$filename;
+//			}
 			if(isset($_POST['zavrzi'])){
 				if($model->save(false)){
 					if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
@@ -120,7 +120,7 @@ class VsebineController extends Controller
 				
 				if($MMvalidated){
 					if($model->save()){ //validate detail before saving the master
-						if($uploadedFile) $uploadedFile->saveAs(Yii::app()->params['imgDir'].$filename);  	//shrani sliko
+//						if($uploadedFile) $uploadedFile->saveAs(Yii::app()->params['imgDir'].$filename);  	//shrani sliko
 						
 		    				$masterValues = array('id_vsebine'=>$model->id);
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
@@ -258,10 +258,10 @@ class VsebineController extends Controller
 		
 			foreach ($_FILES["images"]["error"] as $key => $error) {
 				if ($error == UPLOAD_ERR_OK) {
-					$name = $_FILES["images"]["name"][$key];
+					$filename = $_FILES["images"]["name"][$key];
 					//echo  $_FILES["images"]["tmp_name"][$key];
 					//move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->basePath.'/../slike/' . $_FILES['images']['name'][$key]);
-					move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->basePath.'/../../slike/'. $_FILES['images']['name'][$key]);
+					move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir'].$filename);
 				}
 			}
 			//echo "<h2>Successfully Uploaded Images</h2>";
@@ -270,7 +270,7 @@ class VsebineController extends Controller
 //			echo "ha";print_r($uploadedFile);
 //			$filepath = Yii::app()->basePath.'/../slike/'.$uploadedFile;
 //			$uploadedFile->saveAs($filepath);  
-//			echo $filepath;
+			echo Yii::app()->params['imgUrl'].$filename;
 		
 	}
 

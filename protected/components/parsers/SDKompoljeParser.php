@@ -75,7 +75,7 @@ class SDKompoljeParser extends Parser {
         	}       	
         	elseif(isset($fc2)){
         		if($fc2->tag=='img'){ //slika
-        			$this->currentItem->slika=$fc2->src;
+        			$this->currentItem->slika=$this->stran_model->home_url.'/'.$fc2->src;
 //        			$fc2->style="width:150px;float:left;";
 //        			$fc2->width=null;
 //        			$fc2->height = null;

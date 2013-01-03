@@ -123,7 +123,7 @@ class Vsebine extends CActiveRecord
 			array('slika', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>true, 'on'=>'insert'),
 			array('event_cat,state', 'default', 'value'=>0, 'setOnEmpty'=>true, 'on'=>'insert'),
-			array('params', 'default', 'value'=>'show_intro=0\n', 'setOnEmpty'=>true, 'on'=>'insert'),
+			array('params', 'default', 'value'=>'show_intro=0', 'setOnEmpty'=>true, 'on'=>'insert'),
 			
 			
 			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, frontpage, koledar', 'numerical', 'integerOnly'=>true),

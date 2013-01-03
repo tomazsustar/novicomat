@@ -136,14 +136,17 @@ function nalozi_sliko(){
 	//$.post(ajax_url, data, function(data){alert(data);})
 	 if (formdata) {
 			$.ajax({
-				url: ajax_url,
+				url: ajax_url, //se zgenerira v php-ju
 				type: "POST",
 				data: formdata,
 				processData: false,
 				contentType: false,
 				success: function (res) {
-					alert(res);
-					//document.getElementById("response").innerHTML = res; 
+					//alert(res);
+					var img  = document.getElementById("slika");
+			  		img.src = res; 
+			  		$("#Vsebine_slika").val(res);
+			  		jInsertEditorText('<img src=\"'+res+'\" style="float:right;width:250px;margin:5px" />', 'Vsebine_fulltext');
 				}
 			});
 		}
@@ -172,20 +175,21 @@ $(document).ready(function () {
 			file = this.files[i];
 	
 			if (!!file.type.match(/image.*/)) {
-				if ( window.FileReader ) {
-					reader = new FileReader();
-					reader.onloadend = function (e) { 
-						showUploadedItem(e.target.result);
-					};
-					reader.readAsDataURL(file);
-				}
+				nalozi_sliko();
+//				if ( window.FileReader ) {
+//					reader = new FileReader();
+//					reader.onloadend = function (e) { 
+//						showUploadedItem(e.target.result);
+//					};
+//					reader.readAsDataURL(file);
+//				}
 //				if (formdata) {
 //					formdata.append("images[]", file);
 //				}
 			}	
 		}
 		
-		$("#Vsebine_slika").val("");
+		
 	}, false);
  	
  	$("#Vsebine_slika").change(function(){
