@@ -117,14 +117,14 @@ function kopirajNaslov(){
 		input.val($("#Vsebine_title").val());
 }
 
-function nalozi_sliko(){
-	extension = $('#Vsebine_activeFile').val().split('.').pop().toLowerCase(); //preberi extension
-	if($.inArray(extension, ['gif','png','jpg','jpeg']) == -1) {                       //preveri, če gre za sliko
+function nalozi_sliko(file_id, success){ //id od input file brez #, success funkcija
+	extension = $('#'+file_id).val().split('.').pop().toLowerCase(); //preberi extension
+	if($.inArray(extension, ['gif','png','jpg','jpeg']) == -1) {         //preveri, če gre za sliko
 	    alert('To pa že ni slika!');
 	    return false;
 	}
 	
-	var input = document.getElementById("Vsebine_activeFile"),  
+	var input = document.getElementById(file_id),  
     formdata = false;  
 	 if (window.FormData) {  
 	     formdata = new FormData();  
@@ -141,20 +141,19 @@ function nalozi_sliko(){
 				data: formdata,
 				processData: false,
 				contentType: false,
-				success: function (res) {
-					//alert(res);
-					var img  = document.getElementById("slika");
-			  		img.src = res; 
-			  		$("#Vsebine_slika").val(res);
-			  		jInsertEditorText('<img src=\"'+res+'\" style="float:right;width:250px;margin:5px" />', 'Vsebine_fulltext');
-				}
+				success: success,
 			});
 		}
 	  
 }
 
+function slika_za_clanek(src){
+	return '<img src=\"'+src+'\" style="float:right;width:265px;" />';
+}
+
 $(document).ready(function () {
 	var input = document.getElementById("Vsebine_activeFile");
+	var textUrl = document.getElementById("Vsebine_slika");
 		//formdata = false;
 	//alert(input);
 	function showUploadedItem (source) {
@@ -175,7 +174,16 @@ $(document).ready(function () {
 			file = this.files[i];
 	
 			if (!!file.type.match(/image.*/)) {
-				nalozi_sliko();
+				success = function (res) {
+					var img  = document.getElementById("slika");
+			  		img.src = res; 
+			  		$("#Vsebine_slika").val(res);
+			  		jInsertEditorText(slika_za_clanek(res), 'Vsebine_fulltext');
+			  		$("#loading-img1").css('display','none');
+				}
+				$("#loading-img1").css('display','inline');				
+				nalozi_sliko('Vsebine_activeFile', success);
+				
 //				if ( window.FileReader ) {
 //					reader = new FileReader();
 //					reader.onloadend = function (e) { 
@@ -192,8 +200,43 @@ $(document).ready(function () {
 		
 	}, false);
  	
- 	$("#Vsebine_slika").change(function(){
- 		$("#slika").attr('src', $("#Vsebine_slika").val());
- 		$("#Vsebine_activeFile").val("");
+ 	$("#Vsebine_slika").change(function(){ //input za url onchange
+ 		if($("#Vsebine_slika").val()!=""){
+	 		$("#slika").attr('src', $("#Vsebine_slika").val()); //nastavsi src, da prikaže sliko
+	 		$("#Vsebine_activeFile").val("");
+	 		jInsertEditorText(slika_za_clanek($("#Vsebine_slika").val()), 'Vsebine_fulltext');
+ 		}
+ 	});
+ 	$("#nalozi_sliko").change(function(){ //input za url onchange
+ 		if($("#nalozi_sliko").val()!=""){
+	 		success = function (res) {
+		  		jInsertEditorText(slika_za_clanek(res), 'Vsebine_fulltext');
+		  		$("#loading-img2").css('display','none');
+			}
+			$("#loading-img2").css('display','inline');				
+			nalozi_sliko('nalozi_sliko', success);
+ 		}
+ 	});
+ 	$("#vstavi_sliko").change(function(){ //input za url onchange
+ 		if($("#vstavi_sliko").val()!=""){
+ 			jInsertEditorText(slika_za_clanek($("#vstavi_sliko").val()), 'Vsebine_fulltext');
+ 		}
+ 	});
+ 	$("#vstavi_video").change(function(){ //input za url onchange
+ 		if($("#vstavi_video").val()!=""){
+	 		split=$("#vstavi_video").val().split('=');
+	 		embed='<iframe style="display: block; margin: auto;" width="420" height="315" src="http://www.youtube.com/embed/'+split[1]+'" frameborder="0" allowfullscreen></iframe>';
+	 		jInsertEditorText(embed, 'Vsebine_fulltext');
+ 		}
+ 	});
+ 	$("#nalozi_galerijo").change(function(){ //input za url onchange
+ 		if($("#nalozi_galerijo").val()!=""){
+	 		success = function (res) {
+		  		jInsertEditorText(slika_za_clanek(res), 'Vsebine_fulltext');
+		  		$("#loading-img3").css('display','none');
+			}
+			$("#loading-img3").css('display','inline');				
+			nalozi_sliko('nalozi_galerijo', success);
+ 		}
  	});
 });

@@ -225,19 +225,55 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					<?php echo $form->error($model,'slika'); ?>
 				</div>
 			</td>
+			
 			<td>
 				<?php echo $form->labelEx($model,'activeFile'); ?>
 				<?php echo CHtml::activeFileField($model,'activeFile',array('style'=>'width:100%;') ); ?>
+				
 				<?php echo $form->error($model,'activeFile'); ?>
 				
 			</td>
-			<td style="vertical-align:bottom;">
+			<td style="vertical-align:middle;width:20px;">
 				<?php //echo $form->labelEx('&nbsp;'); ?>
-				<?php //echo CHtml::button("Naloži", array('onclick'=>'js:nalozi_sliko()'));?>
+				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img1','style'=>'display:none;'));?>
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="row">
+					<?php echo CHtml::Label('Vstavi sliko - URL', 'vstavi_sliko');?>
+					<?php echo CHtml::textField('vstavi_sliko','',array('style'=>'width:100%;')); ?>
+				</div>
+			</td>
+			<td>
+				<?php echo $form->labelEx($model,'activeFile'); ?>
+				<?php echo CHtml::fileField('nalozi_sliko','',array('style'=>'width:100%;') ); ?>
+			</td>
+			<td style="vertical-align:middle;width:20px;">
+				<?php //echo $form->labelEx('&nbsp;'); ?>
+				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img2','style'=>'display:none;'));?>
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="row">
+					<?php echo CHtml::Label('Vstavi Youtube video - URL', 'vstavi_video');?>
+					<?php echo CHtml::textField('vstavi_video','',array('style'=>'width:100%;')); ?>
+				</div>
+			</td>
+			<td>
+				<?php //echo $form->labelEx($model,'activeFile'); ?>
+				<?php //echo CHtml::fileField('nalozi_sliko','',array('style'=>'width:100%;') ); ?>
+			</td>
+			<td style="vertical-align:middle;width:20px;">
+				<?php //echo $form->labelEx('&nbsp;'); ?>
+				<?php //echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img2','style'=>'display:none;'));?>
+				
 			</td>
 		</tr>
 	</table>
-
 	
 	
 	<div class="row">
@@ -252,9 +288,10 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 			    'editorTemplate'=>'full',			
 			)); ?>
 	</div>
-
-
-	
+	<div class="row">
+		<?php echo CHtml::Label('Naloži galerijo', 'nalozi_galerijo');?>
+		<?php echo CHtml::fileField('nalozi_galerijo','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
+	</div>
 		<table>
 		<tr>
 		<td style="width:400px;">
@@ -440,6 +477,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
     */	?>
     
     <?php echo $form->hiddenField($model, 'state')?>
+    <?php echo $form->hiddenField($model, 'galerija')?>
     
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Shrani'); ?>

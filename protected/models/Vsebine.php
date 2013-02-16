@@ -126,7 +126,7 @@ class Vsebine extends CActiveRecord
 			array('params', 'default', 'value'=>'show_intro=0', 'setOnEmpty'=>true, 'on'=>'insert'),
 			
 			
-			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, frontpage, koledar', 'numerical', 'integerOnly'=>true),
+			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, frontpage, koledar, galerija', 'numerical', 'integerOnly'=>true),
 			array('author, author_alias, global_id', 'length', 'max'=>256),
 			array('import_checksum, export_checksum', 'length', 'max'=>32),
 			
@@ -193,7 +193,7 @@ class Vsebine extends CActiveRecord
 			'Lokacija' => 'Lokacija',
 			'koledar' => 'Koledar',
 			'koledar_naslov' => 'Naslov za koledar',
-			'slika' => 'URL slike',
+			'slika' => 'Naslovna slika - URL',
 			'activeFile' => 'Naloži sliko'
 		);
 	}
