@@ -147,7 +147,8 @@ class Vsebine extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'stran' => array(self::BELONGS_TO, 'Strani', 'site_id'),
-			'dogodki' => array(self::HAS_MANY, 'Koledar',   'id_vsebine'),
+			'dogodki' => array(self::HAS_MANY, 'Koledar',   'id_vsebine'),                
+			'slike' =>array(self::MANY_MANY, 'Slike', '{{slike_vsebine}}(id_vsebine, id_slike)')
 		);
 	}
 

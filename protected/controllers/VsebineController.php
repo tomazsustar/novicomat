@@ -32,7 +32,7 @@ class VsebineController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'loadCategories', 'zavrzi', 'izvoz', 'aclist', 'naloziSliko'),
+				'actions'=>array('create','update', 'loadCategories', 'zavrzi', 'izvoz', 'aclist', ),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -62,6 +62,7 @@ class VsebineController extends Controller
 	 */
 	public function actionCreate()
 	{
+		$this->layout='//layouts/column1';
 		$model=new Vsebine;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -84,6 +85,7 @@ class VsebineController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+		$this->layout='//layouts/column1';
 		$model=$this->loadModel($id);
 
 		$this->saveVsebine($model, 'update');
@@ -100,6 +102,7 @@ class VsebineController extends Controller
 		if(isset($_POST['Vsebine']))
 		{
 			$model->attributes=$_POST['Vsebine'];
+			
 			//nalaganje slike
 //			if($uploadedFile=CUploadedFile::getInstance($model,'activeFile')){
 //				$filename = urldecode($uploadedFile);
@@ -120,8 +123,15 @@ class VsebineController extends Controller
 				
 				if($MMvalidated){
 					if($model->save()){ //validate detail before saving the master
-//						if($uploadedFile) $uploadedFile->saveAs(Yii::app()->params['imgDir'].$filename);  	//shrani sliko
-						
+						//if($uploadedFile) $uploadedFile->saveAs(Yii::app()->params['imgDir'].$filename);  	//shrani slike
+						// izbriši obstoječe povezave za ta članek
+						SlikeVsebine::model()->deleteAllByAttributes(array('id_vsebine'=>$model->id));
+						foreach ($_POST['Slike'] as $id => $values){
+							$slvs=new SlikeVsebine();
+							$slvs->attributes=$values;
+							$slvs->id_vsebine=$model->id;
+							$slvs->save();							
+						}
 		    				$masterValues = array('id_vsebine'=>$model->id);
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
 							if(isset($_POST['joomla'])){ 
@@ -253,26 +263,8 @@ class VsebineController extends Controller
 	    }
 	}
 	
-	public function actionNaloziSliko(){
-				
-		
-			foreach ($_FILES["images"]["error"] as $key => $error) {
-				if ($error == UPLOAD_ERR_OK) {
-					$filename = $_FILES["images"]["name"][$key];
-					//echo  $_FILES["images"]["tmp_name"][$key];
-					//move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->basePath.'/../slike/' . $_FILES['images']['name'][$key]);
-					move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir'].$filename);
-				}
-			}
-			//echo "<h2>Successfully Uploaded Images</h2>";
+	
 			
-//			$uploadedFile=CUploadedFile::getInstanceByName('files[0]');
-//			echo "ha";print_r($uploadedFile);
-//			$filepath = Yii::app()->basePath.'/../slike/'.$uploadedFile;
-//			$uploadedFile->saveAs($filepath);  
-			echo Yii::app()->params['imgUrl'].$filename;
-		
-	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

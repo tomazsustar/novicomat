@@ -13,6 +13,8 @@ $(document).ready(function() {
   //checkKoledar();
 });
 
+var img_count=0;
+
 // Simulates PHP's date function
 Date.prototype.format=function(format){var returnStr='';var replace=Date.replaceChars;for(var i=0;i<format.length;i++){var curChar=format.charAt(i);if(i-1>=0&&format.charAt(i-1)=="\\"){returnStr+=curChar}else if(replace[curChar]){returnStr+=replace[curChar].call(this)}else if(curChar!="\\"){returnStr+=curChar}}return returnStr};Date.replaceChars={shortMonths:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],longMonths:['January','February','March','April','May','June','July','August','September','October','November','December'],shortDays:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],longDays:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],d:function(){return(this.getDate()<10?'0':'')+this.getDate()},D:function(){return Date.replaceChars.shortDays[this.getDay()]},j:function(){return this.getDate()},l:function(){return Date.replaceChars.longDays[this.getDay()]},N:function(){return this.getDay()+1},S:function(){return(this.getDate()%10==1&&this.getDate()!=11?'st':(this.getDate()%10==2&&this.getDate()!=12?'nd':(this.getDate()%10==3&&this.getDate()!=13?'rd':'th')))},w:function(){return this.getDay()},z:function(){var d=new Date(this.getFullYear(),0,1);return Math.ceil((this-d)/86400000)}, W:function(){var d=new Date(this.getFullYear(),0,1);return Math.ceil((((this-d)/86400000)+d.getDay()+1)/7)},F:function(){return Date.replaceChars.longMonths[this.getMonth()]},m:function(){return(this.getMonth()<9?'0':'')+(this.getMonth()+1)},M:function(){return Date.replaceChars.shortMonths[this.getMonth()]},n:function(){return this.getMonth()+1},t:function(){var d=new Date();return new Date(d.getFullYear(),d.getMonth(),0).getDate()},L:function(){var year=this.getFullYear();return(year%400==0||(year%100!=0&&year%4==0))},o:function(){var d=new Date(this.valueOf());d.setDate(d.getDate()-((this.getDay()+6)%7)+3);return d.getFullYear()},Y:function(){return this.getFullYear()},y:function(){return(''+this.getFullYear()).substr(2)},a:function(){return this.getHours()<12?'am':'pm'},A:function(){return this.getHours()<12?'AM':'PM'},B:function(){return Math.floor((((this.getUTCHours()+1)%24)+this.getUTCMinutes()/60+this.getUTCSeconds()/ 3600) * 1000/24)}, g:function(){return this.getHours()%12||12},G:function(){return this.getHours()},h:function(){return((this.getHours()%12||12)<10?'0':'')+(this.getHours()%12||12)},H:function(){return(this.getHours()<10?'0':'')+this.getHours()},i:function(){return(this.getMinutes()<10?'0':'')+this.getMinutes()},s:function(){return(this.getSeconds()<10?'0':'')+this.getSeconds()},u:function(){var m=this.getMilliseconds();return(m<10?'00':(m<100?'0':''))+m},e:function(){return"Not Yet Supported"},I:function(){return"Not Yet Supported"},O:function(){return(-this.getTimezoneOffset()<0?'-':'+')+(Math.abs(this.getTimezoneOffset()/60)<10?'0':'')+(Math.abs(this.getTimezoneOffset()/60))+'00'},P:function(){return(-this.getTimezoneOffset()<0?'-':'+')+(Math.abs(this.getTimezoneOffset()/60)<10?'0':'')+(Math.abs(this.getTimezoneOffset()/60))+':00'},T:function(){var m=this.getMonth();this.setMonth(0);var result=this.toTimeString().replace(/^.+ \(?([^\)]+)\)?$/,'$1');this.setMonth(m);return result},Z:function(){return-this.getTimezoneOffset()*60},c:function(){return this.format("Y-m-d\\TH:i:sP")},r:function(){return this.toString()},U:function(){return this.getTime()/1000}};
 Date.prototype.setDateFromForm=function(dateText){
@@ -117,7 +119,9 @@ function kopirajNaslov(){
 		input.val($("#Vsebine_title").val());
 }
 
-function nalozi_sliko(file_id, success){ //id od input file brez #, success funkcija
+function nalozi_sliko(file_id, success, file_index){ //id od input file brez #, success funkcija
+	file_index = file_index || 0; // default parameter
+	
 	extension = $('#'+file_id).val().split('.').pop().toLowerCase(); //preberi extension
 	if($.inArray(extension, ['gif','png','jpg','jpeg']) == -1) {         //preveri, če gre za sliko
 	    alert('To pa že ni slika!');
@@ -128,7 +132,7 @@ function nalozi_sliko(file_id, success){ //id od input file brez #, success funk
     formdata = false;  
 	 if (window.FormData) {  
 	     formdata = new FormData();  
-	     formdata.append("images[]", input.files[0]);
+	     formdata.append("images[]", input.files[file_index]);
 	     //document.getElementById("btn").style.display = "none";  
 	 } 
 	 //alert(formdata);
@@ -154,6 +158,15 @@ function slika_za_clanek(src){
 $(document).ready(function () {
 	var input = document.getElementById("Vsebine_activeFile");
 	var textUrl = document.getElementById("Vsebine_slika");
+	$("#slike").sortable({
+		stop: function () {
+		        var inputs = $('input.zp_st');
+		        //var nbElems = inputs.length;
+		        $('input.zp_st').each(function(idx) {
+		            $(this).val(1 + idx);
+		        });
+		}
+	});
 		//formdata = false;
 	//alert(input);
 	function showUploadedItem (source) {
@@ -182,7 +195,7 @@ $(document).ready(function () {
 			  		$("#loading-img1").css('display','none');
 				}
 				$("#loading-img1").css('display','inline');				
-				nalozi_sliko('Vsebine_activeFile', success);
+				nalozi_sliko('Vsebine_activeFile', success, i);
 				
 //				if ( window.FileReader ) {
 //					reader = new FileReader();
@@ -208,15 +221,56 @@ $(document).ready(function () {
  		}
  	});
  	$("#nalozi_sliko").change(function(){ //input za url onchange
- 		if($("#nalozi_sliko").val()!=""){
-	 		success = function (res) {
-		  		jInsertEditorText(slika_za_clanek(res), 'Vsebine_fulltext');
-		  		$("#loading-img2").css('display','none');
+ 		var i = 0, len = this.files.length, img, reader, file;
+ 		
+		for ( ; i < len; i++ ) { // za vsak file
+			$("#loading-img2").css('display','inline');
+			file = this.files[i];
+	
+			if (!!file.type.match(/image.*/)) {
+				success = success = function (res) {
+		 			slika=JSON.parse(res);
+		 			//alert(slika.url);
+		 			$('<div />', {
+		 				id:'slika_'+slika.id
+		 			}).append(
+			 			$('<img/>', {
+			 				src: slika.url
+			 			}).css('width', '258px'),
+			 			$('<input/>', {
+			 				type:'hidden', 
+			 				name: 'Slike['+slika.id+'][zp_st]',
+			 				id: 'slika_'+slika.id+'_zp_st',
+			 				'class': 'zp_st'
+			 			})
+			 			,
+			 			$('<input/>', {
+			 				type:'hidden', 
+			 				name: 'Slike['+slika.id+'][id_slike]',
+			 				id: 'slika_'+slika.id+'_id_slike',
+			 				'class': 'id_slike',
+			 				value: slika.id
+			 			}),
+			 			$('<input/>', {
+			 				type:'hidden', 
+			 				name: 'Slike['+slika.id+'][mesto_prikaza]',
+			 				id: 'slika_'+slika.id+'_mesto_prikaza',
+			 				'class': 'mesto_prikaza',
+			 				value: 1
+			 			})
+		 			).appendTo("#slike");
+		 			img_count=img_count+1;
+		 			$('#'+'slika_'+slika.id+'_zp_st').val($('#'+'slika_'+slika.id).index()+1);
+//		 			$("#slike").append('<img src="'+slika.url+'" />');
+//			  		jInsertEditorText(slika_za_clanek(res), 'Vsebine_fulltext');
+			  		$("#loading-img2").css('display','none');
+				}			
+				nalozi_sliko('nalozi_sliko', success, i);
 			}
-			$("#loading-img2").css('display','inline');				
-			nalozi_sliko('nalozi_sliko', success);
- 		}
+		}
+ 
  	});
+ 	
  	$("#vstavi_sliko").change(function(){ //input za url onchange
  		if($("#vstavi_sliko").val()!=""){
  			jInsertEditorText(slika_za_clanek($("#vstavi_sliko").val()), 'Vsebine_fulltext');

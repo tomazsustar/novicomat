@@ -5,7 +5,7 @@
 	?>
 <?php 
 
- $s="var ajax_url = '".Yii::app()->createAbsoluteUrl("vsebine/naloziSliko")."'; 
+ $s="var ajax_url = '".Yii::app()->createAbsoluteUrl("slike/naloziSliko")."'; 
 	";
 
 	Yii::app()->clientScript->registerScript('import-global-vars',$s, CClientScript::POS_HEAD );?>
@@ -163,16 +163,26 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 </table>
 */ ?>
  
-<table>
+	
+	<table>
 		<tr>
+			<td>
+				<?php echo CHTML::label("Uvodna slika", "slika")?>	
+				<?php echo CHTML::image($model->slika, "Naloži ali izberi sliko", array('style'=>'width:264px;', 'id'=>'slika'))  ?>
+			</td>
+			<td style="vertical-align:top;">
+					
+				<?php echo $form->labelEx($model,'introtext'); ?>		
+				<?php echo $form->textArea($model,'introtext',array('rows'=>5, 'cols'=>40)); ?>
+				<?php echo $form->error($model,'introtext'); ?>
+				
+			</td>
 			<td>
 				<div class="row" style="width:60px;" >
 					<?php echo $form->labelEx($model,'frontpage'); ?>
 					<?php echo $form->checkbox($model, 'frontpage'); ?>
 					<?php echo $form->error($model,'frontpage'); ?>
 				</div>
-			</td>
-			<td>
 				<div class="row">
 					<?php echo $form->labelEx($model,'publish_up'); ?>
 					<?php if(trim($model->publish_up)=="" && trim($model->start_date)==""){
@@ -183,37 +193,12 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					}?>
 					<?php echo $form->error($model,'publish_up'); ?>
 				</div>
-			</td>
-			<td>
 				<div class="row">
 					<?php echo $form->labelEx($model,'publish_down'); ?>
 					<?php $form->dateTimePicker($model,'publish_down');?>
 					<?php echo $form->error($model,'publish_down'); ?>
 				</div>
 			</td>
-			<td>
-				<div class="row" >
-					<?php //echo $form->labelEx($model,'show_intro'); ?>
-					<?php //echo $form->dropDownList($model, 'catid', array()); ?>
-					<?php //echo $form->checkbox($model, 'show_intro'); ?>
-					<?php //echo $form->error($model,'show_intro'); ?>
-				</div> 
-			</td>
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<td>
-				<?php echo CHTML::label("Uvodna slika", "slika")?>	
-				<?php echo CHTML::image($model->slika, "Naloži ali izberi sliko", array('style'=>'width:264px;', 'id'=>'slika'))  ?>
-			</td>
-			<td style="vertical-align:top;">
-				<?php echo $form->labelEx($model,'introtext'); ?>		
-				<?php echo $form->textArea($model,'introtext',array('rows'=>5, 'cols'=>40)); ?>
-				<?php echo $form->error($model,'introtext'); ?>
-				
-			</td>
-			
 		</tr>
 	</table>
 	<table>
@@ -239,55 +224,51 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				
 			</td>
 		</tr>
-		<tr>
-			<td>
-				<div class="row">
-					<?php echo CHtml::Label('Vstavi sliko - URL', 'vstavi_sliko');?>
-					<?php echo CHtml::textField('vstavi_sliko','',array('style'=>'width:100%;')); ?>
-				</div>
-			</td>
-			<td>
-				<?php echo $form->labelEx($model,'activeFile'); ?>
-				<?php echo CHtml::fileField('nalozi_sliko','',array('style'=>'width:100%;') ); ?>
-			</td>
-			<td style="vertical-align:middle;width:20px;">
-				<?php //echo $form->labelEx('&nbsp;'); ?>
-				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img2','style'=>'display:none;'));?>
-				
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div class="row">
-					<?php echo CHtml::Label('Vstavi Youtube video - URL', 'vstavi_video');?>
-					<?php echo CHtml::textField('vstavi_video','',array('style'=>'width:100%;')); ?>
-				</div>
-			</td>
-			<td>
-				<?php //echo $form->labelEx($model,'activeFile'); ?>
-				<?php //echo CHtml::fileField('nalozi_sliko','',array('style'=>'width:100%;') ); ?>
-			</td>
-			<td style="vertical-align:middle;width:20px;">
-				<?php //echo $form->labelEx('&nbsp;'); ?>
-				<?php //echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img2','style'=>'display:none;'));?>
-				
-			</td>
-		</tr>
+		
 	</table>
 	
+	<table>
+	<tr>
+		<td>
+			<div class="row">
+				<?php echo $form->labelEx($model,'fulltext'); ?>		
+				<?php //echo $form->textArea($model,'text',array('rows'=>20, 'cols'=>90)); ?>
+				<?php echo $form->error($model,'fulltext'); ?>
+				<?php 
+				$options;
+				$form->widget('application.extensions.tinymce.ETinyMce', 
+					array('model'=>$model,
+						'attribute'=>'fulltext',
+					    'editorTemplate'=>'full',			
+					)); ?>
+			</div>
+			<div class="row">
+				<?php echo CHtml::Label('Vstavi Youtube video - URL', 'vstavi_video');?>
+				<?php echo CHtml::textField('vstavi_video','',array('style'=>'width:100%;')); ?>
+			</div>
+		</td>
+		<td>
+			<div class="row">
+				<?php echo CHtml::Label('Vstavi sliko - URL', 'vstavi_sliko');?>
+				<?php echo CHtml::textField('vstavi_sliko','',array('style'=>'width:100%;')); ?>
+			</div>
+			<?php echo $form->labelEx($model,'activeFile'); ?>
+			<?php echo CHtml::fileField('nalozi_sliko','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
+
+			<?php //echo $form->labelEx('&nbsp;'); ?>
+			<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img2','style'=>'display:none;'));?>
+			<div id="slike">
+				<?php foreach($model->slike as $slika):?>
+					<div id="slika_<?php echo $slika->id;?>">
+						<img alt="" src="<?php echo $slika->url;?>">
+					</div>
+				<?php endforeach;?>
+			</div>
+		</td>
+	</tr>
 	
-	<div class="row">
-		<?php echo $form->labelEx($model,'fulltext'); ?>		
-		<?php //echo $form->textArea($model,'text',array('rows'=>20, 'cols'=>90)); ?>
-		<?php echo $form->error($model,'fulltext'); ?>
-		<?php 
-		$options;
-		$form->widget('application.extensions.tinymce.ETinyMce', 
-			array('model'=>$model,
-				'attribute'=>'fulltext',
-			    'editorTemplate'=>'full',			
-			)); ?>
-	</div>
+	</table>
+	
 	<div class="row">
 		<?php echo CHtml::Label('Naloži galerijo', 'nalozi_galerijo');?>
 		<?php echo CHtml::fileField('nalozi_galerijo','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
