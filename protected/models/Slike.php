@@ -15,6 +15,8 @@
  */
 class Slike extends CActiveRecord
 {
+	
+	var $msg = "";
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Slike the static model class
@@ -42,7 +44,8 @@ class Slike extends CActiveRecord
 		return array(
 			array('url', 'required'),
 			array('title, avtor', 'length', 'max'=>256),
-			array('datum, url2, opis, title, avtor, tags, pot, ime_slike', 'safe'),
+			array('datum, url2, opis, title, avtor, tags, pot', 'safe'),
+			array('ime_slike','unique', 'message'=>'Slika s tem imenom že obstaja'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, url, url2, opis, title, avtor, datum, tags', 'safe', 'on'=>'search'),
@@ -104,5 +107,25 @@ class Slike extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+	
+/**
+	 * 
+	 * Enter description here ...
+	 * @param Slike $slika_mdl
+	 */
+	public function slikca(){
+			if(!class_exists('WideImage', false)) 
+				require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
+			
+			//load
+			WideImage::load($this->pot.$this->ime_slike)
+				->resize(265, 177, 'outside')
+				->crop('center', 'center', 265, 177)
+				->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$this->ime_slike);
+			
+			//set url2
+			$this->url2=Yii::app()->params['imgUrl'].'slikce/'.$this->ime_slike;
+		
 	}
 }

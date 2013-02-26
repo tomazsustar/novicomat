@@ -116,17 +116,17 @@ class Vsebine extends CActiveRecord
 			array('publish_up, publish_down, start_date, end_date','ext.myvalidators.DateOrTime'),
 			array('publish_down','ext.myvalidators.Later', 'then'=>'publish_up'),
 			array('end_date','ext.myvalidators.Later', 'then'=>'start_date'),
-			array('title, fulltext, introtext, sectionid, catid, publish_up, tags', 'required'),
+			array('title, fulltext, introtext, sectionid, catid, publish_up, tags, slika', 'required'),
 //			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
 			array('event_cat, lokacija', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar'),
 //			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
-			array('slika', 'safe'),
+			array('video', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>true, 'on'=>'insert'),
 			array('event_cat,state', 'default', 'value'=>0, 'setOnEmpty'=>true, 'on'=>'insert'),
 			array('params', 'default', 'value'=>'show_intro=0', 'setOnEmpty'=>true, 'on'=>'insert'),
 			
 			
-			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, frontpage, koledar, galerija', 'numerical', 'integerOnly'=>true),
+			array('state, sectionid, catid, checked_out, edited_by, site_id, original_changed, event_cat, frontpage, koledar', 'numerical', 'integerOnly'=>true),
 			array('author, author_alias, global_id', 'length', 'max'=>256),
 			array('import_checksum, export_checksum', 'length', 'max'=>32),
 			
@@ -147,8 +147,9 @@ class Vsebine extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'stran' => array(self::BELONGS_TO, 'Strani', 'site_id'),
-			'dogodki' => array(self::HAS_MANY, 'Koledar',   'id_vsebine'),                
-			'slike' =>array(self::MANY_MANY, 'Slike', '{{slike_vsebine}}(id_vsebine, id_slike)')
+			'dogodki' => array(self::HAS_MANY, 'Koledar',   'id_vsebine'),      
+			'slvs' => array(self::HAS_MANY, 'SlikeVsebine', 'id_vsebine', 'order'=>'slvs.zp_st ASC', 'with'=>'slika'),
+//			'slike' =>array(self::MANY_MANY, 'Slike', '{{slike_vsebine}}(id_vsebine, id_slike)')
 		);
 	}
 
@@ -195,7 +196,9 @@ class Vsebine extends CActiveRecord
 			'koledar' => 'Koledar',
 			'koledar_naslov' => 'Naslov za koledar',
 			'slika' => 'Naslovna slika - URL',
-			'activeFile' => 'Naloži sliko'
+			'activeFile' => 'Naloži sliko',
+			'video'=>'Vstavi video'
+			
 		);
 	}
 

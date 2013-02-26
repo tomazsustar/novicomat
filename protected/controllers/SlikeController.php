@@ -31,7 +31,7 @@ class SlikeController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'naloziSliko'),
+				'actions'=>array('create','update', 'naloziSliko', 'naloziSlikoIzUrl'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -180,18 +180,30 @@ class SlikeController extends Controller
 					$filename = $_FILES["images"]["name"][$key];
 					//echo  $_FILES["images"]["tmp_name"][$key];
 					//move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->basePath.'/../slike/' . $_FILES['images']['name'][$key]);
-					move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir'].$filename);
+					if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$filename))){
+						$msg="Slika z imenom $filename že obstaja na strežniku";
+						echo CJSON::encode(array($slika, $msg));
+					}else{
+						move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir'].$filename);
+					//shrani v bazo
+						$model=new Slike;
+						$model->url=Yii::app()->params['imgUrl'].$filename;
+						$model->pot=Yii::app()->params['imgDir'];
+						$model->ime_slike=$filename;
+						
+						// naredi slicico
+						$model->slikca();
+						
+						if($model->save()){
+							//echo $model->url2; 
+							$msg="";
+							echo CJSON::encode(array($model, $msg));
+						}
+					}
 				}
 			}
 			
-			//shrani v bazo
-			$model=new Slike;
-			$model->url=Yii::app()->params['imgUrl'].$filename;
-			$model->pot=Yii::app()->params['imgDir'];
-			$model->ime_slike=$filename;
-			if($model->save()){
-				echo CJSON::encode($model->getAttributes());
-			}
+			
 			
 			//echo "<h2>Successfully Uploaded Images</h2>";
 			
@@ -201,4 +213,36 @@ class SlikeController extends Controller
 //			$uploadedFile->saveAs($filepath);  
 			
 	}
+	
+	public function actionNaloziSlikoIzUrl(){
+		if(!class_exists('WideImage', false)) 
+				require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
+				//shrani na disk
+		$url=$_POST['image_url'];
+		$filename=basename($url);
+		
+		if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$filename))){
+			$msg="Slika z imenom $filename že obstaja na strežniku";
+			echo CJSON::encode(array($slika, $msg));
+		}else{
+			//load
+			$img=WideImage::load($url)->saveToFile((Yii::app()->params['imgDir'].$filename));
+			
+			//shrani v bazo
+			$model=new Slike;
+			$model->url=Yii::app()->params['imgUrl'].$filename;
+			$model->pot=Yii::app()->params['imgDir'];
+			$model->ime_slike=$filename;
+			
+			// naredi slicico
+			$model->slikca();
+			if($model->save()){
+				$msg="";
+				echo CJSON::encode(array($model, $msg));
+			}else echo "Prišlo je do napake pri shranjevanju v bazo";
+		}
+		
+	}
+	
+	
 }

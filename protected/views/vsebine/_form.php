@@ -5,10 +5,9 @@
 	?>
 <?php 
 
- $s="var ajax_url = '".Yii::app()->createAbsoluteUrl("slike/naloziSliko")."'; 
-	";
+ 
 
-	Yii::app()->clientScript->registerScript('import-global-vars',$s, CClientScript::POS_HEAD );?>
+	//Yii::app()->clientScript->registerScript('import-global-vars',$s, CClientScript::POS_HEAD );?>
 
 <div class="form">
 
@@ -168,7 +167,10 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 		<tr>
 			<td>
 				<?php echo CHTML::label("Uvodna slika", "slika")?>	
-				<?php echo CHTML::image($model->slika, "Naloži ali izberi sliko", array('style'=>'width:264px;', 'id'=>'slika'))  ?>
+				<div id="naslovna_slika">
+					<?php $form->slike($model->slvs,1, "246px", false);?>
+				</div>
+				
 			</td>
 			<td style="vertical-align:top;">
 					
@@ -203,6 +205,11 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 	</table>
 	<table>
 		<tr>
+			<td style="vertical-align:middle;width:20px;">
+				<?php //echo $form->labelEx('&nbsp;'); ?>
+				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img1','style'=>'display:none;'));?>
+				
+			</td>
 			<td>
 				<div class="row">
 					<?php echo $form->labelEx($model,'slika'); ?>
@@ -218,11 +225,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				<?php echo $form->error($model,'activeFile'); ?>
 				
 			</td>
-			<td style="vertical-align:middle;width:20px;">
-				<?php //echo $form->labelEx('&nbsp;'); ?>
-				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img1','style'=>'display:none;'));?>
-				
-			</td>
+			
 		</tr>
 		
 	</table>
@@ -243,9 +246,88 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					)); ?>
 			</div>
 			<div class="row">
-				<?php echo CHtml::Label('Vstavi Youtube video - URL', 'vstavi_video');?>
-				<?php echo CHtml::textField('vstavi_video','',array('style'=>'width:100%;')); ?>
+				<?php echo $form->labelEx($model,'video'); ?>
+				<?php echo $form->textField($model,'video',array('size'=>60)); ?>
+				<?php echo $form->error($model,'video'); ?>
+				<div id="video">
+					<?php echo ZVideoHelper::insertVideo($model->video);?>
+				</div>
 			</div>
+			<div class="row">
+				<?php echo CHtml::Label('Naloži galerijo', 'nalozi_galerijo');?>
+				<?php echo CHtml::fileField('nalozi_galerijo','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
+				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img3','style'=>'display:none;'));?>
+				<div id="galerija" style="float:left;width:100%;">
+						<?php $form->slike($model->slvs,3,'100px');?>
+				</div>
+			</div>
+			
+	
+			<div class="row">
+				<?php echo $form->labelEx($model,'author_alias'); ?>
+				<?php echo $form->textField($model,'author_alias',array('size'=>60,'maxlength'=>256)); ?>
+				<br><?php echo $model->getAttributeLabel('author'); ?>:&nbsp;<?php echo $model->author; ?>
+				<?php echo $form->error($model,'author_alias'); ?>
+			</div>
+				
+			<div class="row">
+				<?php echo $form->labelEx($model,'tags'); ?>
+				<?php //echo $form->textField($model,'tags',array('size'=>60)); ?>
+				<?php $form->autocompleteField($model,'tags', 'Vsebine/aclist',  array('size'=>60)); ?>
+				<?php echo $form->error($model,'tags'); ?>
+			</div>
+			<div class="row">
+				<?php echo $form->labelEx($model,'lokacija'); ?>
+				<?php echo $form->textField($model,'lokacija',array('size'=>60)); ?>
+				<?php echo $form->error($model,'lokacija'); ?>
+			</div>
+							
+		<table>
+			<tr>
+				<td>
+					<div class="row">
+						<?php //echo '<pre>';print_r($expression)?>
+							<?php echo $form->labelEx($model,'sectionid'); ?>
+							<?php echo $form->dropDownList($model, 'sectionid', CHtml::listData(Sections::model()->findAll(), 'id', 'title'),
+											array(
+												'ajax' => array(
+													'type'=>'POST', //request type
+													'url'=>CController::createUrl('Vsebine/loadCategories'), //url to call.
+													//Style: CController::createUrl('currentController/methodToCall')
+													'update'=>'#Vsebine_catid', //selector to update
+													//'data'=>'js:javascript statement' 
+													//leave out the data key to pass all form values through
+													),
+												'prompt'=>'Izberi sekcijo:',
+												'onchange' => 'addTagFromSelect(document.getElementById("tags"), this)'
+											));  ?>
+							<?php echo $form->error($model,'sectionid'); ?>
+						</div>
+					</td>
+					<td>
+						
+					
+						<div class="row">
+							<?php echo $form->labelEx($model,'catid'); ?>
+							<?php //echo $form->dropDownList($model, 'catid', array()); ?>
+							<?php echo $form->dropDownList($model, 'catid', Categories::listBySection($model->sectionid),
+										array('prompt'=>'Izberi kategorijo:',
+											'onchange' => 'addTagFromSelect(document.getElementById("tags"), this)')); ?>
+							<?php echo $form->error($model,'catid'); ?>
+						</div>
+					</td>
+					<td>
+					
+						<div class="row">
+							<?php echo $form->labelEx($model,'event_cat'); ?>
+							<?php //echo $form->dropDownList($model, 'catid', array()); ?>
+							<?php echo $form->dropDownList($model, 'event_cat', Categories::listJevCat(),
+										array('prompt'=>'Izberi kategorijo:', 'style'=>'width:250px;')); ?>
+							<?php echo $form->error($model,'event_cat'); ?>
+						</div>
+					</td>
+				</tr>
+			</table>
 		</td>
 		<td>
 			<div class="row">
@@ -258,84 +340,15 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 			<?php //echo $form->labelEx('&nbsp;'); ?>
 			<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img2','style'=>'display:none;'));?>
 			<div id="slike">
-				<?php foreach($model->slike as $slika):?>
-					<div id="slika_<?php echo $slika->id;?>">
-						<img alt="" src="<?php echo $slika->url;?>">
-					</div>
-				<?php endforeach;?>
+				<?php $form->slike($model->slvs,2);?>
 			</div>
 		</td>
 	</tr>
 	
 	</table>
 	
-	<div class="row">
-		<?php echo CHtml::Label('Naloži galerijo', 'nalozi_galerijo');?>
-		<?php echo CHtml::fileField('nalozi_galerijo','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
-	</div>
-		<table>
-		<tr>
-		<td style="width:400px;">
-		
-				<div class="row">
-					<?php echo $form->labelEx($model,'author_alias'); ?>
-					<?php echo $form->textField($model,'author_alias',array('size'=>60,'maxlength'=>256)); ?>
-					<br><?php echo $model->getAttributeLabel('author'); ?>:&nbsp;<?php echo $model->author; ?>
-					<?php echo $form->error($model,'author_alias'); ?>
-				</div>
-					
-					<div class="row">
-						<?php echo $form->labelEx($model,'tags'); ?>
-						<?php //echo $form->textField($model,'tags',array('size'=>60)); ?>
-						<?php $form->autocompleteField($model,'tags', 'Vsebine/aclist',  array('size'=>60)); ?>
-						<?php echo $form->error($model,'tags'); ?>
-					</div>
-					<div class="row">
-						<?php echo $form->labelEx($model,'lokacija'); ?>
-						<?php echo $form->textField($model,'lokacija',array('size'=>60)); ?>
-						<?php echo $form->error($model,'lokacija'); ?>
-					</div>
 	
-		</td>
-		<td>
-				<div class="row">
-				<?php //echo '<pre>';print_r($expression)?>
-					<?php echo $form->labelEx($model,'sectionid'); ?>
-					<?php echo $form->dropDownList($model, 'sectionid', CHtml::listData(Sections::model()->findAll(), 'id', 'title'),
-									array(
-										'ajax' => array(
-											'type'=>'POST', //request type
-											'url'=>CController::createUrl('Vsebine/loadCategories'), //url to call.
-											//Style: CController::createUrl('currentController/methodToCall')
-											'update'=>'#Vsebine_catid', //selector to update
-											//'data'=>'js:javascript statement' 
-											//leave out the data key to pass all form values through
-											),
-										'prompt'=>'Izberi sekcijo:',
-										'onchange' => 'addTagFromSelect(document.getElementById("tags"), this)'
-									));  ?>
-					<?php echo $form->error($model,'sectionid'); ?>
-				</div>
-			
-				<div class="row">
-					<?php echo $form->labelEx($model,'catid'); ?>
-					<?php //echo $form->dropDownList($model, 'catid', array()); ?>
-					<?php echo $form->dropDownList($model, 'catid', Categories::listBySection($model->sectionid),
-								array('prompt'=>'Izberi kategorijo:',
-									'onchange' => 'addTagFromSelect(document.getElementById("tags"), this)')); ?>
-					<?php echo $form->error($model,'catid'); ?>
-				</div>
-			
-				<div class="row">
-					<?php echo $form->labelEx($model,'event_cat'); ?>
-					<?php //echo $form->dropDownList($model, 'catid', array()); ?>
-					<?php echo $form->dropDownList($model, 'event_cat', Categories::listJevCat(),
-								array('prompt'=>'Izberi kategorijo:', 'style'=>'width:250px;')); ?>
-					<?php echo $form->error($model,'event_cat'); ?>
-				</div>
-			</td>
-		</tr>
-	</table>
+	
 	
 	
 			
@@ -458,7 +471,6 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
     */	?>
     
     <?php echo $form->hiddenField($model, 'state')?>
-    <?php echo $form->hiddenField($model, 'galerija')?>
     
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Shrani'); ?>
@@ -478,6 +490,18 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 }";
 Yii::app()->clientScript->registerScript('editprofile-form-beforeValidate', $js);
  */?>   
+ 
+ <?php 
+
+ $s="
+ 	var base_url='".Yii::app()->baseUrl."';
+ 	var ajax_url_url = '".Yii::app()->createAbsoluteUrl("slike/naloziSlikoIzUrl")."'; 
+ 	var ajax_url = '".Yii::app()->createAbsoluteUrl("slike/naloziSliko")."'; 
+ 	img_count = ".$form->img_count.";
+	";
+ 
+
+	Yii::app()->clientScript->registerScript('import-global-vars',$s, CClientScript::POS_HEAD );?>
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->

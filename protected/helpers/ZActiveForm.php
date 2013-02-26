@@ -2,6 +2,7 @@
 
 class ZActiveForm extends CActiveForm{
 	
+	public $img_count = 0;
 	
 	public function datePicker($model, $attribute, $value=false){		
 		
@@ -89,5 +90,44 @@ class ZActiveForm extends CActiveForm{
 	        'htmlOptions'=>$htmlOptions
 	  	)
 	  );
+	}
+	
+	public function slike($slvss, $mesto_prikaza, $sirina='264px', $allowDelete=true){
+		
+		foreach($slvss as $slvs){
+					if($mesto_prikaza==$slvs->mesto_prikaza){
+						echo CHtml::openTag('div', array('id'=>'slika_'.$this->img_count, 'style'=>'width:'.$sirina.';float:left;'));
+							if($allowDelete){
+								echo CHtml::openTag('a', array('href'=>'#', 'class'=>'delete_img'));
+									echo CHtml::image(
+										Yii::app()->baseUrl."/slike/delete_16.gif",     //src
+										"izbrisi", //alt
+										array('style'=>'width:16px;float:right;')
+									);
+								echo CHtml::closeTag('a');
+							}
+							//img
+							echo CHtml::image(
+									$slvs->slika->url2,     //src
+									$slvs->slika->ime_slike,  //alt
+									array(
+										'style'=>'width:'.$sirina.';', 
+									)
+							);
+							//hidden inputs
+							foreach($slvs->getAttributes() as $name => $value ){
+								echo CHtml::hiddenField(
+								'Slike['.$this->img_count.']['.$name.']', // name
+								$value, //value
+								array(
+										'id'=>'slika_'.$this->img_count.'_'.$name,
+										'class'=>$name
+									)
+								);
+							}
+						echo CHtml::closeTag('div');
+						$this->img_count++;
+					}
+			}
 	}
 }
