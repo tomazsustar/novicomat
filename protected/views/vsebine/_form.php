@@ -165,10 +165,10 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 	
 	<table>
 		<tr>
-			<td>
+			<td >
 				<?php echo CHTML::label("Uvodna slika", "slika")?>	
-				<div id="naslovna_slika">
-					<?php $form->slike($model->slvs,1, "246px", false);?>
+				<div id="naslovna_slika" style="width:265px;">
+					<?php $form->slike($model->slvs,1, "265px", false);?>
 				</div>
 				
 			</td>

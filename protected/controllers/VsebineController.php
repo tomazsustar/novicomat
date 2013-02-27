@@ -102,12 +102,14 @@ class VsebineController extends Controller
 		if(isset($_POST['Vsebine']))
 		{
 			$model->attributes=$_POST['Vsebine'];
-			foreach ($_POST['Slike'] as $id => $values){
-				$slvs=new SlikeVsebine();
-				$slvs->attributes=$values;
-				$slvs_array[]=$slvs;						
+			if(isset($_POST['Slike'])){
+				foreach ($_POST['Slike'] as $id => $values){
+					$slvs=new SlikeVsebine();
+					$slvs->attributes=$values;
+					$slvs_array[]=$slvs;						
+				}
+				$model->slvs=$slvs_array;
 			}
-			$model->slvs=$slvs_array;
 			//nalaganje slike
 //			if($uploadedFile=CUploadedFile::getInstance($model,'activeFile')){
 //				$filename = urldecode($uploadedFile);
