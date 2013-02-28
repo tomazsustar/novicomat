@@ -133,11 +133,13 @@ class VsebineController extends Controller
 						//if($uploadedFile) $uploadedFile->saveAs(Yii::app()->params['imgDir'].$filename);  	//shrani slike
 						// izbriši obstoječe povezave za ta članek
 						SlikeVsebine::model()->deleteAllByAttributes(array('id_vsebine'=>$model->id));
-						foreach ($_POST['Slike'] as $id => $values){
-							$slvs=new SlikeVsebine();
-							$slvs->attributes=$values;
-							$slvs->id_vsebine=$model->id;
-							$slvs->save();							
+						if(isset($_POST['Slike'])){
+							foreach ($_POST['Slike'] as $id => $values){
+								$slvs=new SlikeVsebine();
+								$slvs->attributes=$values;
+								$slvs->id_vsebine=$model->id;
+								$slvs->save();							
+							}
 						}
 		    				$masterValues = array('id_vsebine'=>$model->id);
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
