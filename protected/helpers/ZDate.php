@@ -130,4 +130,9 @@ class ZDate{
 		if($mesec=array_search($imeMeseca, self::MESECI_ROD())) return $mesec;
 		if($mesec=array_search($imeMeseca, self::MESECI_KRATKO())) return $mesec;
 	}
+	
+	public static function imeMeseca($stMeseca){
+		$a=self::MESECI_KRATKO();
+		return $a[$stMeseca];
+	}
 }

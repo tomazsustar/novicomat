@@ -177,25 +177,40 @@ class Content extends CActiveRecord
 	 */
 	public function mapVsebine(&$vsebineModel){
 		$this->title = $vsebineModel->title;
-		$this->alias = str_replace(array(' ', 'š','č','ž','đ','ć','Š','Č','Ž','Đ','Ć'), 
-								   array('-','s','c','z','dz','c','s','c','z','dz','c'), 
+		$this->alias = str_replace(array('.',' ', 'š','č','ž','đ','ć','Š','Č','Ž','Đ','Ć'), 
+								   array('-','-','s','c','z','dz','c','s','c','z','dz','c'), 
 								   strtolower(trim($vsebineModel->title)));
 		$this->title_alias = '';
 		$this->introtext = CHtml::image($vsebineModel->slika, $vsebineModel->slika, array('style'=>'margin:5px;float:left;width:150px')).$vsebineModel->introtext;
-		$this->fulltext = $vsebineModel->fulltext;
+		//slike
+		$slike_html=CHtml::openTag('div', array('class'=>'prispevek-slike', 'style'=>'float:right;'));
+		foreach ($vsebineModel->slvs as $slvs){
+			$slike_html.=CHtml::openTag('a', array('href'=>'$slvs->slika->url', 'rel'=>'lightbox'));
+				$slike_html.= CHtml::image(
+					$slvs->slika->url2,     //src
+					$slvs->slika->ime_slike,  //alt
+					array(
+						'style'=>'margin:5px;width:250px;', 
+					)
+				);
+			$slike_html.=CHtml::closeTag('a');
+		}
+		$slike_html.=CHtml::closeTag('div');
+		
+		$this->fulltext = $slike_html.$vsebineModel->fulltext;
 		$this->state = 1; // 1 - published
 		$this->sectionid = $vsebineModel->sectionid;
 		$this->mask = 0;
 		$this->catid = $vsebineModel->catid;
-		$this->created = ZDate::dbModify($vsebineModel->publish_up, '- 1 hour');
+		$this->created = ZDate::dbModify($vsebineModel->publish_up, '- 2 hours');
 		$this->created_by = Yii::app()->user->id;
 		$this->created_by_alias = $vsebineModel->author_alias;
 		$this->modified = ZDate::dbNow(); // zdaj
 		$this->modified_by = Yii::app()->user->id;
 		$this->checked_out = 0;
 		$this->checked_out_time = '000-00-00 00:00:00';
-		$this->publish_up = ZDate::dbModify($vsebineModel->publish_up, '- 1 hour');
-		$this->publish_down = ZDate::dbModify($vsebineModel->publish_down, '- 1 hour');
+		$this->publish_up = ZDate::dbModify($vsebineModel->publish_up, '- 2 hours');
+		$this->publish_down = ZDate::dbModify($vsebineModel->publish_down, '- 2 hours');
 		$this->images = '';
 		$this->urls = '';
 		$this->attribs = "show_intro=0\n"; //$vsebineModel->params;
