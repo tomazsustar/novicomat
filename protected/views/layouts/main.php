@@ -32,7 +32,7 @@
 				array('label'=>'Vsebine', 'url'=>array('/vsebine/index')),
 				//array('label'=>'Izvoz', 'url'=>array('/vsebine/izvoz')),
 				array('label'=>'Strani', 'url'=>array('/strani/index')),
-				
+				array('label'=>'Lokacije', 'url'=>array('/lokacije/index')),
 				//array('label'=>'Tipi Strani', 'url'=>array('/tipiStrani/index')),
 				//array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 				//array('label'=>'Contact', 'url'=>array('/site/contact')),

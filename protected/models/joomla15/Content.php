@@ -185,15 +185,19 @@ class Content extends CActiveRecord
 		//slike
 		$slike_html=CHtml::openTag('div', array('class'=>'prispevek-slike', 'style'=>'float:right;'));
 		foreach ($vsebineModel->slvs as $slvs){
-			$slike_html.=CHtml::openTag('a', array('href'=>'$slvs->slika->url', 'rel'=>'lightbox'));
-				$slike_html.= CHtml::image(
-					$slvs->slika->url2,     //src
-					$slvs->slika->ime_slike,  //alt
-					array(
-						'style'=>'margin:5px;width:250px;', 
-					)
-				);
-			$slike_html.=CHtml::closeTag('a');
+			if($slvs->mesto_prikaza==2){
+				$slike_html.=CHtml::openTag('div');
+					$slike_html.=CHtml::openTag('a', array('href'=>$slvs->slika->url, 'rel'=>'lightbox[prispevek]'));
+						$slike_html.= CHtml::image(
+							$slvs->slika->url2,     //src
+							$slvs->slika->ime_slike,  //alt
+							array(
+								'style'=>'margin:5px;width:250px;', 
+							)
+						);
+					$slike_html.=CHtml::closeTag('a');
+				$slike_html.=CHtml::closeTag('div');
+			}			
 		}
 		$slike_html.=CHtml::closeTag('div');
 		
