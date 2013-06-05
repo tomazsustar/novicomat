@@ -94,24 +94,39 @@ class ZActiveForm extends CActiveForm{
 	
 	public function slike($slvss, $mesto_prikaza, $sirina='264px', $allowDelete=true){
 		
-		foreach($slvss as $slvs){
+			foreach($slvss as $slvs){
 					if($mesto_prikaza==$slvs->mesto_prikaza){
 						echo CHtml::openTag('div', array('id'=>'slika_'.$this->img_count, 'style'=>'width:'.$sirina.';float:left;'));
+//							echo CHtml::ajaxLink(Yii::t('slike','uredi slikco'),Yii::app()->createUrl('slike/popup', array('id'=>$slvs->slika->id)),
+//								array(
+//						        'onclick'=>'$("#popup").dialog("open"); return false;',
+//						        'update'=>'#popup'
+//						        ),array('id'=>'popup-link-'.$slvs->slika->id));
 							if($allowDelete){
+								
 								echo CHtml::openTag('a', array('href'=>'#', 'class'=>'delete_img'));
 									echo CHtml::image(
 										Yii::app()->baseUrl."/slike/delete_16.gif",     //src
 										"izbrisi", //alt
-										array('style'=>'width:16px;float:right;')
+										array('title'=>'izbriši', 'style'=>'width:16px;float:right;')
 									);
 								echo CHtml::closeTag('a');
+								
 							}
+							echo CHtml::openTag('a', array('href'=>'#', 'class'=>'crop_img'));
+									echo CHtml::image(
+										Yii::app()->baseUrl."/slike/image-crop.png",     //src
+										"obreži", //alt
+										array('title'=>'obreži','style'=>'width:16px;float:right;')
+									);
+							echo CHtml::closeTag('a');
 							//img
 							echo CHtml::image(
 									$slvs->slika->url2,     //src
 									$slvs->slika->ime_slike,  //alt
 									array(
 										'style'=>'width:'.$sirina.';', 
+										'class'=>'slikca-'.$slvs->slika->id
 									)
 							);
 							//hidden inputs

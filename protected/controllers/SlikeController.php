@@ -31,7 +31,7 @@ class SlikeController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'naloziSliko', 'naloziSlikoIzUrl'),
+				'actions'=>array('create','update', 'naloziSliko', 'naloziSlikoIzUrl', 'popup', 'obrezi'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -244,5 +244,69 @@ class SlikeController extends Controller
 		
 	}
 	
+	public function actionPopup($id) {
+		
+		$model=$this->loadModel($id);
+		
+        // Ajax Validation enabled
+        //$this->performAjaxValidation($model);
+        // Flag to know if we will render the form or try to add 
+        // new jon.
+        $flag=true;
+//        if(isset($_POST['Slike']))
+//        {       $flag=false;
+//            $model->attributes=$_POST['Job'];
+// 
+//            if($model->save()) {
+//                //Return an <option> and select it
+//                            echo CHtml::tag('option',array (
+//                                'value'=>$model->jid,
+//                                'selected'=>true
+//                            ),CHtml::encode($model->jdescr),true);
+//                        }
+//         }
+         if($flag) {
+            Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+              $this->renderPartial('popup',array('model'=>$model,),false,true);
+         }
+        }
+	
+	public function actionObrezi($id){
+		$model=$this->loadModel($id);
+		if(!class_exists('WideImage', false)) 
+				require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
+				//shrani na disk
+		
+//		$url=$_POST['image_url'];
+//		$filename=basename($url);
+//		
+//		if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$filename))){
+//			$msg="Slika z imenom $filename že obstaja na strežniku";
+//			echo CJSON::encode(array($slika, $msg));
+//		}else{
+//			//load
+			$filename=basename($model->url);
+			
+			WideImage::load(str_replace(' ', '%20', $model->url))
+				->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
+				->resize(265, 177, 'outside')				
+				->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$filename);
+// $img=WideImage::load($model->url)->saveToFile((Yii::app()->params['imgDir'].$filename));
+//			
+//			//shrani v bazo
+//			$model=new Slike;
+//			$model->url=Yii::app()->params['imgUrl'].$filename;
+//			$model->pot=Yii::app()->params['imgDir'];
+//			$model->ime_slike=$filename;
+//			
+//			// naredi slicico
+//			$model->slikca();
+//			if($model->save()){
+//				$msg="";
+//				echo CJSON::encode(array($model, $msg));
+//			}else echo "Prišlo je do napake pri shranjevanju v bazo";
+//		}
+		//print_r($_POST);
+	}
 	
 }

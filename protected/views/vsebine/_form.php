@@ -35,6 +35,11 @@ $form=$this->beginWidget('ZActiveForm', array(
 		<?php echo $form->textField($model,'title',array('style'=>'width:100%;') ); ?>
 		<?php echo $form->error($model,'title'); ?>
 	</div>
+	<div id="popup"></div>
+
+	
+    	
+
 
 
 	<?php 
@@ -497,6 +502,7 @@ Yii::app()->clientScript->registerScript('editprofile-form-beforeValidate', $js)
  	var base_url='".Yii::app()->baseUrl."';
  	var ajax_url_url = '".Yii::app()->createAbsoluteUrl("slike/naloziSlikoIzUrl")."'; 
  	var ajax_url = '".Yii::app()->createAbsoluteUrl("slike/naloziSliko")."'; 
+ 	var ajax_url_crop = '".Yii::app()->createUrl("slike/popup")."'; 
  	img_count = ".$form->img_count.";
 	";
  

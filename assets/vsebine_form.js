@@ -200,10 +200,23 @@ function vstavi_sliko(container_selector, mesto_prikaza, slika_obj, width, allow
 					$('<img/>',{
 							src:base_url+'/slike/delete_16.gif',
 							alt:"izbrisi",
+							title:"izbriši",
 							style:deleteImgStyle
 					})),
+			$('<a/>', {
+				href: "#",
+				'class': "crop_img"
+					}
+			).append(
+					$('<img/>',{
+							src:base_url+'/slike/image-crop.png',
+							alt:"obreži",
+							title:"obreži",
+							style:"width:16px;float:right;"
+					})),
 			$('<img/>', {
-				src: slika_obj.url2
+				src: slika_obj.url2,
+				class: "slikca-"+slika_obj.id
 			}).css('width', width),
 			$('<input/>', {
 				type:'hidden', 
@@ -397,6 +410,21 @@ $(document).ready(function () {
  	});
  	$("a.delete_img").live("click", function(){ //izbrisi sliko
 		$(this).parent().remove();
+		return false;
+ 	});
+ 	$("a.crop_img").live("click", function(){ //izbrisi sliko
+ 		
+ 		id_slike=$(this).siblings('input.id_slike').val();
+ 		$.ajax({
+			url: ajax_url_crop, //se zgenerira v php-ju
+			type: "GET",
+			data: 'id='+id_slike,
+			processData: false,
+			contentType: false,
+			success: function(data){ $('#popup').html(data);
+										$("#popup").dialog("open");
+ 									},
+		});
 		return false;
  	});
 });
