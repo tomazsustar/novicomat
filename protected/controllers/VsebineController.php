@@ -148,6 +148,8 @@ class VsebineController extends Controller
 								$this->izvoziVsebino($model);
 								if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
 								else $this->redirect(array('index'));
+							}elseif(isset($_POST['objavi'])){
+								$this->redirect(array('index'));
 							}else{
 								//samo shrani
 								$this->redirect(array('update','id'=>$model->id));
