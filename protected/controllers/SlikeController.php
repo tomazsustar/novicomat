@@ -287,10 +287,12 @@ class SlikeController extends Controller
 //			//load
 			$filename=basename($model->url);
 			
-			WideImage::load(str_replace(' ', '%20', $model->url))
+			WideImage::load(str_replace(' ', '%20', Yii::app()->params['imgDir'].'tmp/'.$filename))
 				->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
 				->resize(265, 177, 'outside')				
 				->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$filename);
+				
+			unlink(Yii::app()->params['imgDir'].'tmp/'.$filename);
 // $img=WideImage::load($model->url)->saveToFile((Yii::app()->params['imgDir'].$filename));
 //			
 //			//shrani v bazo

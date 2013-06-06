@@ -5,8 +5,12 @@
 	'enableAjaxValidation'=>false,
 )); 
 
+if(!class_exists('WideImage', false)) 
+	require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
+
 $size=getimagesize(str_replace(' ', '%20', $model->url));
 $width=$size[0]; $height = $size[1];
+	
 $scale=1;
 $style="";
 if($width/$height > 600/401){
@@ -17,6 +21,8 @@ if($width/$height > 600/401){
 	}
 	$initial_width = round(600*$height/401);
 	$initial_height = $height;
+	$canvas_width = $width;
+	$canvas_height = round($width*401/600);
 	
 }else{
 	if($height>401){
@@ -26,10 +32,25 @@ if($width/$height > 600/401){
 	
 	$initial_width = $width;
 	$initial_height = round(401*$width/600);
+	$canvas_width = round($height*600/401);
+	$canvas_height = $height;
 }
 
+$filename=basename($model->url);
+
+$tmp_file=Yii::app()->params['imgDir'].'tmp/'.$filename;
+$ext = pathinfo($filename, PATHINFO_EXTENSION);
 
 
+WideImage::load(str_replace(' ', '%20', $model->url))
+	->resizeCanvas($canvas_width, $canvas_height, 'center', 'center', 0xffffff, 'any', true)
+	->saveToFile($tmp_file);
+
+$x1=round($canvas_width-$initial_width)/2;
+$x2=$x1+$initial_width;
+$y1=round($canvas_height-$initial_height)/2;
+$y2=$y1+$initial_height;
+	
 $this->widget(
     'ext.imgAreaSelect.JImgAreaSelect',
     array(
@@ -37,12 +58,12 @@ $this->widget(
         'apiVarName' => 'ias',
         // 'selectionAreaBorderAnimated'=>true,
         'options' => array( 
-    		'x1'=>'0',
-    		'x2'=>$initial_width,
-    		'y1'=>'0',
-    		'y2'=>$initial_height,
-    		'imageWidth'=>$width,
-    		'imageHeight'=>$height,
+    		'x1'=>$x1,
+    		'x2'=>$x2,
+    		'y1'=>$y1,
+    		'y2'=>$y2,
+    		'imageWidth'=>$canvas_width,
+    		'imageHeight'=>$canvas_height,
     		'parent'=>'#popup',
             'handles' => 'true',
     		'aspectRatio'=>'265:177',
@@ -64,7 +85,7 @@ $this->widget(
 
 
 <?php echo CHtml::image(
-				$model->url,     //src
+				Yii::app()->params['imgUrl'].'tmp/'.$filename,    //src
 				"uredi slikco", //alt
 				array('id'=>'photo', 'style'=>$style)
 			); 
