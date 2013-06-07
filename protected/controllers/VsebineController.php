@@ -32,12 +32,13 @@ class VsebineController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'loadCategories', 'zavrzi', 'izvoz', 'aclist', ),
-				'users'=>array('@'),
+				'actions'=>array('update', 'create', 'loadCategories', 'zavrzi', 'aclist', 'izvoz',  ),
+				'roles'=>array('avtor'),
 			),
+			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('@'),
+				'actions'=>array('admin','delete', ),
+				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -85,12 +86,14 @@ class VsebineController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$this->layout='//layouts/column1';
 		$model=$this->loadModel($id);
-
-		$this->saveVsebine($model, 'update');
-
 		
+		if(Yii::app()->user->checkAccess('urejanjeNovic', $model)){
+		
+			$this->layout='//layouts/column1';
+			$this->saveVsebine($model, 'update');
+
+		}else throw new CHttpException(403, 'You are not authorized to perform this action');
 	}
 	
 	private function saveVsebine(&$model, $action){
@@ -220,14 +223,26 @@ class VsebineController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Vsebine', 
-		   array(
-			'criteria'=>array(
-		   		'condition'=>'state=0',
-		    	'order'=>'created ASC',
-		  	)
-		  )
-		);
+		if (Yii::app()->user->checkAccess('admin')){
+			$dataProvider=new CActiveDataProvider('Vsebine', 
+			   array(
+				'criteria'=>array(
+			   		'condition'=>'state=0',
+			    	'order'=>'created ASC',
+			  	)
+			  )
+			);
+		}else{
+			$dataProvider=new CActiveDataProvider('Vsebine', 
+			   array(
+				'criteria'=>array(
+			   		'condition'=>'created_by='.Yii::app()->user->id,
+			    	'order'=>'created desc',
+			  	)
+			  )
+			);
+		}
+		
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

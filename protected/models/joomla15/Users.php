@@ -120,4 +120,9 @@ class Users extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function getID($username){
+		$model=$this->findByAttributes(array('username' => $username));
+		return $model->id;
+	}
 }

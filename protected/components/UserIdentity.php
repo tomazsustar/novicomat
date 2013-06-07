@@ -20,7 +20,7 @@ class UserIdentity extends CUserIdentity
 	 */
 	public function authenticate()
 	{
-		$dovoljeni=array("admin", "Brozzy", "bizgec");
+		$dovoljeni=array("admin", "Brozzy", "bizgec", "tomek");
 		
 		if(in_array($this->username, $dovoljeni)){			
 			//če je uporabnik med dovoljenimi uporabniki

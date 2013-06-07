@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'Create Vsebine', 'url'=>array('create')),
-	array('label'=>'Manage Vsebine', 'url'=>array('admin')),
+	array('label'=>'Manage Vsebine', 'url'=>array('admin'), 'visible'=>Yii::app()->user->checkAccess('admin')),
 );
 ?>
 
@@ -14,6 +14,10 @@ $this->menu=array(
 	CClientScript::POS_HEAD
 	);
 	?>
+	
+	<h1>Vsebine</h1>
+
+<?php if(Yii::app()->user->checkAccess('admin')):?>
 <?php 
 
 	$ids="";
@@ -31,9 +35,9 @@ $this->menu=array(
 	 var importSiteNames = new Array($names);
 	";
 
-	Yii::app()->clientScript->registerScript('import-global-vars',$s, CClientScript::POS_HEAD );?>
+	Yii::app()->clientScript->registerScript('import-global-vars',$s, CClientScript::POS_HEAD );
+?>
 
-<h1>Vsebine</h1>
 <div class="import-form" style="width:100%;height:30px;">
 	<?php echo CHtml::button("Osveži", array('onclick'=>'js:osvezi()', 'style'=>'float:left'));?>
 	<?php echo CHtml::button("Uvozi", array('onclick'=>'js:uvoz()', 'style'=>'float:left'));?>
@@ -45,11 +49,15 @@ $this->menu=array(
 	    ),
 	));?>
 </div>
+
 <div id="import-report">
  
 </div>
+<?php endif;?>
 
-<?php $this->widget('zii.widgets.CListView', array(
+<?php 
+//echo Yii::app()->user->id;
+$this->widget('zii.widgets.CListView', array(
 	'id'=>'vsebine-list-view',
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
