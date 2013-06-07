@@ -28,7 +28,8 @@ return array(
 		'application.components.*',
 		'application.components.parsers.*',
 		'application.vendors.*',
-		'application.helpers.*'
+		'application.helpers.*',
+		'application.modules.srbac.controllers.SBaseController',
 	),
 
 	'modules'=>array(
@@ -39,6 +40,33 @@ return array(
 			'password'=>'admin123',
 		 	// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
+		),
+		'srbac' => array(
+			'userclass'=>'Users', //default: User
+			'userid'=>'id', //default: userid
+			'username'=>'username', //default:username
+			'delimeter'=>'@', //default:-
+			'debug'=>false, //default :false
+			'pageSize'=>15, // default : 15
+			'superUser' =>'admin', //default: Authorizer
+			'css'=>'srbac.css', //default: srbac.css
+			'layout'=>'application.views.layouts.main', //default: application.views.layouts.main,//must be an existing alias
+			'notAuthorizedView'=> 'srbac.views.authitem.unauthorized', // default:
+			//srbac.views.authitem.unauthorized, must be an existing alias
+			'alwaysAllowed'=>array(), //default: array()
+			'userActions'=>array(), //default: array()
+			'listBoxNumberOfLines' => 15, //default : 10
+			'imagesPath' => 'srbac.images', // default: srbac.images
+			'imagesPack'=>'noia', //default: noia
+			'iconText'=>false, // default : false
+			'header'=>'srbac.views.authitem.header', //default : srbac.views.authitem.header,
+			//must be an existing alias
+			'footer'=>'srbac.views.authitem.footer', //default: srbac.views.authitem.footer,
+			//must be an existing alias
+			'showHeader'=>true, // default: false
+			'showFooter'=>true, // default: false
+			'alwaysAllowedPath'=>'srbac.components', // default: srbac.components
+			// must be an existing alias
 		),
 		
 	),
@@ -87,6 +115,8 @@ return array(
             'connectionID'=>'db',
 			'defaultRoles'=>array('avtor'),
         ),
+        
+        
         
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors

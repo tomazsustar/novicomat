@@ -663,7 +663,46 @@ class ETinyMce extends CInputWidget
    {
       $options = array();
 
-      $options['theme'] = 'simple';
+      //$options['theme'] = 'simple';
+      
+   $this->plugins = array('safari','pagebreak','style','layer','table','save','advhr','advimage','advlink','emotions','spellchecker','inlinepopups','insertdatetime','preview','media','searchreplace','print','contextmenu','paste','directionality','fullscreen','noneditable','visualchars','nonbreaking','xhtmlxtras','template');
+
+      if ($this->contentCSS !== '') {
+         $sc = "styleselect,";
+         $c1 = '';
+         $c2 = 'cite,abbr,acronym,|,';
+      }
+      else {
+         $sc = '';
+         $c1 = ',|,cite,abbr,acronym';
+         $c2 = '';
+      }
+
+      if (!empty($this->fontFamilies)) {
+         $options['theme_advanced_fonts'] = implode(',', $this->fontFamilies);
+      }
+      if (!empty($this->fontSizes)) {
+         $options['theme_advanced_font_sizes'] = implode(',', $this->fontSizes);
+      }
+      
+      $options['theme'] = 'advanced';
+      $options['theme_advanced_toolbar_location'] = 'top';
+      $options['theme_advanced_toolbar_align'] = 'left';
+      $options['theme_advanced_path_location'] = 'bottom';
+		$options['theme_advanced_buttons1'] = "formatselect,|,bold,italic,underline,|,undo,redo,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,outdent,indent,|,removeformat,cleanup,code";
+//		$options['theme_advanced_buttons2'] = "moveforward,movebackward";
+//		$options['theme_advanced_buttons3'] = "justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,|,hr,advhr,nonbreaking,pagebreak,blockquote,|,charmap,emotions,media,image,|,link,unlink,anchor,|,insertdate,inserttime";
+//		$options['theme_advanced_buttons4'] = "{$c2}tablecontrols,|,insertlayer,moveforward,movebackward,absolute,|,styleprops,del,ins,attribs,|,template";
+		$options['theme_advanced_toolbar_location'] = "'top'";
+		$options['theme_advanced_toolbar_align'] = "'left'";
+		$options['theme_advanced_statusbar_location'] = "bottom";
+      $options['theme_advanced_toolbar_location'] = 'top';
+      $options['theme_advanced_toolbar_align'] = 'left';
+      $options['theme_advanced_path_location'] = 'bottom';
+      $options['theme_advanced_resize_horizontal'] = true;
+      $options['theme_advanced_resizing'] = true;
+      $options['spellchecker_languages'] = '+English=en,Danish=da,Dutch=nl,Finnish=fi,French=fr,German=de,Italian=it,Polish=pl,Portuguese=pt,Spanish=es,Swedish=sv';
+
 
       return $options;
    }

@@ -244,11 +244,22 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				<?php echo $form->error($model,'fulltext'); ?>
 				<?php 
 				$options;
-				$form->widget('application.extensions.tinymce.ETinyMce', 
-					array('model'=>$model,
-						'attribute'=>'fulltext',
-					    'editorTemplate'=>'full',			
-					)); ?>
+				if(Yii::app()->user->checkAccess('vseMoznostiUrejevalnika')){
+					$form->widget('application.extensions.tinymce.ETinyMce', 
+						array('model'=>$model,
+							'attribute'=>'fulltext',
+						    'editorTemplate'=>'full',	
+							'useSwitch'=>false	
+						));
+				}else{
+					$form->widget('application.extensions.tinymce.ETinyMce', 
+						array('model'=>$model,
+							'attribute'=>'fulltext',
+						    'editorTemplate'=>'simple',		
+							'useSwitch'=>false	
+						));
+				} 
+					?>
 			</div>
 			<div class="row">
 				<?php echo $form->labelEx($model,'video'); ?>
@@ -271,7 +282,9 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 			<div class="row">
 				<?php echo $form->labelEx($model,'author_alias'); ?>
 				<?php echo $form->textField($model,'author_alias',array('size'=>60,'maxlength'=>256)); ?>
-				<br><?php echo $model->getAttributeLabel('author'); ?>:&nbsp;<?php echo $model->author; ?>
+				<?php if(Yii::app()->user->checkAccess('admin')):?>
+					<br><?php echo $model->getAttributeLabel('author'); ?>:&nbsp;<?php echo $model->author; ?>
+				<?php endif;?>
 				<?php echo $form->error($model,'author_alias'); ?>
 			</div>
 				

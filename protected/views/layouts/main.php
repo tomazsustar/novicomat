@@ -33,6 +33,7 @@
 				//array('label'=>'Izvoz', 'url'=>array('/vsebine/izvoz')),
 				array('label'=>'Strani', 'url'=>array('/strani/index'), 'visible'=>Yii::app()->user->checkAccess('admin')),
 				array('label'=>'Lokacije', 'url'=>array('/lokacije/index'), 'visible'=>Yii::app()->user->checkAccess('admin')),
+				array('label'=>'Portali', 'url'=>array('/portali/admin'), 'visible'=>Yii::app()->user->checkAccess('admin')),
 				array('label'=>'Rutine', 'url'=>array('/rutine/rutine'), 'visible'=>Yii::app()->user->checkAccess('admin')),
 				//array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 				//array('label'=>'Contact', 'url'=>array('/site/contact')),

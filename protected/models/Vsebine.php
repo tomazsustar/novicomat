@@ -170,7 +170,7 @@ class Vsebine extends CActiveRecord
 			'sectionid' => 'Sekcija',
 			'catid' => 'Kategorija',
 			'author' => 'Avtor izvirnika',
-			'author_alias' => 'Avtor',
+			'author_alias' => 'Psevdonim',
 			'created' => 'Ustvarjeno',
 			'imported' => 'Uvoženo',
 			'checked_out' => 'Checked Out',
@@ -200,7 +200,7 @@ class Vsebine extends CActiveRecord
 			'koledar_naslov' => 'Naslov za koledar',
 			'slika' => 'Naslovna slika - URL',
 			'activeFile' => 'Naloži sliko',
-			'video'=>'Vstavi video'
+			'video'=>'Vstavi video (Youtube)'
 			
 		);
 	}
