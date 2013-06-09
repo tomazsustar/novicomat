@@ -35,12 +35,7 @@ return array(
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
 		
-		'gii'=>array(
-			'class'=>'system.gii.GiiModule',
-			'password'=>'admin123',
-		 	// If removed, Gii defaults to localhost only. Edit carefully to taste.
-			'ipFilters'=>array('127.0.0.1','::1'),
-		),
+		
 		'srbac' => array(
 			'userclass'=>'Users', //default: User
 			'userid'=>'id', //default: userid
@@ -92,14 +87,7 @@ return array(
 			),
 		),
 		
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=nize01_zelnik',
-            'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
-            'tablePrefix' => 'vs_'
-		),
+		
 		// uncomment the following to use a MySQL database
 		/*
 		'db'=>array(
