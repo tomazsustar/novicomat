@@ -224,6 +224,87 @@ CREATE TABLE IF NOT EXISTS `vs_vsebine` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=251 ;
 
 ALTER TABLE  `vs_vsebine` ADD  `created_by` INT NOT NULL AFTER  `created`;
+
+--
+-- Struktura tabele `AuthAssignment`
+--
+
+CREATE TABLE IF NOT EXISTS `AuthAssignment` (
+  `itemname` varchar(64) NOT NULL,
+  `userid` varchar(64) NOT NULL,
+  `bizrule` text,
+  `data` text,
+  PRIMARY KEY (`itemname`,`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabele `AuthItem`
+--
+
+CREATE TABLE IF NOT EXISTS `AuthItem` (
+  `name` varchar(64) NOT NULL,
+  `type` int(11) NOT NULL,
+  `description` text,
+  `bizrule` text,
+  `data` text,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabele `AuthItemChild`
+--
+
+CREATE TABLE IF NOT EXISTS `AuthItemChild` (
+  `parent` varchar(64) NOT NULL,
+  `child` varchar(64) NOT NULL,
+  PRIMARY KEY (`parent`,`child`),
+  KEY `child` (`child`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Omejitve tabel za povzetek stanja
+--
+
+--
+-- Omejitve za tabelo `AuthAssignment`
+--
+ALTER TABLE `AuthAssignment`
+  ADD CONSTRAINT `AuthAssignment_ibfk_1` FOREIGN KEY (`itemname`) REFERENCES `AuthItem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Omejitve za tabelo `AuthItemChild`
+--
+ALTER TABLE `AuthItemChild`
+  ADD CONSTRAINT `AuthItemChild_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `AuthItem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `AuthItemChild_ibfk_2` FOREIGN KEY (`child`) REFERENCES `AuthItem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+CREATE TABLE IF NOT EXISTS `vs_portali` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `domena` varchar(128) NOT NULL,
+  `tag` varchar(128) NOT NULL,
+  `tip` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabele `vs_portali_vsebine`
+--
+
+CREATE TABLE IF NOT EXISTS `vs_portali_vsebine` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_portala` int(11) NOT NULL,
+  `id_vsebine` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

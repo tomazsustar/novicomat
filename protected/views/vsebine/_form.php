@@ -295,6 +295,21 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				<?php echo $form->error($model,'tags'); ?>
 			</div>
 			<div class="row">
+				<?php 
+				$arr=array();
+				foreach(Portali::model()->findAll() as $portal):
+					if(Yii::app()->user->checkAccess($portal->domena.'-avtor')):
+						$arr[]=CHtml::checkBox('Portali[]', false, array('value'=>$portal->id)).$portal->domena;
+					endif;
+				endforeach;	
+				if(count($arr)){
+					echo CHtml::Label('Objavi na:', 'Portali[]');
+					echo implode(', ', $arr);
+				}
+				
+				?>
+			</div>
+			<div class="row">
 				<?php echo $form->labelEx($model,'lokacija'); ?>
 				<?php echo $form->textField($model,'lokacija',array('size'=>60)); ?>
 				<?php echo $form->error($model,'lokacija'); ?>

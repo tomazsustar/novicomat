@@ -144,6 +144,24 @@ class VsebineController extends Controller
 								$slvs->save();							
 							}
 						}
+						if(isset($_POST['Portali'])){
+							foreach ($_POST['Portali'] as $id => $value){
+								$povs=new PortaliVsebine();
+								if(Yii::app()->user->checkAccess($value.'-objava')){
+									$povs->status=2;
+								}elseif (Yii::app()->user->checkAccess($value.'-avtor')){
+									$povs->status=1;
+								}
+								$povs->id_portala=Portali::model()->findByAttributes(array('domena'=>$value))->id;
+								$povs->id_vsebine=$model->id;
+								$povs->save();							
+							}
+						}
+						$povss=PortaliVsebine::model()->findByAttributes(array('status'=>1, 'id_vsebine'=>$model->id));
+						if(count($povss)){ //če je novica kjerkoli v pregledovanju  (status 1) nastavi globalni status
+							$model->state=1;
+							$model->save;
+						}
 		    				$masterValues = array('id_vsebine'=>$model->id);
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
 							if(isset($_POST['joomla'])){ 

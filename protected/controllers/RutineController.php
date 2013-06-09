@@ -55,9 +55,10 @@ class RutineController extends Controller
 	}
 		
 	protected function RBAC(){
+		
+		
 		$auth=Yii::app()->authManager;
 		$auth->clearAll();
-		//$auth->clearAuthAssignments();
  		
 		$auth->createOperation('urejanjeNovic','update a post');
 		
@@ -78,10 +79,12 @@ class RutineController extends Controller
 		$role->addChild('urejanjeNovic');
 		$role->addChild('vseMoznostiUrejevalnika');
 		
+		foreach (Portali::model()->findAll() as $portal){
+			$portal->createRoles();
+		}
 		
 		$auth->assign('admin',Users::model()->getID('admin'));
 		$auth->assign('admin',Users::model()->getID('Brozzy'));
-		
 		
 		
 	}

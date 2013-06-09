@@ -101,7 +101,7 @@ return array(
 		'authManager'=>array(
             'class'=>'CDbAuthManager',
             'connectionID'=>'db',
-			'defaultRoles'=>array('avtor'),
+			'defaultRoles'=>array('zelnik.net-avtor'),
         ),
         
         
@@ -130,10 +130,5 @@ return array(
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
-	'params'=>array(
-		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
-		'imgUrl'=>'http://localhost/slike/',
-		'imgDir'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'slike/',
-	),
+	
 );

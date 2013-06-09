@@ -1,19 +1,17 @@
 <?php
 
 /**
- * This is the model class for table "{{portali}}".
+ * This is the model class for table "AuthItemChild".
  *
- * The followings are the available columns in table '{{portali}}':
- * @property integer $id
- * @property string $domena
- * @property string $tag
- * @property integer $tip
+ * The followings are the available columns in table 'AuthItemChild':
+ * @property string $parent
+ * @property string $child
  */
-class Portali extends CActiveRecord
+class AuthItemChild extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
-	 * @return Portali the static model class
+	 * @return AuthItemChild the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -25,7 +23,7 @@ class Portali extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{portali}}';
+		return 'AuthItemChild';
 	}
 
 	/**
@@ -36,12 +34,11 @@ class Portali extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('domena, tag, tip', 'required'),
-			array('tip', 'numerical', 'integerOnly'=>true),
-			array('domena, tag', 'length', 'max'=>128),
+			array('parent, child', 'required'),
+			array('parent, child', 'length', 'max'=>64),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, domena, tag, tip', 'safe', 'on'=>'search'),
+			array('parent, child', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,10 +59,8 @@ class Portali extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'domena' => 'Domena',
-			'tag' => 'Tag',
-			'tip' => 'Tip',
+			'parent' => 'Parent',
+			'child' => 'Child',
 		);
 	}
 
@@ -80,35 +75,11 @@ class Portali extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('domena',$this->domena,true);
-		$criteria->compare('tag',$this->tag,true);
-		$criteria->compare('tip',$this->tip);
+		$criteria->compare('parent',$this->parent,true);
+		$criteria->compare('child',$this->child,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
-	}
-	
-	public function createRoles()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$auth=Yii::app()->authManager;
-				
-		$role=$auth->createRole($this->domena.'-avtor');
-		$role->addChild('avtor');
-		
-		$role=$auth->createRole($this->domena.'-objava');	
-		$role->addChild($this->domena.'-avtor');
-		
-		$role=$auth->createRole($this->domena.'-urednik');
-		$role->addChild($this->domena.'-objava');
-		
-		$role=$auth->createRole($this->domena.'-manager');
-		$role->addChild($this->domena.'-urednik');
-		
-		$auth->addItemChild('admin', $this->domena.'-manager');
 	}
 }

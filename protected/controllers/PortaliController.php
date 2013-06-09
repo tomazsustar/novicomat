@@ -70,22 +70,8 @@ class PortaliController extends Controller
 		{
 			$model->attributes=$_POST['Portali'];
 			if($model->save()){
-				$auth=Yii::app()->authManager;
 				
-				$role=$auth->createRole($model->domena.'-avtor');
-				$role->addChild('avtor');
-				
-				$role=$auth->createRole($model->domena.'-objava');	
-				$role->addChild($model->domena.'-avtor');
-				
-				$role=$auth->createRole($model->domena.'-urednik');
-				$role->addChild($model->domena.'-objava');
-				
-				$role=$auth->createRole($model->domena.'-manager');
-				$role->addChild($model->domena.'-urednik');
-				
-				$auth->addItemChild('admin', $model->domena.'-manager');
-				
+				$model->createRoles();
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}

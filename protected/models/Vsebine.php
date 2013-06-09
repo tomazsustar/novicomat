@@ -152,6 +152,7 @@ class Vsebine extends CActiveRecord
 			'stran' => array(self::BELONGS_TO, 'Strani', 'site_id'),
 			'dogodki' => array(self::HAS_MANY, 'Koledar',   'id_vsebine'),      
 			'slvs' => array(self::HAS_MANY, 'SlikeVsebine', 'id_vsebine', 'order'=>'slvs.zp_st ASC', 'with'=>'slika'),
+			'povs' => array(self::HAS_MANY, 'PortaliVsebine', 'id_vsebine'),
 //			'slike' =>array(self::MANY_MANY, 'Slike', '{{slike_vsebine}}(id_vsebine, id_slike)')
 		);
 	}

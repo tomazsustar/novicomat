@@ -218,7 +218,7 @@ class SlikeController extends Controller
 		if(!class_exists('WideImage', false)) 
 				require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
 				//shrani na disk
-		$url=$_POST['image_url'];
+		$url=$_POST['image_url'];	
 		$filename=basename($url);
 		
 		if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$filename))){
@@ -267,6 +267,7 @@ class SlikeController extends Controller
 //         }
          if($flag) {
             Yii::app()->clientScript->scriptMap['jquery.js'] = false;
+            Yii::app()->clientScript->scriptMap['jquery-ui.css'] = false;
               $this->renderPartial('popup',array('model'=>$model,),false,true);
          }
         }

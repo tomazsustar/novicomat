@@ -1,19 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "{{portali}}".
+ * This is the model class for table "AuthItem".
  *
- * The followings are the available columns in table '{{portali}}':
- * @property integer $id
- * @property string $domena
- * @property string $tag
- * @property integer $tip
+ * The followings are the available columns in table 'AuthItem':
+ * @property string $name
+ * @property integer $type
+ * @property string $description
+ * @property string $bizrule
+ * @property string $data
  */
-class Portali extends CActiveRecord
+class AuthItem extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
-	 * @return Portali the static model class
+	 * @return AuthItem the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -25,7 +26,7 @@ class Portali extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{portali}}';
+		return 'AuthItem';
 	}
 
 	/**
@@ -36,12 +37,13 @@ class Portali extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('domena, tag, tip', 'required'),
-			array('tip', 'numerical', 'integerOnly'=>true),
-			array('domena, tag', 'length', 'max'=>128),
+			array('name, type', 'required'),
+			array('type', 'numerical', 'integerOnly'=>true),
+			array('name', 'length', 'max'=>64),
+			array('description, bizrule, data', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, domena, tag, tip', 'safe', 'on'=>'search'),
+			array('name, type, description, bizrule, data', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,10 +64,11 @@ class Portali extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'domena' => 'Domena',
-			'tag' => 'Tag',
-			'tip' => 'Tip',
+			'name' => 'Name',
+			'type' => 'Type',
+			'description' => 'Description',
+			'bizrule' => 'Bizrule',
+			'data' => 'Data',
 		);
 	}
 
@@ -80,35 +83,14 @@ class Portali extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('domena',$this->domena,true);
-		$criteria->compare('tag',$this->tag,true);
-		$criteria->compare('tip',$this->tip);
+		$criteria->compare('name',$this->name,true);
+		$criteria->compare('type',$this->type);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('bizrule',$this->bizrule,true);
+		$criteria->compare('data',$this->data,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
-	}
-	
-	public function createRoles()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
-
-		$auth=Yii::app()->authManager;
-				
-		$role=$auth->createRole($this->domena.'-avtor');
-		$role->addChild('avtor');
-		
-		$role=$auth->createRole($this->domena.'-objava');	
-		$role->addChild($this->domena.'-avtor');
-		
-		$role=$auth->createRole($this->domena.'-urednik');
-		$role->addChild($this->domena.'-objava');
-		
-		$role=$auth->createRole($this->domena.'-manager');
-		$role->addChild($this->domena.'-urednik');
-		
-		$auth->addItemChild('admin', $this->domena.'-manager');
 	}
 }
