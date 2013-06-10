@@ -96,6 +96,15 @@ function addTagFromSelect(element, selectList){
 	addTag(element, tag);
 }
 
+function addTagFromCbx(element, cbx, tags){
+	if(cbx.checked){
+		tags=split(tags);
+		for(i=0; i<tags.length; i=i+1){
+			addTag(element, tags[i]);
+		}
+	}
+}
+
 function checkKoledar(chbox){
 	if($("#Vsebine_koledar").is(':checked')){
 		$("#Vsebine_koledar_naslov").removeAttr("disabled");

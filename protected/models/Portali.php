@@ -11,6 +11,7 @@
  */
 class Portali extends CActiveRecord
 {
+	public $checked;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @return Portali the static model class

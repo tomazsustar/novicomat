@@ -32,12 +32,12 @@ class VsebineController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'create', 'loadCategories', 'zavrzi', 'aclist', 'izvoz',  ),
+				'actions'=>array('update', 'create', 'loadCategories', 'aclist', 'izvoz',  ),
 				'roles'=>array('avtor'),
 			),
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete', ),
+				'actions'=>array('admin','delete', 'zavrzi'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -68,7 +68,7 @@ class VsebineController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+		$model->author=Yii::app()->user->name;
 
 		if(isset($_POST['zavrzi'])){				
 			if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
@@ -97,6 +97,9 @@ class VsebineController extends Controller
 	}
 	
 	private function saveVsebine(&$model, $action){
+		if(isset($_POST['preklici'])){
+			$this->redirect(array('index'));
+		}
 		Yii::import('ext.multimodelform.MultiModelForm');
 
 		$member = new Koledar;
@@ -144,11 +147,13 @@ class VsebineController extends Controller
 //				$model->slika = Yii::app()->params['imgUrl'].$filename;
 //			}
 			if(isset($_POST['zavrzi'])){
-				if($model->save(false)){
-					if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
-					else $this->redirect(array('index'));
-					//$this->redirect(array('index'));
-				}
+				if(Yii::app()->user->checkAccess('admin')){
+					if($model->save(false)){
+						if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
+						else $this->redirect(array('index'));
+						//$this->redirect(array('index'));
+					}
+				}else throw new CHttpException(403, 'You are not authorized to perform this action');
 			}else{	
 				$MMvalidated = false;
 				if(MultiModelForm::validate($member,$validatedMembers,$deleteItems)) $MMvalidated = true;
@@ -170,12 +175,16 @@ class VsebineController extends Controller
 							}
 						}
 						foreach($povs_array as $povs){
+							$povs->id_vsebine=$model->getPrimaryKey();
 							$povs->save();							
 						}
-						$povs=PortaliVsebine::model()->findByAttributes(array('status'=>1, 'id_vsebine'=>$model->id));
-						if(isset($povs)){ //če je novica kjerkoli v pregledovanju  (status 1) nastavi globalni status
-							$model->state=1;
-							$model->save();
+						if(isset($_POST['objavi'])){
+							$povs=PortaliVsebine::model()->countByAttributes(array('status'=>1, 'id_vsebine'=>$model->getPrimaryKey()));
+							
+							if($povs){ //če je novica kjerkoli v pregledovanju  (status 1) nastavi globalni status
+								$model->state=1;
+								$model->save(false);
+							}
 						}
 		    				$masterValues = array('id_vsebine'=>$model->id);
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
@@ -260,7 +269,7 @@ class VsebineController extends Controller
 			$dataProvider=new CActiveDataProvider('Vsebine', 
 			   array(
 				'criteria'=>array(
-			   		'condition'=>'state=0',
+			   		'condition'=>'state IN (0, 1) ',
 			    	'order'=>'created ASC',
 			  	)
 			  )

@@ -71,7 +71,7 @@ class RutineController extends Controller
 		//$bizRule='return !in_array(Yii::app()->user->name, array("admin", "Brozzy"));';
 		$role=$auth->createRole('avtor', 'avtor');
 		$role->addChild('urejanjeSvojihNovic');
-		
+				
 		// in_array(Yii::app()->user->username, array("admin", "Brozzy"));
 		//$bizRule='return in_array(Yii::app()->user->name, array("admin", "Brozzy"));';
 		$role=$auth->createRole('admin', 'admin user');

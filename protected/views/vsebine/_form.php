@@ -287,6 +287,15 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				<?php endif;?>
 				<?php echo $form->error($model,'author_alias'); ?>
 			</div>
+			
+			<?php 
+				$model->checkPortali()
+				
+//				if($model->isNewRecord && !$model->hasErrors()){
+//					
+//				}
+				
+				?>
 				
 			<div class="row">
 				<?php echo $form->labelEx($model,'tags'); ?>
@@ -295,30 +304,19 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				<?php echo $form->error($model,'tags'); ?>
 			</div>
 			<div class="row">
+				
 				<?php 
-				$arr=array();
-//				foreach(PortaliVsebine::model()->vsiPortaliGledeNaVsebino($model) as $portal):
-//					if(Yii::app()->user->checkAccess($portal['domena'].'-avtor')):
-//						$arr[]=CHtml::checkBox('Portali[]', $portal['status'], array('value'=>$portal['id'])).$portal['domena'];
-//					endif;
-//				endforeach;	
-				foreach (Portali::model()->findAll() as $portal){
-					if(Yii::app()->user->checkAccess($portal['domena'].'-avtor')){
-						$checked=false;
-						foreach($model->povs as $povs){
-							if($povs->id_portala == $portal->id){
-								if($povs->status)$checked=true;
-								break;
-							}
-						}
-						$arr[]=CHtml::checkBox("Portali[$portal->id]", $checked).$portal->domena;
+				if(count($model->portali)){
+					echo CHtml::Label('Objavi na:', 'Portali');
+					$i=1;
+					foreach ($model->portali as $portal){
+						$options=array();
+						if($portal->tip==2)
+							$options['onclick']='addTagFromCbx(document.getElementById("tags"), this, "'.$portal->tag.'")';
+						echo CHtml::checkBox("Portali[$portal->id]", $portal->checked, $options).$portal->domena;
+						if($i<count($model->portali))echo ', '; $i++;
 					}
 				}
-				if(count($arr)){
-					echo CHtml::Label('Objavi na:', 'Portali[]');
-					echo implode(', ', $arr);
-				}
-				
 				?>
 			</div>
 			<div class="row">
@@ -326,7 +324,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				<?php echo $form->textField($model,'lokacija',array('size'=>60)); ?>
 				<?php echo $form->error($model,'lokacija'); ?>
 			</div>
-							
+		<?php if(Yii::app()->user->checkAccess('zelnik.net-objava')):?>					
 		<table>
 			<tr>
 				<td>
@@ -373,6 +371,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					</td>
 				</tr>
 			</table>
+			<?php endif; //zelnik.net-objava?>
 		</td>
 		<td>
 			<div class="row">
@@ -519,9 +518,12 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
     
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Shrani'); ?>
-		<?php echo CHtml::submitButton('Objavi', 			array('onclick'=>"$('#Vsebine_state').val(2)", 'name'=>'objavi')); ?>
-		<?php echo CHtml::submitButton('Shrani v Joomlo', 	array('onclick'=>"$('#Vsebine_state').val(1)", 'name'=>'joomla')); ?>
-		<?php echo CHtml::submitButton('Zavrzi', 			array('onclick'=>"$('#Vsebine_state').val(3)", 'name'=>'zavrzi')); ?>
+		<?php echo CHtml::submitButton('Objavi/Pošlji v pregled', 			array('onclick'=>"$('#Vsebine_state').val(2)", 'name'=>'objavi')); ?>
+		<?php if(Yii::app()->user->checkAccess('admin'))
+					echo CHtml::submitButton('Shrani v Joomlo', 	array('onclick'=>"$('#Vsebine_state').val(1)", 'name'=>'joomla')); ?>
+		<?php if(Yii::app()->user->checkAccess('admin'))
+					echo CHtml::submitButton('Zavrzi', 			array('onclick'=>"$('#Vsebine_state').val(3)", 'name'=>'zavrzi')); ?>
+		<?php echo CHtml::submitButton('Prekliči', 			array('name'=>'preklici')); ?>
 	</div>
     
  <?php /*

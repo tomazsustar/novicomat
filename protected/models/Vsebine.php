@@ -40,6 +40,7 @@ class Vsebine extends CActiveRecord
 	
 	
 	public $activeFile;
+	public $portali;
 	
 	/**
 	 * Returns the static model of the specified AR class.
@@ -116,9 +117,10 @@ class Vsebine extends CActiveRecord
 			array('publish_up, publish_down, start_date, end_date','ext.myvalidators.DateOrTime'),
 			array('publish_down','ext.myvalidators.Later', 'then'=>'publish_up'),
 			array('end_date','ext.myvalidators.Later', 'then'=>'start_date'),
-			array('title, fulltext, introtext, sectionid, catid, publish_up, tags, slika', 'required'),
+			array('title, fulltext, introtext, publish_up, tags, slika', 'required'),
 //			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
-			array('event_cat, lokacija', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar'),
+			array('event_cat, lokacija', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar', 'onZelnikOnly'=>true),
+			array('sectionid, catid', 'ext.myvalidators.RequiredIf', 'onZelnikOnly'=>true),
 //			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
 			array('video', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>false, 'on'=>'insert'),
@@ -297,6 +299,50 @@ class Vsebine extends CActiveRecord
 		}
 				
 		parent::onAfterSave($event);
+	}
+	
+	public function checkPortali(){
+		$portali=array();
+//				foreach(PortaliVsebine::model()->vsiPortaliGledeNaVsebino($model) as $portal):
+//					if(Yii::app()->user->checkAccess($portal['domena'].'-avtor')):
+//						$arr[]=CHtml::checkBox('Portali[]', $portal['status'], array('value'=>$portal['id'])).$portal['domena'];
+//					endif;
+//				endforeach;	
+		$tags=array();
+		$oneChecked=false;
+		foreach (Portali::model()->findAll() as $portal){
+			if(Yii::app()->user->checkAccess($portal['domena'].'-avtor')){
+				$checked=false;
+				//default values
+				if($this->getIsNewRecord() && !$this->hasErrors() && !Yii::app()->user->checkAccess('admin')){
+					if($portal->tip==1){
+						$checked=true;
+					}elseif (!$oneChecked && $portal->tip==2){
+						$tags[]=$portal->tag;
+						$checked=true;
+						$oneChecked=true;
+					}
+				}else{
+					foreach($this->povs as $povs){
+						if($povs->id_portala == $portal->id){
+							if($povs->status)$checked=true;
+							break;
+						}
+					}
+				}
+				$portal->checked=$checked;
+				//CHtml::checkBox("Portali[$portal->id]", $checked).$portal->domena;
+				$portali[]=$portal;	
+			}
+		}
+		//default
+		$this->portali=$portali;
+		if(count($tags)){
+			if(trim($this->tags))
+				$this->tags.=', '.implode(', ', $tags);
+			else $this->tags=implode(', ', $tags);
+		}
+		
 	}
 	
 public function afterConstruct(){
