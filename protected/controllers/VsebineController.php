@@ -101,7 +101,6 @@ class VsebineController extends Controller
 
 		$member = new Koledar;
 		$validatedMembers = array(); //ensure an empty array
-		
 		if(isset($_POST['Vsebine']))
 		{
 			$model->attributes=$_POST['Vsebine'];
@@ -113,6 +112,32 @@ class VsebineController extends Controller
 				}
 				$model->slvs=$slvs_array;
 			}
+			//if(isset($_POST["Portali"]))print_r($_POST["Portali"]);
+			foreach (Portali::model()->findAll() as $portal){
+				if(Yii::app()->user->checkAccess($portal->domena.'-avtor')){
+					$povs=PortaliVsebine::model()->findByAttributes(array('id_portala'=>$portal->id, 'id_vsebine'=>$model->id));
+					if(!isset($povs)){ 
+						$povs=new PortaliVsebine();
+						$povs->id_portala=$portal->id;
+						$povs->id_vsebine=$model->id;
+					}
+					//echo "portalid:".$portal->id;
+					if(isset($_POST['Portali'][$portal->id])){
+						//echo "AAAA";
+						$povs->status=1;
+						if(isset($_POST['objavi'])){
+							if(Yii::app()->user->checkAccess($portal->domena.'-objava')){
+								$povs->status=2;
+							}
+						}
+					}else{
+						//echo "BBB";
+						$povs->status=0;
+					}
+					$povs_array[]=$povs;		
+				}					
+			}
+			$model->povs=$povs_array;
 			//nalaganje slike
 //			if($uploadedFile=CUploadedFile::getInstance($model,'activeFile')){
 //				$filename = urldecode($uploadedFile);
@@ -144,23 +169,13 @@ class VsebineController extends Controller
 								$slvs->save();							
 							}
 						}
-						if(isset($_POST['Portali'])){
-							foreach ($_POST['Portali'] as $id => $value){
-								$povs=new PortaliVsebine();
-								if(Yii::app()->user->checkAccess($value.'-objava')){
-									$povs->status=2;
-								}elseif (Yii::app()->user->checkAccess($value.'-avtor')){
-									$povs->status=1;
-								}
-								$povs->id_portala=Portali::model()->findByAttributes(array('domena'=>$value))->id;
-								$povs->id_vsebine=$model->id;
-								$povs->save();							
-							}
+						foreach($povs_array as $povs){
+							$povs->save();							
 						}
-						$povss=PortaliVsebine::model()->findByAttributes(array('status'=>1, 'id_vsebine'=>$model->id));
-						if(count($povss)){ //če je novica kjerkoli v pregledovanju  (status 1) nastavi globalni status
+						$povs=PortaliVsebine::model()->findByAttributes(array('status'=>1, 'id_vsebine'=>$model->id));
+						if(isset($povs)){ //če je novica kjerkoli v pregledovanju  (status 1) nastavi globalni status
 							$model->state=1;
-							$model->save;
+							$model->save();
 						}
 		    				$masterValues = array('id_vsebine'=>$model->id);
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){

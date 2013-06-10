@@ -297,11 +297,23 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 			<div class="row">
 				<?php 
 				$arr=array();
-				foreach(Portali::model()->findAll() as $portal):
-					if(Yii::app()->user->checkAccess($portal->domena.'-avtor')):
-						$arr[]=CHtml::checkBox('Portali[]', false, array('value'=>$portal->id)).$portal->domena;
-					endif;
-				endforeach;	
+//				foreach(PortaliVsebine::model()->vsiPortaliGledeNaVsebino($model) as $portal):
+//					if(Yii::app()->user->checkAccess($portal['domena'].'-avtor')):
+//						$arr[]=CHtml::checkBox('Portali[]', $portal['status'], array('value'=>$portal['id'])).$portal['domena'];
+//					endif;
+//				endforeach;	
+				foreach (Portali::model()->findAll() as $portal){
+					if(Yii::app()->user->checkAccess($portal['domena'].'-avtor')){
+						$checked=false;
+						foreach($model->povs as $povs){
+							if($povs->id_portala == $portal->id){
+								if($povs->status)$checked=true;
+								break;
+							}
+						}
+						$arr[]=CHtml::checkBox("Portali[$portal->id]", $checked).$portal->domena;
+					}
+				}
 				if(count($arr)){
 					echo CHtml::Label('Objavi na:', 'Portali[]');
 					echo implode(', ', $arr);

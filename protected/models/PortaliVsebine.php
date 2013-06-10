@@ -89,4 +89,14 @@ class PortaliVsebine extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function vsiPortaliGledeNaVsebino($vsebina){
+		$query = "SELECT p.id, domena, status FROM {{portali}} p LEFT OUTER JOIN {{portali_vsebine}} pv ON p.id=pv.id_portala WHERE id_vsebine=$vsebina->id OR id_vsebine IS NULL";
+		 
+		$out=Yii::app()->db->createCommand($query)->queryAll();
+		//print_r($out);
+		return $out;
+		
+	}
+	
 }
