@@ -92,7 +92,7 @@ class ZActiveForm extends CActiveForm{
 	  );
 	}
 	
-	public function slike($slvss, $mesto_prikaza, $sirina='264px', $allowDelete=true){
+	public function slike($slvss, $mesto_prikaza, $sirina='265px', $allowDelete=true){
 		
 			foreach($slvss as $slvs){
 					if($mesto_prikaza==$slvs->mesto_prikaza){

@@ -13,26 +13,23 @@ $width=$size[0]; $height = $size[1];
 	
 $scale=1;
 $style="";
-if($width/$height > 600/401){
+if($width/$height > 265/177){
 	if($width>600){
 		$style = 'width:600px';
-		$scale = 600/$width;
 		
 	}
-	$initial_width = round(600*$height/401);
+	$initial_width = round(265*$height/177);
 	$initial_height = $height;
 	$canvas_width = $width;
-	$canvas_height = round($width*401/600);
+	$canvas_height = round($width*177/265);
 	
 }else{
 	if($height>401){
-		$style = 'height:401px';
-		$scale = 401/$height;
-	}
+		$style = 'height:401px';	}
 	
 	$initial_width = $width;
-	$initial_height = round(401*$width/600);
-	$canvas_width = round($height*600/401);
+	$initial_height = round(177*$width/265);
+	$canvas_width = round($height*265/177);
 	$canvas_height = $height;
 }
 
@@ -91,10 +88,10 @@ $this->widget(
 			); 
 			
 
-echo CHtml::hiddenField('x1','0');
-echo CHtml::hiddenField('x2',$initial_width);
-echo CHtml::hiddenField('y1','0');
-echo CHtml::hiddenField('y2',$initial_height);
+echo CHtml::hiddenField('x1',$x1);
+echo CHtml::hiddenField('x2',$x2);
+echo CHtml::hiddenField('y1',$y1);
+echo CHtml::hiddenField('y2',$y2);
 echo CHtml::hiddenField('width',$initial_width);
 echo CHtml::hiddenField('height',$initial_height);		
 //echo CHtml::activeHiddenField($model, 'id');		

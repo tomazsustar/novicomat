@@ -894,7 +894,8 @@ class MultiModelForm extends CWidget
 
 
         if ($this->tableView)
-            $this->renderTableBegin($showAddLink);
+        	$this->renderTableBegin(false);
+            //$this->renderTableBegin($showAddLink);
 
         if ($this->isSortable())
         {
@@ -958,6 +959,7 @@ class MultiModelForm extends CWidget
         {
             echo CHtml::closeTag('tbody');
             echo CHtml::closeTag('table');
+            echo $form->renderAddLink();
         }
         elseif ($this->isSortable())
             echo CHtml::closeTag('div');
