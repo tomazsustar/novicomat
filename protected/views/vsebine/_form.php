@@ -33,7 +33,7 @@ $form=$this->beginWidget('ZActiveForm', array(
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>
-		<?php echo $form->textField($model,'title',array('style'=>'width:100%;') ); ?>
+		<?php echo $form->textField($model,'title',array('style'=>'width:100%;', 'tabindex'=>1) ); ?>
 		<?php echo $form->error($model,'title'); ?>
 	</div>
 	<div id="popup"></div>
@@ -172,7 +172,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 	<table>
 		<tr>
 			<td >
-				<?php echo CHTML::label("Uvodna slika", "slika")?>	
+				<?php echo CHTML::label("Naslovna slika", "slika")?>	
 				<div id="naslovna_slika" style="width:265px;">
 					<?php $form->slike($model->slvs,1, "265px", false);?>
 				</div>
@@ -180,8 +180,9 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 			</td>
 			<td style="vertical-align:top;">
 					
-				<?php echo $form->labelEx($model,'introtext'); ?>		
-				<?php echo $form->textArea($model,'introtext',array('rows'=>5, 'cols'=>40)); ?>
+				<?php echo $form->labelEx($model,'introtext'); ?>	
+				<br>	
+				<?php echo $form->textArea($model,'introtext',array('rows'=>10, 'cols'=>40, 'tabindex'=>4)); ?>
 				<?php echo $form->error($model,'introtext'); ?>
 				
 			</td>
@@ -208,33 +209,28 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				</div>
 			</td>
 		</tr>
-	</table>
-	<table>
 		<tr>
-			<td style="vertical-align:middle;width:20px;">
-				<?php //echo $form->labelEx('&nbsp;'); ?>
-				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img1','style'=>'display:none;'));?>
-				
-			</td>
 			<td>
+				
+				<?php //echo $form->labelEx($model,'activeFile'); ?>
+				<?php echo CHtml::activeFileField($model,'activeFile',array('style'=>'width:100%;','tabindex'=>2) ); ?>
+				
+				<?php echo $form->error($model,'activeFile'); ?>
 				<div class="row">
 					<?php echo $form->labelEx($model,'slika'); ?>
-					<?php echo $form->textField($model,'slika',array('style'=>'width:100%;') ); ?>
+					<?php echo $form->textField($model,'slika',array('style'=>'width:100%;','tabindex'=>3) ); ?>
 					<?php echo $form->error($model,'slika'); ?>
 				</div>
 			</td>
-			
 			<td>
-				<?php echo $form->labelEx($model,'activeFile'); ?>
-				<?php echo CHtml::activeFileField($model,'activeFile',array('style'=>'width:100%;') ); ?>
-				
-				<?php echo $form->error($model,'activeFile'); ?>
-				
-			</td>
+				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img1','style'=>'display:none;'));?>
 			
+			</td>
+			<td>
+			</td>
 		</tr>
-		
 	</table>
+	
 	
 	<table>
 	<tr>
@@ -376,10 +372,10 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 		</td>
 		<td>
 			<div class="row">
-				<?php echo CHtml::Label('Vstavi sliko - URL', 'vstavi_sliko');?>
+				<?php echo CHtml::Label('Naloži sliko iz URL naslova', 'vstavi_sliko');?>
 				<?php echo CHtml::textField('vstavi_sliko','',array('style'=>'width:100%;')); ?>
 			</div>
-			<?php echo $form->labelEx($model,'activeFile'); ?>
+			<?php echo CHtml::Label('Naloži slike iz računalnika', 'vstavi_sliko'); ?>
 			<?php echo CHtml::fileField('nalozi_sliko','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
 
 			<?php //echo $form->labelEx('&nbsp;'); ?>

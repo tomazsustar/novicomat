@@ -286,8 +286,10 @@ $(document).ready(function () {
 	$('input').live("keypress", function(e) {
 	    var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
 	    if(key == 13) {
+		e.preventDefault();
+		//$(this).trigger("change");
 	        e.preventDefault();
-	        var inputs = $(this).closest('form').find(':input:visible');
+	        var inputs = $(this).closest('form').find(':focusable');
 	        inputs.eq( inputs.index(this)+ 1 ).focus();
 	    }
 	});
@@ -446,8 +448,12 @@ $(document).ready(function () {
  	//skrij tabelo, če ni dogodkov
  	if($("table.mmf_table tr").length==2){
  		$("table.mmf_table").addClass("hide");
- 	}
+ 	};
  	
+ 	$('#ikona_nalozi_sliko').click(function(){
+		$('#Vsebine_activeFile').trigger('click');
+		return false;
+	});
 });
 
 function parseResult(res){

@@ -93,7 +93,7 @@ class ZActiveForm extends CActiveForm{
 	}
 	
 	public function slike($slvss, $mesto_prikaza, $sirina='265px', $allowDelete=true){
-		
+		  	$i=0;
 			foreach($slvss as $slvs){
 					if($mesto_prikaza==$slvs->mesto_prikaza){
 						echo CHtml::openTag('div', array('id'=>'slika_'.$this->img_count, 'style'=>'width:'.$sirina.';float:left;'));
@@ -142,7 +142,22 @@ class ZActiveForm extends CActiveForm{
 							}
 						echo CHtml::closeTag('div');
 						$this->img_count++;
+						$i++;
 					}
+			}
+			if($i==0 && $mesto_prikaza==1){
+				echo CHtml::openTag('a', array('href'=>'#'));
+				echo CHtml::image(
+						Yii::app()->baseUrl."/slike/upload_photo.png",     //src
+						"Naloži sliko",  //alt
+						array(
+							'title'=>'Naloži sliko',
+							'style'=>'width:'.$sirina.';', 
+							'class'=>'nalozi_sliko',
+							'id'=>"ikona_nalozi_sliko"
+						)
+				);
+				echo CHtml::closeTag('a');
 			}
 	}
 }
