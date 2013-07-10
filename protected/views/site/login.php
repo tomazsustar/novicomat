@@ -1,13 +1,13 @@
 <?php
-$this->pageTitle=Yii::app()->name . ' - Login';
+$this->pageTitle=Yii::app()->name . ' - Prijava';
 $this->breadcrumbs=array(
-	'Login',
+	'Prijava',
 );
 ?>
 
-<h1>Login</h1>
+<h1>Prijava</h1>
 
-<p>Please fill out the following form with your login credentials:</p>
+<p>Prosim izpolnite spodnji obrazec z vašim uporabniškim imenom in geslom.</p>
 
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -17,8 +17,6 @@ $this->breadcrumbs=array(
 		'validateOnSubmit'=>true,
 	),
 )); ?>
-
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'username'); ?>
@@ -40,7 +38,7 @@ $this->breadcrumbs=array(
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Login'); ?>
+		<?php echo CHtml::submitButton('Prijava'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

@@ -2,38 +2,46 @@
 
 	<div>
 	<b><?php echo date('d. m. Y', strtotime($data->created));  ?></b>,&nbsp;
-	<?php echo CHtml::encode($data->getAttributeLabel('stran')); ?>:
-	<?php echo $data->virLink; ?>	
+	<?php if($data->virLink){ 
+		echo CHtml::encode($data->getAttributeLabel('stran')).":"; 
+		echo $data->virLink;
+	} else{
+		echo "Avtor: ";
+		echo $data->author.", ".$data->author_alias;
+	}?>
 	<?php echo CHtml::link('Uredi', array('update', 'id'=>$data->id)); ?>
 	<?php echo CHtml::hiddenField('Vsebine_id', $data->id); ?>
-	<?php echo CHtml::link('Zavrzi', 'javascript;', array(
-			'onclick' => 'zavrzi(this);return false;',
-			/*'ajax' => array(
-							'type'=>'POST', //request type
-							'url'=>CController::createUrl('Vsebine/zavrzi', array('id'=>$data->id)), //url to call.
-							//Style: CController::createUrl('currentController/methodToCall')
-							//'update'=>'#Vsebine_catid', //selector to update
-							'success'=> "function( data )
-				                  {
-				                    // handle return data
-				                    alert(data);
-				                    alert($(this).html())
-				                    alert(".$data->id.");
-				                    if (data>0 ){
-				                     if (zavrziKlikov > 2){
-				                     	zavrziKlikov = 0;
-				                     	$.fn.yiiListView.update('vsebine-list-view');
-				                     }else{
-				                     	zavrziKlikov+=1;
-				                      	$('#povzetek_".$data->id."').hide('fast');
-				                      }
-				                    }
-				                  }",
-							//'data'=>'js:javascript statement' 
-							//leave out the data key to pass all form values through
-							),*/
-										
-	)); ?>	
+	
+	<?php if(Yii::app()->user->checkAccess('admin')):
+				 echo CHtml::link('Zavrzi', 'javascript;', array(
+					'onclick' => 'zavrzi(this);return false;',
+					/*'ajax' => array(
+									'type'=>'POST', //request type
+									'url'=>CController::createUrl('Vsebine/zavrzi', array('id'=>$data->id)), //url to call.
+									//Style: CController::createUrl('currentController/methodToCall')
+									//'update'=>'#Vsebine_catid', //selector to update
+									'success'=> "function( data )
+						                  {
+						                    // handle return data
+						                    alert(data);
+						                    alert($(this).html())
+						                    alert(".$data->id.");
+						                    if (data>0 ){
+						                     if (zavrziKlikov > 2){
+						                     	zavrziKlikov = 0;
+						                     	$.fn.yiiListView.update('vsebine-list-view');
+						                     }else{
+						                     	zavrziKlikov+=1;
+						                      	$('#povzetek_".$data->id."').hide('fast');
+						                      }
+						                    }
+						                  }",
+									//'data'=>'js:javascript statement' 
+									//leave out the data key to pass all form values through
+									),*/
+												
+			)); 
+	endif;?>	
 </div>
 	<h3 class="view-naslov"><?php echo CHtml::encode($data->title); ?></h3>
 	

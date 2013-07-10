@@ -1,12 +1,12 @@
 <?php
 $this->breadcrumbs=array(
 	'Vsebine'=>array('index'),
-	'Pregled vsebin',
+	'Prispevki',
 );
 
 $this->menu=array(
-	array('label'=>'List Vsebine', 'url'=>array('index')),
-	array('label'=>'Create Vsebine', 'url'=>array('create')),
+	array('label'=>'Prispevki', 'url'=>array('index')),
+	array('label'=>'Dodaj prispevek', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "

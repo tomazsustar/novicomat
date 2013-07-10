@@ -702,9 +702,14 @@ class ETinyMce extends CInputWidget
       $options['theme_advanced_resize_horizontal'] = true;
       $options['theme_advanced_resizing'] = true;
       $options['spellchecker_languages'] = '+English=en,Danish=da,Dutch=nl,Finnish=fi,French=fr,German=de,Italian=it,Polish=pl,Portuguese=pt,Spanish=es,Swedish=sv';
-
-
-      return $options;
+//	$options['paste_retain_style_properties'] = "";
+//	$options['paste_strip_class_attributes'] = "all";
+//	$options['paste_auto_cleanup_on_paste'] = true;
+//	$options['paste_remove_spans'] = true;
+//	$options['paste_remove_styles'] = true;
+	$options['paste_preprocess'] = 'pocisti';
+             
+	return $options;
    }
 
    /**

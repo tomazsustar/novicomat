@@ -118,23 +118,30 @@ class VsebineController extends Controller
 			//if(isset($_POST["Portali"]))print_r($_POST["Portali"]);
 			foreach (Portali::model()->findAll() as $portal){
 				if(Yii::app()->user->checkAccess($portal->domena.'-avtor')){
+					//če ima pravico avtorstva za ta portal
 					$povs=PortaliVsebine::model()->findByAttributes(array('id_portala'=>$portal->id, 'id_vsebine'=>$model->id));
 					if(!isset($povs)){ 
+						// če še ni povs vrstice naredi novo
 						$povs=new PortaliVsebine();
 						$povs->id_portala=$portal->id;
 						$povs->id_vsebine=$model->id;
+						$povs->status=0;
 					}
 					//echo "portalid:".$portal->id;
 					if(isset($_POST['Portali'][$portal->id])){
+						// če je portal obkljukan
 						//echo "AAAA";
-						$povs->status=1;
-						if(isset($_POST['objavi'])){
-							if(Yii::app()->user->checkAccess($portal->domena.'-objava')){
-								$povs->status=2;
+						if($povs->status!=2){ //če je že objavljen ga pusti objavljenega
+							$povs->status=1;
+							if(isset($_POST['objavi']) || isset($_POST['joomla'])){
+								// če gre za objavo
+								if(Yii::app()->user->checkAccess($portal->domena.'-objava')){
+									$povs->status=2;
+								}
 							}
 						}
 					}else{
-						//echo "BBB";
+						//če portal ni obkljukan
 						$povs->status=0;
 					}
 					$povs_array[]=$povs;		

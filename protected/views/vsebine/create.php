@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Vsebines'=>array('index'),
-	'Create',
+	'Vsebine'=>array('index'),
+	'Dodaj prispevek',
 );
 
 $this->menu=array(
-	array('label'=>'List Vsebine', 'url'=>array('index')),
-	array('label'=>'Manage Vsebine', 'url'=>array('admin')),
+	array('label'=>'Prispevki', 'url'=>array('index')),
+	array('label'=>'Urejanje vsebin', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Vsebine</h1>
+<h1>Dodaj prispevek</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model, 'member'=>$member,'validatedMembers'=>$validatedMembers)); ?>

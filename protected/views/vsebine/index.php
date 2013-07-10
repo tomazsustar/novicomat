@@ -4,8 +4,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create Vsebine', 'url'=>array('create')),
-	array('label'=>'Manage Vsebine', 'url'=>array('admin'), 'visible'=>Yii::app()->user->checkAccess('admin')),
+	array('label'=>'Dodaj prispevek', 'url'=>array('create')),
+	array('label'=>'Urejanje vsebin', 'url'=>array('admin'), 'visible'=>Yii::app()->user->checkAccess('admin')),
 );
 ?>
 
@@ -61,12 +61,12 @@ $this->widget('zii.widgets.CListView', array(
 	'id'=>'vsebine-list-view',
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
-	 'sortableAttributes'=>array(
-		'title',
-	     'imported',   
-		 'created',
-	   	
-    ),
+//	 'sortableAttributes'=>array(
+//		'title',
+//	     'imported',   
+//		 'created',
+//	   	
+//    ),
     'pager'=>array(
         'class'=>'ext.yiinfinite-scroll.YiinfiniteScroller',
         'contentSelector' => '#vsebine-list-view div.items',

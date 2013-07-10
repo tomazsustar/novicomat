@@ -9,7 +9,7 @@ class UserIdentity extends CUserIdentity
 {
 	
 	private $_id;
-	
+	private $_username;
 	/**
 	 * Authenticates a user.
 	 * The example implementation makes sure if the username and password
@@ -20,9 +20,7 @@ class UserIdentity extends CUserIdentity
 	 */
 	public function authenticate()
 	{
-		$dovoljeni=array("admin", "Brozzy", "bizgec", "tomek");
-		
-		if(in_array($this->username, $dovoljeni)){			
+			
 			//če je uporabnik med dovoljenimi uporabniki
 			// dobi userja iz baze glede na uporabnisko ime
 			$user=Users::model()->findByAttributes(array('username'=>$this->username));
@@ -38,6 +36,7 @@ class UserIdentity extends CUserIdentity
 				if ($crypt == $testcrypt) {
 					//geslo se ujema
 					$this->_id = $user->id;
+					$this->_username = $user->username;
 					$this->errorCode=self::ERROR_NONE;
 				} else {
 					//geslo se ne ujema
@@ -48,11 +47,7 @@ class UserIdentity extends CUserIdentity
 				//uporabnika ni v bazi
 				$this->errorCode=self::ERROR_USERNAME_INVALID;
 			}
-		}else {
-			//uporabnika ni med dovoljenimi
-			$this->errorCode=self::ERROR_USERNAME_INVALID;
-		
-		}
+
 			
 		return !$this->errorCode;
 	}
@@ -60,5 +55,9 @@ class UserIdentity extends CUserIdentity
 	public function getId()
     {
         return $this->_id;
+    }
+	public function getName()
+    {
+        return $this->_username;
     }
 }

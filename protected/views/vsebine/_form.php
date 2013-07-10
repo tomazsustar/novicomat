@@ -23,10 +23,11 @@ $form=$this->beginWidget('ZActiveForm', array(
       //                  'beforeValidate' => 'js:beforeValidate',
        //         ),
 )); ?>
-
+<?php if($model->virLink):?>
 	<p class="note">Vir: <?php echo $model->virLink;?>, 
 				uvožen: <?php echo $model->imported;?>, 
 				datum izvirnika: <?php $model->created;?></p>
+<?php endif;?>
 
 	<?php echo $form->errorSummary(array_merge(array($model),$validatedMembers)); ?>
 

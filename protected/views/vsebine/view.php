@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Vsebines'=>array('index'),
+	'Vsebine'=>array('index'),
 	$model->title,
 );
 
 $this->menu=array(
-	array('label'=>'List Vsebine', 'url'=>array('index')),
-	array('label'=>'Create Vsebine', 'url'=>array('create')),
-	array('label'=>'Update Vsebine', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Vsebine', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Vsebine', 'url'=>array('admin')),
+	array('label'=>'Vsebine', 'url'=>array('index')),
+	array('label'=>'Dodaj prispevek', 'url'=>array('create')),
+	array('label'=>'Uredi prispevek', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Izbriši pispevek', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Ali ste prepričani, da želite izbrisati to vsebino?')),
+	array('label'=>'Urajanje vsebin', 'url'=>array('admin')),
 );
 ?>
 

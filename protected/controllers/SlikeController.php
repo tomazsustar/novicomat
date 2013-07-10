@@ -178,18 +178,19 @@ class SlikeController extends Controller
 			foreach ($_FILES["images"]["error"] as $key => $error) {
 				if ($error == UPLOAD_ERR_OK) {
 					$filename = $_FILES["images"]["name"][$key];
+					$newname = ZString::get_url_save_string($filename);
 					//echo  $_FILES["images"]["tmp_name"][$key];
 					//move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->basePath.'/../slike/' . $_FILES['images']['name'][$key]);
-					if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$filename))){
+					if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$newname))){
 						$msg="Slika z imenom $filename že obstaja na strežniku";
 						echo CJSON::encode(array($slika, $msg));
 					}else{
-						move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir'].$filename);
+						move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir'].$newname);
 					//shrani v bazo
 						$model=new Slike;
-						$model->url=Yii::app()->params['imgUrl'].$filename;
+						$model->url=Yii::app()->params['imgUrl'].$newname;
 						$model->pot=Yii::app()->params['imgDir'];
-						$model->ime_slike=$filename;
+						$model->ime_slike=$newname;
 						
 						// naredi slicico
 						$model->slikca();
@@ -220,19 +221,20 @@ class SlikeController extends Controller
 				//shrani na disk
 		$url=$_POST['image_url'];	
 		$filename=basename($url);
+		$newname = ZString::get_url_save_string($filename);
 		
-		if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$filename))){
+		if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$newname))){
 			$msg="Slika z imenom $filename že obstaja na strežniku";
 			echo CJSON::encode(array($slika, $msg));
 		}else{
 			//load
-			$img=WideImage::load($url)->saveToFile((Yii::app()->params['imgDir'].$filename));
+			$img=WideImage::load($url)->saveToFile((Yii::app()->params['imgDir'].$newname));
 			
 			//shrani v bazo
 			$model=new Slike;
-			$model->url=Yii::app()->params['imgUrl'].$filename;
+			$model->url=Yii::app()->params['imgUrl'].$newname;
 			$model->pot=Yii::app()->params['imgDir'];
-			$model->ime_slike=$filename;
+			$model->ime_slike=$newname;
 			
 			// naredi slicico
 			$model->slikca();

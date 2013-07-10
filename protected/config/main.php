@@ -15,7 +15,7 @@ $cs->scriptMap=array(
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 
-	'name'=>'Zelnik - Novicomat',
+	'name'=>'Zelnik.net - Novicomat',
 	//'theme'=>'twitter_fluid',	
 
 	// preloading 'log' component

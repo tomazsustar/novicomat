@@ -32,6 +32,10 @@ Date.prototype.setDateFromForm=function(dateText){
 	}*/
 }
 
+function pocisti(pl, o){
+	o.content=strip_tags(o.content,'');
+}
+
 function startDateChanged(dateText, inst){
 	
 	if(dateText.length >= 10){
@@ -126,6 +130,7 @@ function kopirajNaslov(){
 	input = $("#id_jajca_copytemplate td:first input");
 	if(!$.trim(input.val()).length)
 		input.val($("#Vsebine_title").val());
+	$("table.mmf_table").removeClass("hide");
 }
 
 function nalozi_sliko(file_id, success, file_index){ //id od input file brez #, success funkcija
@@ -436,6 +441,13 @@ $(document).ready(function () {
 		});
 		return false;
  	});
+ 	
+ 	//alert($("table.mmf_table tr").length);
+ 	//skrij tabelo, če ni dogodkov
+ 	if($("table.mmf_table tr").length==2){
+ 		$("table.mmf_table").addClass("hide");
+ 	}
+ 	
 });
 
 function parseResult(res){
@@ -445,5 +457,58 @@ function parseResult(res){
 			return result[0];
 		}		 					
 	catch(err){alert(err.message);alert(res);return false;}
+}
+
+function strip_tags (str, allowed_tags)
+{
+
+    var key = '', allowed = false;
+    var matches = [];    var allowed_array = [];
+    var allowed_tag = '';
+    var i = 0;
+    var k = '';
+    var html = ''; 
+    var replacer = function (search, replace, str) {
+        return str.split(search).join(replace);
+    };
+    // Build allowes tags associative array
+    if (allowed_tags) {
+        allowed_array = allowed_tags.match(/([a-zA-Z0-9]+)/gi);
+    }
+    str += '';
+
+    // Match tags
+    matches = str.match(/(<\/?[\S][^>]*>)/gi);
+    // Go through all HTML tags
+    for (key in matches) {
+        if (isNaN(key)) {
+                // IE7 Hack
+            continue;
+        }
+
+        // Save HTML tag
+        html = matches[key].toString();
+        // Is tag not in allowed list? Remove from str!
+        allowed = false;
+
+        // Go through all allowed tags
+        for (k in allowed_array) {            // Init
+            allowed_tag = allowed_array[k];
+            i = -1;
+
+            if (i != 0) { i = html.toLowerCase().indexOf('<'+allowed_tag+'>');}
+            if (i != 0) { i = html.toLowerCase().indexOf('<'+allowed_tag+' ');}
+            if (i != 0) { i = html.toLowerCase().indexOf('</'+allowed_tag)   ;}
+
+            // Determine
+            if (i == 0) {                allowed = true;
+                break;
+            }
+        }
+        if (!allowed) {
+            str = replacer(html, "", str); // Custom replace. No regexing
+        }
+    }
+    return str;
 }
 

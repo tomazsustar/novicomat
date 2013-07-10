@@ -96,7 +96,7 @@ class Vsebine extends CActiveRecord
 		if(isset($this->stran)){
 			return '<a href="'.$this->vir_url.'" target="_blank">'.$this->stran->vir_text.'</a>';
 		}
-		else return "Članek ni uvožen";	
+		else return false;	
 	}
 	
 	public function behaviors()
@@ -129,7 +129,7 @@ class Vsebine extends CActiveRecord
 			array('edited', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>false, 'on'=>'update'),
 			array('event_cat,state', 'default', 'value'=>0, 'setOnEmpty'=>true, 'on'=>'insert'),
 			array('params', 'default', 'value'=>'show_intro=0', 'setOnEmpty'=>true, 'on'=>'insert'),
-			
+			array('author', 'default', 'value'=>Yii::app()->user->name, 'setOnEmpty'=>true, 'on'=>'insert'),
 			
 			array('state, sectionid, catid, checked_out,created_by, edited_by, site_id, original_changed, event_cat, frontpage, koledar', 'numerical', 'integerOnly'=>true),
 			array('author, author_alias, global_id', 'length', 'max'=>256),
@@ -173,7 +173,7 @@ class Vsebine extends CActiveRecord
 			'sectionid' => 'Sekcija',
 			'catid' => 'Kategorija',
 			'author' => 'Avtor izvirnika',
-			'author_alias' => 'Psevdonim',
+			'author_alias' => 'Ime avtorja ali psevdonim',
 			'created' => 'Ustvarjeno',
 			'imported' => 'Uvoženo',
 			'checked_out' => 'Checked Out',

@@ -68,4 +68,10 @@ class ZString {
 	    return substr($string,$ini,$len);
 	}
 	
+	public static function get_url_save_string($string){
+		return str_replace(array(" "), 
+						   array('_'), 
+						   $string);
+	}
+	
 }
