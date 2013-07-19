@@ -160,4 +160,54 @@ class ZActiveForm extends CActiveForm{
 				echo CHtml::closeTag('a');
 			}
 	}
+	
+public function priponke($slvss){
+		  	$i=0;
+			foreach($slvss as $slvs){
+					if($slvs->mesto_prikaza == 4){
+						echo CHtml::openTag('div', array('id'=>'slika_'.$this->img_count));
+//							echo CHtml::ajaxLink(Yii::t('slike','uredi slikco'),Yii::app()->createUrl('slike/popup', array('id'=>$slvs->slika->id)),
+//								array(
+//						        'onclick'=>'$("#popup").dialog("open"); return false;',
+//						        'update'=>'#popup'
+//						        ),array('id'=>'popup-link-'.$slvs->slika->id));
+							
+							echo CHtml::link(
+									$slvs->slika->ime_slike,     // text
+									$slvs->slika->url,  //url
+									array(
+										'class'=>'slikca-'.$slvs->slika->id
+									)
+							);
+								
+							echo CHtml::openTag('a', array('href'=>'#', 'class'=>'delete_img'));
+								echo CHtml::image(
+									Yii::app()->baseUrl."/slike/delete_16.gif",     //src
+									"izbrisi", //alt
+									array('title'=>'izbriši', 'style'=>'width:16px;')
+								);
+							echo CHtml::closeTag('a');
+								
+							
+		
+							//img
+							
+							//hidden inputs
+							foreach($slvs->getAttributes() as $name => $value ){
+								echo CHtml::hiddenField(
+								'Slike['.$this->img_count.']['.$name.']', // name
+								$value, //value
+								array(
+										'id'=>'slika_'.$this->img_count.'_'.$name,
+										'class'=>$name
+									)
+								);
+							}
+						echo CHtml::closeTag('div');
+						$this->img_count++;
+						$i++;
+					}
+			}
+
+	}
 }

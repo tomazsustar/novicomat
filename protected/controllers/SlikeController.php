@@ -182,7 +182,7 @@ class SlikeController extends Controller
 					//echo  $_FILES["images"]["tmp_name"][$key];
 					//move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->basePath.'/../slike/' . $_FILES['images']['name'][$key]);
 					if($slika=Slike::model()->findByAttributes(array('ime_slike'=>$newname))){
-						$msg="Slika z imenom $filename že obstaja na strežniku";
+						$msg="Datoteka z imenom $filename že obstaja na strežniku";
 						echo CJSON::encode(array($slika, $msg));
 					}else{
 						move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir'].$newname);
@@ -193,7 +193,9 @@ class SlikeController extends Controller
 						$model->ime_slike=$newname;
 						
 						// naredi slicico
-						$model->slikca();
+						
+						if(!isset($_POST["priponka"]))
+							$model->slikca();
 						
 						if($model->save()){
 							//echo $model->url2; 
@@ -290,7 +292,7 @@ class SlikeController extends Controller
 //			//load
 			$filename=basename($model->url);
 			
-			WideImage::load(str_replace(' ', '%20', Yii::app()->params['imgDir'].'tmp/'.$filename))
+			WideImage::load(str_replace(' ', '_', Yii::app()->params['imgDir'].'tmp/'.$filename))
 				->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
 				->resize(265, 177, 'outside')				
 				->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$filename);

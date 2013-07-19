@@ -207,10 +207,10 @@ class Content extends CActiveRecord
 		$this->mask = 0;
 		$this->catid = $vsebineModel->catid;
 		$this->created = ZDate::dbModify($vsebineModel->publish_up, '- 2 hours');
-		$this->created_by = Yii::app()->user->id;
+		$this->created_by = $vsebineModel->created_by;
 		$this->created_by_alias = $vsebineModel->author_alias;
 		$this->modified = ZDate::dbNow(); // zdaj
-		$this->modified_by = Yii::app()->user->id;
+		$this->modified_by = $vsebineModel->edited_by;
 		$this->checked_out = 0;
 		$this->checked_out_time = '000-00-00 00:00:00';
 		$this->publish_up = ZDate::dbModify($vsebineModel->publish_up, '- 2 hours');

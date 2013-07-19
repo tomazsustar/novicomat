@@ -259,6 +259,14 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					?>
 			</div>
 			<div class="row">
+				<?php echo CHtml::Label('Priponke:', 'priponke');?>
+				<?php echo CHtml::fileField('priponke','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
+				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img4','style'=>'display:none;'));?>
+				<div id="priponke_div" style="float:left;width:100%;">
+						<?php $form->priponke($model->slvs);?>
+				</div>
+			</div>
+			<div class="row">
 				<?php echo $form->labelEx($model,'video'); ?>
 				<?php echo $form->textField($model,'video',array('size'=>60)); ?>
 				<?php echo $form->error($model,'video'); ?>

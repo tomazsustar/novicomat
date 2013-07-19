@@ -137,8 +137,10 @@ function nalozi_sliko(file_id, success, file_index){ //id od input file brez #, 
 	file_index = file_index || 0; // default parameter
 	
 	extension = $('#'+file_id).val().split('.').pop().toLowerCase(); //preberi extension
-	if($.inArray(extension, ['gif','png','jpg','jpeg', 'bmp']) == -1) {         //preveri, če gre za sliko
-	    alert('To pa že ni slika!');
+	if($.inArray(extension, ["doc", "docx", "xls", "xlsx",
+                             "pdf", "odt", "jpg", "gif", "png",
+                             "tif", "tiff", "jpeg"]) == -1) {         //preveri, če gre za sliko
+	    alert('Datoteke vrste '+extension+' ni dovoljeno nalagati.');
 	    return false;
 	}
 	
@@ -152,6 +154,10 @@ function nalozi_sliko(file_id, success, file_index){ //id od input file brez #, 
 	 //alert(formdata);
 	//var data={activeFile: encodeURIComponent($('#Vsebine_activeFile').val())};
 	//$.post(ajax_url, data, function(data){alert(data);})
+	 if (file_id=="priponke"){
+		 alert("juhuhu");
+		 formdata.append("priponka", 1);
+	 }
 	 if (formdata) {
 			$.ajax({
 				url: ajax_url, //se zgenerira v php-ju
@@ -258,6 +264,66 @@ function vstavi_sliko(container_selector, mesto_prikaza, slika_obj, width, allow
 		img_count=img_count+1;
 }
 
+function vstavi_priponko(container_selector, slika_obj){
+	deleteImgStyle="width:16px;";
+
+	
+	$('<div />', {
+			id:'slika_'+img_count
+		}).append(
+			
+//			$('<a/>', {
+//				href: "#",
+//				'class': "crop_img"
+//					}
+//			).append(
+//					$('<img/>',{
+//							src:base_url+'/slike/image-crop.png',
+//							alt:"obreži",
+//							title:"obreži",
+//							style:"width:16px;float:right;"
+//					})),
+			$('<a/>', {
+				href: slika_obj.url,
+				class: "slikca-"+slika_obj.id
+			}).append(slika_obj.ime_slike),
+			$('<a/>', {
+				href: "#",
+				'class': "delete_img"
+					}
+			).append(
+					$('<img/>',{
+							src:base_url+'/slike/delete_16.gif',
+							alt:"izbrisi",
+							title:"izbriši",
+							style:deleteImgStyle
+					})),
+			$('<input/>', {
+				type:'hidden', 
+				name: 'Slike['+img_count+'][zp_st]',
+				id: 'slika_'+img_count+'_zp_st',
+				'class': 'zp_st'
+			})
+			,
+			$('<input/>', {
+				type:'hidden', 
+				name: 'Slike['+img_count+'][id_slike]',
+				id: 'slika_'+img_count+'_id_slike',
+				'class': 'id_slike',
+				value: slika_obj.id
+			}),
+			$('<input/>', {
+				type:'hidden', 
+				name: 'Slike['+img_count+'][mesto_prikaza]',
+				id: 'slika_'+img_count+'_mesto_prikaza',
+				'class': 'mesto_prikaza',
+				value: 4
+			})
+		).appendTo(container_selector);
+		$('#'+'slika_'+img_count+'_zp_st').val($('#'+'slika_'+img_count).index()+1); //nastavi zp_st
+		img_count=img_count+1;
+}
+
 function slika_za_clanek(src){
 	return '<img src=\"'+src+'\" style="float:right;width:265px;" />';
 }
@@ -275,6 +341,15 @@ $(document).ready(function () {
 		}
 	});
 	$("#galerija").sortable({
+		stop: function () {
+		        var inputs = $('input.zp_st');
+		        //var nbElems = inputs.length;
+		        $('input.zp_st').each(function(idx) {
+		            $(this).val(1 + idx);
+		        });
+		}
+	});
+	$("#priponke_div").sortable({
 		stop: function () {
 		        var inputs = $('input.zp_st');
 		        //var nbElems = inputs.length;
@@ -422,6 +497,22 @@ $(document).ready(function () {
 				}	
 				nalozi_sliko('nalozi_galerijo', success, i);
 			}
+		}
+ 	});
+ 	$("#priponke").change(function(){ //input za url onchange
+		var i = 0, len = this.files.length, img, reader, file;
+ 		
+		for ( ; i < len; i++ ) { // za vsak file
+			$("#loading-img4").css('display','inline');
+			file = this.files[i];
+			success = function (res) {
+				if(slika=parseResult(res)){
+		 			vstavi_priponko('#priponke_div', slika);			  		
+				}
+				$("#loading-img4").css('display','none');
+			}	
+			nalozi_sliko('priponke', success, i);
+			
 		}
  	});
  	$("a.delete_img").live("click", function(){ //izbrisi sliko

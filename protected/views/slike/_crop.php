@@ -8,7 +8,7 @@
 if(!class_exists('WideImage', false)) 
 	require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
 
-$size=getimagesize(str_replace(' ', '%20', $model->url));
+$size=getimagesize(str_replace(' ', '_', $model->url));
 $width=$size[0]; $height = $size[1];
 	
 $scale=1;
@@ -39,7 +39,7 @@ $tmp_file=Yii::app()->params['imgDir'].'tmp/'.$filename;
 $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
 
-WideImage::load(str_replace(' ', '%20', $model->url))
+WideImage::load(str_replace(' ', '_', $model->url))
 	->resizeCanvas($canvas_width, $canvas_height, 'center', 'center', 0xffffff, 'any', true)
 	->saveToFile($tmp_file);
 
