@@ -326,11 +326,13 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				}
 				?>
 			</div>
+			<?php /*
 			<div class="row">
 				<?php echo $form->labelEx($model,'lokacija'); ?>
 				<?php echo $form->textField($model,'lokacija',array('size'=>60)); ?>
 				<?php echo $form->error($model,'lokacija'); ?>
 			</div>
+			 */?>
 		<?php if(Yii::app()->user->checkAccess('zelnik.net-objava')):?>					
 		<table>
 			<tr>
