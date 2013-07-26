@@ -155,7 +155,6 @@ function nalozi_sliko(file_id, success, file_index){ //id od input file brez #, 
 	//var data={activeFile: encodeURIComponent($('#Vsebine_activeFile').val())};
 	//$.post(ajax_url, data, function(data){alert(data);})
 	 if (file_id=="priponke"){
-		 alert("juhuhu");
 		 formdata.append("priponka", 1);
 	 }
 	 if (formdata) {
@@ -285,7 +284,8 @@ function vstavi_priponko(container_selector, slika_obj){
 //					})),
 			$('<a/>', {
 				href: slika_obj.url,
-				class: "slikca-"+slika_obj.id
+				class: "slikca-"+slika_obj.id,
+				target: "_blank"
 			}).append(slika_obj.ime_slike),
 			$('<a/>', {
 				href: "#",

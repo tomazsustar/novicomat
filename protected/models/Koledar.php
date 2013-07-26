@@ -40,11 +40,10 @@ class Koledar extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('naslov, zacetek', 'required'),
+			array('naslov, zacetek, lokacija', 'required'),
 			array('id_vsebine', 'numerical', 'integerOnly'=>true),
 			array('konec, zacetek', 'ext.myvalidators.DateOrTime'), 
 			array('konec','ext.myvalidators.Later', 'then'=>'zacetek'),
-			array('lokacija', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, naslov, id_vsebine, zacetek, konec, lokacija, id_lokacija', 'safe', 'on'=>'search'),

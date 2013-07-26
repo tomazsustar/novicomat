@@ -194,7 +194,8 @@ class VsebineController extends Controller
 							}
 						}
 		    				$masterValues = array('id_vsebine'=>$model->id);
-						 if (MultiModelForm::save($member,$validatedMembers,$deleteMembers,$masterValues)){
+		    				
+						 if (MultiModelForm::save($member,$validatedMembers,$deleteItems,$masterValues)){
 							if(isset($_POST['joomla'])){ 
 								//če gre v joomlo
 								$this->izvoziVsebino($model);
@@ -204,7 +205,7 @@ class VsebineController extends Controller
 								$this->redirect(array('index'));
 							}else{
 								//samo shrani
-								$this->redirect(array('update','id'=>$model->id));
+								//$this->redirect(array('update','id'=>$model->id));
 							}
 						}
 					}
@@ -258,6 +259,10 @@ class VsebineController extends Controller
 		{
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
+			TagsVsebina::model()->deleteAllByAttributes(array('id_vsebine'=>$id));
+			SlikeVsebine::model()->deleteAllByAttributes(array('id_vsebine'=>$id));
+			Koledar::model()->deleteAllByAttributes(array('id_vsebine'=>$id));
+			PortaliVsebine::model()->deleteAllByAttributes(array('id_vsebine'=>$id));
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))

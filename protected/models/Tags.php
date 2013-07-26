@@ -90,7 +90,10 @@ class Tags extends CActiveRecord
 	public function str_to_array($tags_string){
 		$all_tags = explode(',', addslashes($tags_string)); // v zbirko + addslashes
 		$trimed_tags=array();
-		foreach ($all_tags as $tag) $trimed_tags[] = trim($tag); 
+		foreach ($all_tags as $tag){
+			if(($trimmed_tag = trim($tag)) != "" )
+			$trimed_tags[] = $trimmed_tag; 
+		}
 		return $trimed_tags;
 	}
 	
@@ -103,6 +106,7 @@ class Tags extends CActiveRecord
 		$existing_tags=Tags::model()->findAll("tag IN ('".implode("','", $trimed_tags)."')"); // najde vse besede, ki že obstajajo
 		$existing_tags_simple_array = array();
 		foreach ($existing_tags as $tag) $existing_tags_simple_array[]=$tag->tag; // to simple array
-		return array_diff($trimed_tags, $existing_tags_simple_array) ; // poišče razliko in vrne
+		return array_udiff($trimed_tags, $existing_tags_simple_array, 'strcasecmp'); // poišče razliko in vrne
+		//return array_diff($trimed_tags, $existing_tags_simple_array) ; // poišče razliko in vrne
 	}
 }

@@ -176,7 +176,8 @@ public function priponke($slvss){
 									$slvs->slika->ime_slike,     // text
 									$slvs->slika->url,  //url
 									array(
-										'class'=>'slikca-'.$slvs->slika->id
+										'class'=>'slikca-'.$slvs->slika->id,	
+										'target'=>'_blank'
 									)
 							);
 								

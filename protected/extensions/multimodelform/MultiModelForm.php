@@ -666,7 +666,8 @@ class MultiModelForm extends CWidget
         if (empty($this->removeText) || !$this->allowRemoveItem) //added v3.1
             return '';
 
-        $onClick = '$(this).parent().parent().remove(); mmfRecordCount--; alert(mmfStartCount); false;';
+        //$onClick = '$(this).parent().parent().remove(); mmfRecordCount--; alert(mmfStartCount); false;';
+        $onClick = '$(this).parent().parent().remove(); mmfRecordCount--; false;';
 
         if($isCopyTemplate && $this->hideCopyTemplate)
         {

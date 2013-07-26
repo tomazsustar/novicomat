@@ -50,7 +50,7 @@ $form=$this->beginWidget('ZActiveForm', array(
       'elements'=>array(
         'naslov'=>array(
             'type'=>'text',
-			'size'=>50,
+			'style'=>'width:230px',
         ),
         'zacetek'=>array(
             'type'=>'application.extensions.timepicker.EJuiDateTimePicker',
@@ -88,11 +88,12 @@ $form=$this->beginWidget('ZActiveForm', array(
  	/*'id_vsebine'=>array(
             'type'=>'text',
             'maxlength'=>40,
-        ),
+        ),*/
 	'lokacija'=>array(
             'type'=>'text',
-            'maxlength'=>40,
-        ),
+			'style'=>'width:230px',
+            //'maxlength'=>,
+        ),/*
 	'id_lokacija'=>array(
             'type'=>'text',
             'maxlength'=>40,
@@ -259,13 +260,14 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					?>
 			</div>
 			<div class="row">
-				<?php echo CHtml::Label('Priponke:', 'priponke');?>
-				<?php echo CHtml::fileField('priponke','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
+				<?php echo CHtml::Label('Priponke:', 'priponke', array('style'=>'display:inline;'));?>
+				<?php echo CHtml::fileField('priponke','',array('style'=>'display:inline;','multiple'=>'multiple') ); ?>
 				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img4','style'=>'display:none;'));?>
-				<div id="priponke_div" style="float:left;width:100%;">
+				<div id="priponke_div" style="float:left;width:100%;margin-bottom:10px">
 						<?php $form->priponke($model->slvs);?>
 				</div>
 			</div>
+			
 			<div class="row">
 				<?php echo $form->labelEx($model,'video'); ?>
 				<?php echo $form->textField($model,'video',array('size'=>60)); ?>
@@ -275,10 +277,10 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				</div>
 			</div>
 			<div class="row">
-				<?php echo CHtml::Label('Naloži galerijo', 'nalozi_galerijo');?>
-				<?php echo CHtml::fileField('nalozi_galerijo','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
+				<?php echo CHtml::Label('Naloži galerijo:', 'nalozi_galerijo', array('style'=>'display:inline;'));?>
+				<?php echo CHtml::fileField('nalozi_galerijo','',array('style'=>'display:inline;', 'multiple'=>'multiple') ); ?>
 				<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img3','style'=>'display:none;'));?>
-				<div id="galerija" style="float:left;width:100%;">
+				<div id="galerija" style="float:left;width:100%;margin-bottom:10px">
 						<?php $form->slike($model->slvs,3,'100px');?>
 				</div>
 			</div>
