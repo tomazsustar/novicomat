@@ -81,6 +81,10 @@ class DateTimeDBBehavior  extends CActiveRecordBehavior
 		return true;
 	}*/
 	
+	public function  afterSave($event){
+		$this->afterFind($event);
+	}
+	
 	public function afterFind($event){
 					
 		foreach($event->sender->tableSchema->columns as $columnName => $column){
