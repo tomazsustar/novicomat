@@ -333,7 +333,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				<?php echo $form->error($model,'lokacija'); ?>
 			</div>
 			 */?>
-		<?php if(Yii::app()->user->checkAccess('zelnik.net-objava')):?>					
+		<?php /*if(Yii::app()->user->checkAccess('zelnik.net-objava')):?>					
 		<table>
 			<tr>
 				<td>
@@ -380,7 +380,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					</td>
 				</tr>
 			</table>
-			<?php endif; //zelnik.net-objava?>
+			<?php endif; //zelnik.net-objava */?>
 		</td>
 		<td>
 			<div class="row">
