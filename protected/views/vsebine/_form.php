@@ -528,8 +528,8 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Shrani'); ?>
 		<?php echo CHtml::submitButton('Objavi/Pošlji v pregled', 			array('onclick'=>"$('#Vsebine_state').val(2)", 'name'=>'objavi')); ?>
-		<?php if(Yii::app()->user->checkAccess('admin'))
-					echo CHtml::submitButton('Shrani v Joomlo', 	array('onclick'=>"$('#Vsebine_state').val(1)", 'name'=>'joomla')); ?>
+		<?php /*if(Yii::app()->user->checkAccess('admin'))
+					echo CHtml::submitButton('Shrani v Joomlo', 	array('onclick'=>"$('#Vsebine_state').val(1)", 'name'=>'joomla')); */?>
 		<?php if(Yii::app()->user->checkAccess('admin'))
 					echo CHtml::submitButton('Zavrzi', 			array('onclick'=>"$('#Vsebine_state').val(3)", 'name'=>'zavrzi')); ?>
 		<?php echo CHtml::submitButton('Prekliči', 			array('name'=>'preklici')); ?>
