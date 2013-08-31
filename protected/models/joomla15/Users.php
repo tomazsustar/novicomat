@@ -34,7 +34,7 @@ class Users extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'jos_users';
+		return 'j3_users';
 	}
 
 	/**
