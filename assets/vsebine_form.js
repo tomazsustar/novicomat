@@ -133,19 +133,34 @@ function kopirajNaslov(){
 	$("table.mmf_table").removeClass("hide");
 }
 
-function nalozi_sliko(file_id, success, file_index){ //id od input file brez #, success funkcija
+function nalozi_sliko(file_id, success, file_index, loading_img){ //id od input file brez #, success funkcija, loading img z #
 	file_index = file_index || 0; // default parameter
-	
-	extension = $('#'+file_id).val().split('.').pop().toLowerCase(); //preberi extension
-	if($.inArray(extension, ["doc", "docx", "xls", "xlsx",
-                             "pdf", "odt", "jpg", "gif", "png",
-                             "tif", "tiff", "jpeg"]) == -1) {         //preveri, če gre za sliko
-	    alert('Datoteke vrste '+extension+' ni dovoljeno nalagati.');
-	    return false;
+	console.log("nalozi_sliko");
+	var input = document.getElementById(file_id);
+	extension = input.files[file_index].name.split('.').pop().toLowerCase(); //preberi extension
+	if(file_id == "priponke"){
+		console.log("priponke");
+		if($.inArray(extension, ["doc", "docx", "xls", "xlsx",
+	                             "pdf", "odt", "jpg", "gif", "png",
+	                             "tif", "tiff", "jpeg", "mp3", "zip"]) == -1) {
+			alert('Datoteke vrste '+extension+' ni dovoljeno nalagati.');
+			$(loading_img).css('display','none');
+		    return false;			
+		}
+	}
+	else{
+		console.log("slike");
+		if($.inArray(extension, ["jpg", "gif", "png",
+	                             "tif", "tiff", "jpeg"]) == -1) {         //preveri, če gre za sliko
+		   
+			alert('To pa že ni slika.');
+		    $(loading_img).css('display','none');
+		    return false;
+		}
 	}
 	
-	var input = document.getElementById(file_id),  
-    formdata = false;  
+	
+    var formdata = false;  
 	 if (window.FormData) {  
 	     formdata = new FormData();  
 	     formdata.append("images[]", input.files[file_index]);
@@ -397,7 +412,7 @@ $(document).ready(function () {
 				}
 				$("#loading-img1").css('display','inline');
 				
-				nalozi_sliko('Vsebine_activeFile', success, 0);
+				nalozi_sliko('Vsebine_activeFile', success, 0, "#loading-img1");
 				
 //				if ( window.FileReader ) {
 //					reader = new FileReader();
@@ -409,8 +424,10 @@ $(document).ready(function () {
 //				if (formdata) {
 //					formdata.append("images[]", file);
 //				}
+		}else{
+			alert('To pa že ni slika!');
 		}
-		
+		$("#Vsebine_activeFile	").val(''); //počisti, da se ob objavi ne nalaga še enkrat
 		
 	}, false);
  	
@@ -449,10 +466,14 @@ $(document).ready(function () {
 					}
 					$("#loading-img2").css('display','none');
 				}			
-				nalozi_sliko('nalozi_sliko', success, i);
+				nalozi_sliko('nalozi_sliko', success, i, "#loading-img2");
+			}else{
+				alert('To pa že ni slika!');
 			}
 		}
- 
+
+		$("#loading-img2").css('display','none');
+		$("#nalozi_sliko").val(''); //počisti, da se ob objavi ne nalaga še enkrat
  	});
  	
  	$("#vstavi_sliko").change(function(){ //input za url onchange
@@ -495,9 +516,10 @@ $(document).ready(function () {
 					}
 					$("#loading-img3").css('display','none');
 				}	
-				nalozi_sliko('nalozi_galerijo', success, i);
+				nalozi_sliko('nalozi_galerijo', success, i, "#loading-img3");
 			}
 		}
+		$("#nalozi_galerijo").val(''); //počisti, da se ob objavi ne nalaga še enkrat
  	});
  	$("#priponke").change(function(){ //input za url onchange
 		var i = 0, len = this.files.length, img, reader, file;
@@ -511,9 +533,10 @@ $(document).ready(function () {
 				}
 				$("#loading-img4").css('display','none');
 			}	
-			nalozi_sliko('priponke', success, i);
+			nalozi_sliko('priponke', success, i, "#loading-img4");
 			
 		}
+		$("#priponke").val(''); //počisti, da se ob objavi ne nalaga še enkrat
  	});
  	$("a.delete_img").live("click", function(){ //izbrisi sliko
 		$(this).parent().remove();

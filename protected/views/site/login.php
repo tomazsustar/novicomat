@@ -8,6 +8,9 @@ $this->breadcrumbs=array(
 <h1>Prijava</h1>
 
 <p>Prosim izpolnite spodnji obrazec z vašim uporabniškim imenom in geslom.</p>
+<p>Če uporabniškega imena in gesla še nimate, 
+<a href="http://www.zelnik.net/index.php/component/users/?view=registration">
+se lahko registrirate tukaj.</a></p>
 
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
