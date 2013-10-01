@@ -689,7 +689,7 @@ class ETinyMce extends CInputWidget
       $options['theme_advanced_toolbar_location'] = 'top';
       $options['theme_advanced_toolbar_align'] = 'left';
       $options['theme_advanced_path_location'] = 'bottom';
-		$options['theme_advanced_buttons1'] = "formatselect,|,bold,italic,underline,|,undo,redo,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,outdent,indent,|,removeformat,cleanup,code";
+		$options['theme_advanced_buttons1'] = "formatselect,|,bold,italic,underline,|,undo,redo,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,outdent,indent,|,nonbreaking,removeformat,cleanup,code,|,link,unlink";
 //		$options['theme_advanced_buttons2'] = "moveforward,movebackward";
 //		$options['theme_advanced_buttons3'] = "justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,|,hr,advhr,nonbreaking,pagebreak,blockquote,|,charmap,emotions,media,image,|,link,unlink,anchor,|,insertdate,inserttime";
 //		$options['theme_advanced_buttons4'] = "{$c2}tablecontrols,|,insertlayer,moveforward,movebackward,absolute,|,styleprops,del,ins,attribs,|,template";
@@ -708,7 +708,8 @@ class ETinyMce extends CInputWidget
 //	$options['paste_remove_spans'] = true;
 //	$options['paste_remove_styles'] = true;
 	$options['paste_preprocess'] = 'pocisti';
-             
+    $options['convert_urls'] = false;
+    
 	return $options;
    }
 
@@ -764,7 +765,8 @@ class ETinyMce extends CInputWidget
       if ($url !== '') {
          $options['spellchecker_rpc_url'] = $url . '/plugins/spellchecker/rpc.php';
       }
-
+	$options['convert_urls'] = false;
+		
       return $options;
    }
 

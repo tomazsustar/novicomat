@@ -205,7 +205,7 @@ class VsebineController extends Controller
 								$this->redirect(array('index'));
 							}else{
 								//samo shrani
-								//$this->redirect(array('update','id'=>$model->id));
+								$this->redirect(array('update','id'=>$model->id));
 							}
 						}
 					}
