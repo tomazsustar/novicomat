@@ -388,7 +388,7 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 				<?php echo CHtml::textField('vstavi_sliko','',array('style'=>'width:100%;')); ?>
 			</div>
 			<?php echo CHtml::Label('Naloži slike iz računalnika', 'vstavi_sliko'); ?>
-			<?php echo CHtml::fileField('nalozi_sliko','',array('style'=>'width:100%;', 'multiple'=>'multiple') ); ?>
+			<?php echo CHtml::fileField('nalozi_sliko','',array('style'=>'width:80%;', 'multiple'=>'multiple') ); ?>
 
 			<?php //echo $form->labelEx('&nbsp;'); ?>
 			<?php echo CHtml::image(Yii::app()->baseUrl."/slike/ajax-loader.gif",'Nalagam...', array('id'=>'loading-img2','style'=>'display:none;'));?>
