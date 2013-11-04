@@ -47,7 +47,7 @@
 	
 	<div class="row">
 	<?php //echo '<pre>';print_r($expression)?>
-		<?php echo $form->labelEx($model,'sectionid'); ?>
+		<?php /* echo $form->labelEx($model,'sectionid'); ?>
 		<?php echo $form->dropDownList($model, 'sectionid', CHtml::listData(Sections::model()->findAll(), 'id', 'title'),
 						array(
 							'ajax' => array(
@@ -76,7 +76,7 @@
 		<?php //echo $form->dropDownList($model, 'catid', array()); ?>
 		<?php echo $form->dropDownList($model, 'event_cat', Categories::listJevCat(),
 					array('prompt'=>'Izberi kategorijo:')); ?>
-		<?php echo $form->error($model,'event_cat'); ?>
+    <?php echo $form->error($model,'event_cat'); */ ?>
 	</div>
 	<div class="row">
 	<?php echo $form->labelEx($model,'author_alias'); ?>
