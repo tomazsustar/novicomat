@@ -84,7 +84,7 @@ class RutineController extends Controller
 		}
 		
 		$auth->assign('admin',Users::model()->getID('admin'));
-		$auth->assign('admin',Users::model()->getID('Brozzy'));
+	//	$auth->assign('admin',Users::model()->getID('Brozzy'));
 		
 		
 	}
