@@ -1,6 +1,5 @@
 <?php
 
-<<<<<<< HEAD
 Yii::import('application.vendors.*');
 require_once('ics-parser-read-only/ICal.php');
 require_once('ics-parser-read-only/MyCal.ics');
@@ -10,17 +9,6 @@ class ICalParser extends Parser {
      * Parser ima 3 abstraktne metode: import, readSource, 
      * loop
      */
-=======
-require_once Yii::app()->basePath.'/vendors/ics-parser-read-only/ICal.php.back.php';
-require_once Yii::app()->basePath.'/vendors/ics-parser-read-only/MyCal.ics';
-
-class ICalParser extends ICal {
-    public $filename = 'MyCal.ics';
-
-    public function __construct() {
-        parent::__construct($this->filename);
-    }
->>>>>>> eeb9e7b24d46a45fb12e167358778fe6e08bff55
 
     public function __construct() {
         echo "v konstruktorju <br />";
@@ -82,6 +70,5 @@ class ICalParser extends ICal {
     
 
 }
-
 
 ?>
