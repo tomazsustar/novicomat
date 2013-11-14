@@ -22,23 +22,33 @@ class ICalParser extends Parser {
         $ical = new ICal($datoteka);
         $events = $ical->events();
 
-        $koledar = new Koledar(); // id, title, 
-        $vsebina = new Vsebine(); // id, naslov, id_vsebine, zacetek, konec, lokacija, id_lokacija
+        $koledar = new Koledar(); // naslov, zacetek, konec, kolakcija 
+        $vsebina = new Vsebine(); // naslov
 
-        /*
         foreach ($events as $event) {
-            $vsebina->title=$event['SUMMARY'];
-            $koledar->title=$event['SUMMARY'];
-            $koledar->zacetek=$event['DTSTAER'];
-            $koledar->konec=$event['DTEND'];
-            $koledar->lokacija=$event['LOCATION'];
+            echo "Vsebina naslov: " .$vsebina->title=$event['SUMMARY'] . "<br />";
+            echo "Koledar naslov: " .$koledar->naslov=$event['SUMMARY'] . "<br />";
+            echo "Koledar zacetek: " .$koledar->zacetek=date('Y-m-d', strtotime($event['DTSTART'])) . "<br />";
+            echo "Koledar konec: " .$koledar->konec=date('Y-m-d', strtotime($event['DTEND'])) . "<br />";
+            echo "Koledar lokacija: ". $koledar->lokacija=$event['LOCATION'] . "<br />";
+            echo "========================================== <br />";
         }
-         */
+
+        // testiranje
+        /*
+        echo "v funkciji import() <br />";
+        echo $events[0]['SUMMARY'];
+        echo "<br />";
+
         $vsebina->title=$events[0]['SUMMARY'];
-        $koledar->title=$events[0]['SUMMARY'];
-        $koledar->title=$events[0]['DTSTAER'];
-        $koledar->title=$events[0]['DTEND'];
-        $koledar->title=$events[0]['LOCATION'];
+
+        echo $vsebina->title;
+
+        $koledar->naslov=$events[0]['SUMMARY'];
+        $koledar->zacetek=$events[0]['DTSTART'];
+        $koledar->konec=$events[0]['DTEND'];
+        $koledar->lokacija=$events[0]['LOCATION'];
+         */
     }
 
 
@@ -59,6 +69,7 @@ class ICalParser extends Parser {
          */
         // Ustvarimo datoteko datoteko in jo nafilamo z vsebino prebrano iz urlja za parsanje
 //        file_put_contents("basictest.ics", file_get_contents($this->stran_model->url));
+        echo "v readSource <br />";
         file_put_contents("basictest.ics", file_get_contents('http://www.google.com/calendar/ical/jaklicev.dom%40gmail.com/public/basic.ics'));
 
         $datoteka = 'basictest.ics';
