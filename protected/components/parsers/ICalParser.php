@@ -53,9 +53,12 @@ class ICalParser extends Parser {
         // filanje koledarja in vsebine
         $vsebina->title=$event['SUMMARY'];
         $vsebina->global_id=$event['UID'];
+        $vsebina->fulltext=$event['DESCRIPTION'];
+        $vsebina->created=date('d-m-Y', strtotime($event['CREATED']));
         $koledar->naslov=$event['SUMMARY'];
-        $koledar->zacetek=date('Y-m-d', strtotime($event['DTSTART']));
-        $koledar->konec=date('Y-m-d', strtotime($event['DTEND']));
+        $koledar->zacetek=date('d-m-Y', strtotime($event['DTSTART']));
+        $koledar->konec=date('d-m-Y', strtotime($event['DTEND']));
+
         $koledar->lokacija=$event['LOCATION'];
 
         // da se napolni baza brez vseh atributov in nastavimo id_vsebine za koledar
