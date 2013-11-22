@@ -62,7 +62,7 @@ class RutineController extends Controller
  		
 		$auth->createOperation('urejanjeNovic','update a post');
 		
-		$bizRule='return Yii::app()->user->id==$params->created_by;';
+		$bizRule='return Yii::app()->user->id==$params["created_by"];';
 		$task=$auth->createTask('urejanjeSvojihNovic','update a post by author himself',$bizRule);
 		$task->addChild('urejanjeNovic');
 		
@@ -84,7 +84,7 @@ class RutineController extends Controller
 		}
 		
 		$auth->assign('admin',Users::model()->getID('admin'));
-		$auth->assign('admin',Users::model()->getID('Brozzy'));
+//		$auth->assign('admin',Users::model()->getID('Brozzy'));
 		
 		
 	}
