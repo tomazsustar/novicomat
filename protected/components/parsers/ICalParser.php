@@ -2,15 +2,11 @@
 
 Yii::import('application.vendors.*');
 require_once('ics-parser-read-only/ICal.php');
-require_once('simple_html_dom.php');
 
 class ICalParser extends Parser {
     /*
      * Parser ima 3 abstraktne metode: import, readSource, loop
      */
-    var $html = array();
-    var $oldPath;
-    var $datoteka;
 
     public function __construct($stran_model) {
         $this->stran_model=$stran_model;
@@ -35,10 +31,16 @@ class ICalParser extends Parser {
         }
 			//print_r($channel);
 	           
-	      	$this->afterProcess();
+        $this->after();
 
     }
 
+    // preverjanje trenutnega hasha    
+    public function after() {
+        $this->afterProcess();
+        echo "<br />";
+        echo "Trenutni hash: " .$this->trenutni_hash;
+    }
 
     public function loop(& $event) {
         $this->counter_processed++;
@@ -51,21 +53,23 @@ class ICalParser extends Parser {
         $vsebina = new Vsebine(); // naslov
 
         // filanje koledarja in vsebine
-        $vsebina->title=$event['SUMMARY'];
+        $vsebina->title=preg_replace('[\\\]', '', $event['SUMMARY']);
         $vsebina->global_id=$event['UID'];
-        $vsebina->fulltext=$event['DESCRIPTION'];
-        $vsebina->created=date('d-m-Y', strtotime($event['CREATED']));
-        $koledar->naslov=$event['SUMMARY'];
-        $koledar->zacetek=date('d-m-Y', strtotime($event['DTSTART']));
-        $koledar->konec=date('d-m-Y', strtotime($event['DTEND']));
-
+        $vsebina->introtext=preg_replace('[\\\]', '', preg_replace('/\v+|\\\[rn]/', '<br />', $event['DESCRIPTION']));
+        $vsebina->created=date('d-m-Y G:i:s', strtotime($event['CREATED']));
+        $koledar->naslov=preg_replace('[\\\]', '', $event['SUMMARY']);
+        $koledar->zacetek=date('d-m-Y G:i:s', strtotime($event['DTSTART']));
+        $koledar->konec=date('d-m-Y G:i:s', strtotime($event['DTEND']));
         $koledar->lokacija=$event['LOCATION'];
+		$vsebina->imported = ZDate::dbNow(); //datum uvoza
 
         // da se napolni baza brez vseh atributov in nastavimo id_vsebine za koledar
         if($vsebina->save(false)){
+            $this->counter_imported++;
             $koledar->id_vsebine=$vsebina->getPrimaryKey();
             $koledar->save(false);
-            
+        } else {
+            $this->counter_import_error++;
         }
     }
     
@@ -76,15 +80,16 @@ class ICalParser extends Parser {
      */
     public function readSource() {
         try { 
-                $this->html=file_get_html($this->stran_model->url);
+                // ustvarimo datoteko datoteko in jo nafilamo z vsebino prebrano iz urlja za parsanje
+                file_put_contents("basictest.ics", file_get_contents($this->stran_model->url));
+                $icsfile = file_get_contents("basictest.ics");
+
                 //preveri, če se je stran spremenila
-                $this->trenutni_hash = md5($this->html);
+                $this->trenutni_hash = md5($icsfile);
                 self::Log("Prebrano. ".$this->stran_model->url);
         } catch(CException $e){ 
                 Yii::log($e->getMessage(),CLogger::LEVEL_WARNING);
         }
-        // ustvarimo datoteko datoteko in jo nafilamo z vsebino prebrano iz urlja za parsanje
-        file_put_contents("basictest.ics", file_get_contents($this->stran_model->url));
     }
 
 	protected function exists(& $item){
@@ -93,7 +98,6 @@ class ICalParser extends Parser {
 					array('global_id'=>$item['UID'])  //values
 					);
 	  }
-
 }
 
 ?>
