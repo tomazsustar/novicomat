@@ -27,6 +27,10 @@ class VsebineController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('feed'),
+				'users'=>array('*'),
+			),
+			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
 				//'users'=>array('*'),
 				'users'=>array('@'),
@@ -55,6 +59,59 @@ class VsebineController extends Controller
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
+	}
+	
+	public function actionFeed(){
+		//naloži zend class za generacijo rss
+		//add zend folder to the include path and save the old one
+	    /*$oldPath=set_include_path(($path=Yii::import('application.vendors.*')).PATH_SEPARATOR.get_include_path());
+		//include zend_loader
+        require_once $path.DIRECTORY_SEPARATOR.'Zend'.DIRECTORY_SEPARATOR.'Loader.php';
+        //load zend_feed class
+        Zend_Loader::loadClass('Zend_Feed');*/
+		
+		
+	    Yii::import('ext.feed.*');
+ 
+ 
+		$feed = new EFeed();
+		 
+		$feed->title= 'Novicomat';
+		$feed->description = 'Vsebine iz Novicomata';
+		 
+		//$feed->setImage('Testing RSS 2.0 EFeed class','http://www.ramirezcobos.com/rss',
+		//'http://www.yiiframework.com/forum/uploads/profile/photo-7106.jpg');
+		 
+		$feed->addChannelTag('language', 'sl-si');
+		$feed->addChannelTag('pubDate', date(DATE_RSS, time()));
+		$feed->addChannelTag('link', $this->createAbsoluteUrl('vsebine/index'));
+		 
+		// * self reference
+		$feed->addChannelTag('atom:link',$this->createAbsoluteUrl('vsebine/feed'));
+		
+		$vsebine=Vsebine::model()->findAll(array(
+	        'order'=>'publish_up DESC',
+	        'limit'=>20,
+	    ));
+	    
+	    foreach($vsebine as $vsebina)
+	    {
+	    	$item = $feed->createNewItem();
+	       	$item->title = $vsebina->title;
+			$item->link  = $this->createAbsoluteUrl('vsebine/view',array('id'=>$vsebina->id));
+			// we can also insert well formatted date strings
+			$item->date = $vsebina->publish_up;
+			$item->description = $vsebina->introtext;
+			$item->addTag('content:encoded', $vsebina->fulltext);
+			// this is just a test!!
+			$item->setEncloser('http://www.tester.com', '1283629', 'audio/mpeg');
+			 
+			$item->addTag('author', 'thisisnot@myemail.com (Antonio Ramirez)');
+			$item->addTag('guid', $this->createAbsoluteUrl('vsebine/view',array('id'=>$vsebina->id)),array('isPermaLink'=>'true'));
+			$feed->addItem($item);
+	    }		 
+		$feed->generateFeed();
+		Yii::app()->end();
 	}
 
 	/**
