@@ -62,7 +62,7 @@ class RutineController extends Controller
  		
 		$auth->createOperation('urejanjeNovic','update a post');
 		
-		$bizRule='return Yii::app()->user->id==$params["created_by"];';
+		$bizRule='return Yii::app()->user->id==$params["created_by"];'; // urejanje pravic
 		$task=$auth->createTask('urejanjeSvojihNovic','update a post by author himself',$bizRule);
 		$task->addChild('urejanjeNovic');
 		
