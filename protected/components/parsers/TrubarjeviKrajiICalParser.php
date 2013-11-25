@@ -3,10 +3,12 @@
 Yii::import('application.vendors.*');
 require_once('ics-parser-read-only/ICal.php');
 
-class ICalParser extends Parser {
+class TrubarjeviKrajiICalParser extends Parser {
     /*
      * Parser ima 3 abstraktne metode: import, readSource, loop
      */
+    var $poljeID = array(); // izracunamo na podlagi summary in zacetka dogodka
+    var $stevec = 0; // steje stevilo zgeneriranih idjev v $poljeID[]
 
     public function __construct($stran_model) {
         $this->stran_model=$stran_model;
@@ -23,7 +25,7 @@ class ICalParser extends Parser {
         } else{
 		     
             // Loop over each channel item and store relevant data
-            $ical = new ICal('basictest.ics');
+            $ical = new ICal('trubarjeviKraji.ics');
             $events = $ical->events();
             foreach ($events as $event) {
                     $this->loop($event);
@@ -31,33 +33,29 @@ class ICalParser extends Parser {
         }
 			//print_r($channel);
 	           
-        $this->after();
-
-    }
-
-    // preverjanje trenutnega hasha    
-    public function after() {
         $this->afterProcess();
-        echo "<br />";
-        echo "Trenutni hash: " .$this->trenutni_hash;
+
     }
 
     public function loop(& $event) {
-        $this->counter_processed++;
-        if ($this->exists($event)){ // če že obstaja ga ne gledamo več
-            $this->counter_existing++;
-            return;
-        } 
-
         $koledar = new Koledar(); // naslov, zacetek, konec, lokacija 
         $vsebina = new Vsebine(); // naslov
 
+        /* za trubarjeve kraje izracunamo id tako da skup damo summary in zacetni datum dogodka */
+        $vsebina->global_id=md5($event['SUMMARY'] . $event['DTSTART']); // izracunano na podlagi SUMMARY, DTSTART
+        $this->poljeID[] = $vsebina->global_id;
+
+        $this->counter_processed++;
+        if ($this->exists($stevec)){ // če že obstaja ga ne gledamo več
+            $this->counter_existing++;
+            return;
+        } 
+        $this->stevec++;
+
         // filanje koledarja in vsebine
         $vsebina->title=preg_replace('[\\\]', '', $event['SUMMARY']);
-        $vsebina->global_id=$event['UID'];
-        //$vsebina->introtext=preg_replace('[\\\]', '', preg_replace('/\v+|\\\[rn]/', '<br />', $event['DESCRIPTION']));
-        $vsebina->introtext=preg_replace('[\\\]', '', preg_replace('/\v+|\\\[rn]/', ' ', $event['DESCRIPTION']));
-        $vsebina->created=date('d-m-Y G:i:s', strtotime($event['CREATED']));
+        $vsebina->introtext=preg_replace('[\\\]', '', preg_replace('/\v+|\\\[rn]/', '', $event['DESCRIPTION']));
+        $vsebina->created=ZDate::dbNow();
         $koledar->naslov=preg_replace('[\\\]', '', $event['SUMMARY']);
         $koledar->zacetek=date('d-m-Y G:i:s', strtotime($event['DTSTART']));
         $koledar->konec=date('d-m-Y G:i:s', strtotime($event['DTEND']));
@@ -80,23 +78,16 @@ class ICalParser extends Parser {
      * odpre in prebere ics vir
      */
     public function readSource() {
-        try { 
-                // ustvarimo datoteko datoteko in jo nafilamo z vsebino prebrano iz urlja za parsanje
-                file_put_contents("basictest.ics", file_get_contents($this->stran_model->url));
-                $icsfile = file_get_contents("basictest.ics");
-
-                //preveri, če se je stran spremenila
-                $this->trenutni_hash = md5($icsfile);
-                self::Log("Prebrano. ".$this->stran_model->url);
-        } catch(CException $e){ 
-                Yii::log($e->getMessage(),CLogger::LEVEL_WARNING);
-        }
+            // ustvarimo datoteko datoteko in jo nafilamo z vsebino prebrano iz urlja za parsanje
+            file_put_contents("trubarjeviKraji.ics", file_get_contents($this->stran_model->url));
+            $icsfile = file_get_contents("trubarjeviKraji.ics");
     }
 
-	protected function exists(& $item){
+	protected function exists(& $stevec){
         	return Vsebine::model()->exists(
         			'global_id=:global_id', //condition
-					array('global_id'=>$item['UID'])  //values
+					//array('global_id'=>$item['UID'])  //values
+					array('global_id'=>$this->poljeID[$this->stevec])
 					);
 	  }
 }
