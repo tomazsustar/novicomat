@@ -25,13 +25,14 @@ class TrubarjeviKrajiICalParser extends Parser {
         } else{
 		     
             // Loop over each channel item and store relevant data
-            $ical = new ICal('trubarjeviKraji.ics');
-            $events = $ical->events();
-            foreach ($events as $event) {
-                    $this->loop($event);
-            }			   
+            $ical = new ICal('protected/runtime/trubarjeviKraji.ics');
+            if ($ical->events() != false) { // preverimo, ce ima eventse
+                $events = $ical->events();
+                foreach ($events as $event) {
+                        $this->loop($event);
+                }			   
+            } 
         }
-			//print_r($channel);
 	           
         $this->afterProcess();
 
@@ -79,8 +80,8 @@ class TrubarjeviKrajiICalParser extends Parser {
      */
     public function readSource() {
             // ustvarimo datoteko datoteko in jo nafilamo z vsebino prebrano iz urlja za parsanje
-            file_put_contents("trubarjeviKraji.ics", file_get_contents($this->stran_model->url));
-            $icsfile = file_get_contents("trubarjeviKraji.ics");
+            file_put_contents("protected/runtime/trubarjeviKraji.ics", file_get_contents($this->stran_model->url));
+            $icsfile = file_get_contents("protected/runtime/trubarjeviKraji.ics");
     }
 
 	protected function exists(& $stevec){
