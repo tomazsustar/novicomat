@@ -23,13 +23,20 @@ class ICalParser extends Parser {
         } else{
 		     
             // Loop over each channel item and store relevant data
-            $ical = new ICal('basictest.ics');
+            $ical = new ICal('protected/runtime/basictest.ics');
+            if ($ical->events() != false) { // preverimo, ce je brez eventsov
+                $events = $ical->events();
+                foreach ($events as $event) {
+                        $this->loop($event);
+                }			   
+            } 
+            /*
             $events = $ical->events();
             foreach ($events as $event) {
                     $this->loop($event);
             }			   
+             */
         }
-			//print_r($channel);
 	           
         $this->after();
 
@@ -82,8 +89,8 @@ class ICalParser extends Parser {
     public function readSource() {
         try { 
                 // ustvarimo datoteko datoteko in jo nafilamo z vsebino prebrano iz urlja za parsanje
-                file_put_contents("basictest.ics", file_get_contents($this->stran_model->url));
-                $icsfile = file_get_contents("basictest.ics");
+                file_put_contents("protected/runtime/basictest.ics", file_get_contents($this->stran_model->url));
+                $icsfile = file_get_contents("protected/runtime/basictest.ics");
 
                 //preveri, če se je stran spremenila
                 $this->trenutni_hash = md5($icsfile);

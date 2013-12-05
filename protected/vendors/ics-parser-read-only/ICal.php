@@ -221,7 +221,13 @@ class ICal
     public function events() 
     {
         $array = $this->cal;
-        return $array['VEVENT'];
+        // preverimo, ce je polje prazno
+        if (isset($array['VEVENT'])) {
+            return $array['VEVENT'];
+        }
+        else {
+            return false;
+        }
     }
 
     /**
