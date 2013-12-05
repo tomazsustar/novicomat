@@ -345,6 +345,72 @@ class Vsebine extends CActiveRecord
 		
 	}
 	
+	/**
+	 * 
+	 * Najde vse objavljene vsebine za določen portal
+	 * @param int $portal id portala
+	 * @param int $limit
+	 */
+	public function najdiZaPortal($portal, $limit=50){
+		$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
+						ON pv.id_vsebine = t.id 
+						and pv.id_portala = :portal 
+						and pv.status=2';
+		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->params = array(':portal'=>$portal);
+		$criteria->limit=$limit;
+		$criteria->order="publish_up DESC";
+		return Self::model()->findAll($criteria);
+	}
+	
+	public function getSlikeHTML($mestoPrikaza){
+		switch ($mestoPrikaza){
+			case 2:	$return=CHtml::openTag('div', array('class'=>"prispevek-slike")); break;
+			case 3: $return=CHtml::openTag('div', array('class'=>"prispevek-galerija")); break;
+		}
+		foreach ($this->slvs as $slika){
+			if($mestoPrikaza==$slika->mesto_prikaza){
+				$return.=
+				CHtml::openTag('div').
+				CHtml::openTag('a', array('href'=>$slika->slika->url, 'rel'=>"boxplus-slike","target"=>"_blank")).
+				CHtml::image($slika->slika->url2, $slika->slika->url2).
+				CHtml::closeTag('a').
+				CHtml::closeTag('div');
+			}
+		}
+		$return.=CHtml::closeTag('div');
+		return $return;
+	}
+	
+	public function getVideoHTML(){
+		return ZVideoHelper::insertVideo($this->video);
+	}
+	
+	public function getPriponkeHTML(){
+		$return = CHtml::openTag('ul', array('class'=>"prispevek-priponke"));
+		foreach ($this->slvs as $priponka){
+			if($priponka->mesto_prikaza == 4){
+				$return.=
+				CHtml::openTag('li').
+				CHtml::link($priponka->slika->ime_slike, $priponka->slika->url, array('rel'=>"boxplus-priponke","target"=>"_blank")).				
+				CHtml::closeTag('li');
+			}
+		}
+		$return.=CHtml::closeTag('ul');
+		return $return;
+	}
+	
+	public function getFullContentHTML(){
+			return $this->getSlikeHTML(2).
+					$this->fulltext.
+					$this->getVideoHTML().
+					$this->getPriponkeHTML().
+					$this->getSlikeHTML(3);
+	}
+	
 public function afterConstruct(){
 		//navadne vrednosti
 		$this->frontpage = 1;

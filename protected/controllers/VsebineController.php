@@ -70,48 +70,59 @@ class VsebineController extends Controller
         //load zend_feed class
         Zend_Loader::loadClass('Zend_Feed');*/
 		
-		
-	    Yii::import('ext.feed.*');
- 
- 
-		$feed = new EFeed();
+		if(isset($_GET['portal']))
+		{
+			$portal=Portali::model()->findByAttributes(array('domena'=>$_GET['portal']));
+			if(!isset($portal))
+				die("Portal ne obstaja");
+			$vsebine=Vsebine::model()->najdiZaPortal($portal->id);
+			
+			if(count($vsebine)){
+			
+			    Yii::import('ext.feed.*');
 		 
-		$feed->title= 'Novicomat';
-		$feed->description = 'Vsebine iz Novicomata';
 		 
-		//$feed->setImage('Testing RSS 2.0 EFeed class','http://www.ramirezcobos.com/rss',
-		//'http://www.yiiframework.com/forum/uploads/profile/photo-7106.jpg');
-		 
-		$feed->addChannelTag('language', 'sl-si');
-		$feed->addChannelTag('pubDate', date(DATE_RSS, time()));
-		$feed->addChannelTag('link', $this->createAbsoluteUrl('vsebine/index'));
-		 
-		// * self reference
-		$feed->addChannelTag('atom:link',$this->createAbsoluteUrl('vsebine/feed'));
-		
-		$vsebine=Vsebine::model()->findAll(array(
-	        'order'=>'publish_up DESC',
-	        'limit'=>20,
-	    ));
-	    
-	    foreach($vsebine as $vsebina)
-	    {
-	    	$item = $feed->createNewItem();
-	       	$item->title = $vsebina->title;
-			$item->link  = $this->createAbsoluteUrl('vsebine/view',array('id'=>$vsebina->id));
-			// we can also insert well formatted date strings
-			$item->date = $vsebina->publish_up;
-			$item->description = $vsebina->introtext;
-			$item->addTag('content:encoded', $vsebina->fulltext);
-			// this is just a test!!
-			$item->setEncloser('http://www.tester.com', '1283629', 'audio/mpeg');
-			 
-			$item->addTag('author', 'thisisnot@myemail.com (Antonio Ramirez)');
-			$item->addTag('guid', $this->createAbsoluteUrl('vsebine/view',array('id'=>$vsebina->id)),array('isPermaLink'=>'true'));
-			$feed->addItem($item);
-	    }		 
-		$feed->generateFeed();
-		Yii::app()->end();
+				$feed = new EFeed();
+				 
+				$feed->title= 'Novicomat';
+				$feed->description = 'Vsebine iz Novicomata';
+				 
+				//$feed->setImage('Testing RSS 2.0 EFeed class','http://www.ramirezcobos.com/rss',
+				//'http://www.yiiframework.com/forum/uploads/profile/photo-7106.jpg');
+				 
+				$feed->addChannelTag('language', 'sl-si');
+				$feed->addChannelTag('pubDate', date(DATE_RSS, time()));
+				$feed->addChannelTag('link', $this->createAbsoluteUrl('vsebine/index'));
+				 
+				// * self reference
+				$feed->addChannelTag('atom:link',$this->createAbsoluteUrl('vsebine/feed'));
+				
+		//		$vsebine=Vsebine::model()->findAll(array(
+		//	        'order'=>'publish_up DESC',
+		//	        'limit'=>20,
+		//	    ));
+				
+			    foreach($vsebine as $vsebina)
+			    {
+			    	$item = $feed->createNewItem();
+			       	$item->title = $vsebina->title;
+					$item->link  = $this->createAbsoluteUrl('vsebine/view',array('id'=>$vsebina->id));
+					// we can also insert well formatted date strings
+					$item->date = $vsebina->publish_up;
+					$item->description = CHtml::image($vsebina->slika, $vsebina->title, array('style'=>'float:left;')). $vsebina->introtext;
+									
+					$item->addTag('content:encoded', $vsebina->FullContentHTML);
+					 
+					$item->addTag('author', $vsebina->author_alias);
+					$item->addTag('guid', $this->createAbsoluteUrl('vsebine/view',array('id'=>$vsebina->id)),array('isPermaLink'=>'true'));
+					$feed->addItem($item);
+			    }		 
+				
+				$feed->generateFeed();
+				Yii::app()->end();
+			
+			}
+		}
 	}
 
 	/**
@@ -195,6 +206,7 @@ class VsebineController extends Controller
 								// če gre za objavo
 								if(Yii::app()->user->checkAccess($portal->domena.'-objava')){
 									$povs->status=2;
+									//TODO Pošlji mail na email iz portala
 								}
 							}
 						}
