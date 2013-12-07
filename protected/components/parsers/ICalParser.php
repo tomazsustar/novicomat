@@ -45,8 +45,8 @@ class ICalParser extends Parser {
     // preverjanje trenutnega hasha    
     public function after() {
         $this->afterProcess();
-        echo "<br />";
-        echo "Trenutni hash: " .$this->trenutni_hash;
+        //echo "<br />";
+        //echo "Trenutni hash: " .$this->trenutni_hash;
     }
 
     public function loop(& $event) {

@@ -117,11 +117,12 @@ class Vsebine extends CActiveRecord
 			array('publish_up, publish_down, start_date, end_date','ext.myvalidators.DateOrTime'),
 			array('publish_down','ext.myvalidators.Later', 'then'=>'publish_up'),
 			array('end_date','ext.myvalidators.Later', 'then'=>'start_date'),
-			array('title, fulltext, introtext, publish_up, tags, slika', 'required'),
+			array('title, fulltext, introtext, publish_up, tags', 'required'),
 //			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
 //			array('event_cat', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar', 'onZelnikOnly'=>true),
 //			array('sectionid, catid', 'ext.myvalidators.RequiredIf', 'onZelnikOnly'=>true),
 //			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
+			array('slika', 'ext.myvalidators.RequiredIf', 'onZelnikOnly'=>true),
 			array('video,lokacija', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>false, 'on'=>'insert'),
 			array('created_by', 'default', 'value'=>Yii::app()->user->id, 'setOnEmpty'=>false, 'on'=>'insert'),
@@ -351,7 +352,7 @@ class Vsebine extends CActiveRecord
 	 * @param int $portal id portala
 	 * @param int $limit
 	 */
-	public function najdiZaPortal($portal, $limit=50){
+	public function najdiZaPortal($portal, $start=0, $limit=50){
 		$criteria = new CDbCriteria();
 		//$criteria->select = '*';
 		//$criteria->condition = 'email=:email AND pass=:pass';
@@ -362,8 +363,24 @@ class Vsebine extends CActiveRecord
 		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
 		$criteria->params = array(':portal'=>$portal);
 		$criteria->limit=$limit;
+		$criteria->offset=$start;
 		$criteria->order="publish_up DESC";
-		return Self::model()->findAll($criteria);
+		return $this->findAll($criteria);
+	}
+	
+	public function najdiVsebinoNaPortalu($portal, $id){
+		$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
+						ON pv.id_vsebine = t.id 
+						and pv.id_portala = :portal 
+						and pv.status=2';
+		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->condition = "t.id=:id";
+		$criteria->params = array(':portal'=>$portal, 'id'=>$id);
+		
+		return $this->findAll($criteria);
 	}
 	
 	public function getSlikeHTML($mestoPrikaza){
@@ -409,6 +426,15 @@ class Vsebine extends CActiveRecord
 					$this->getVideoHTML().
 					$this->getPriponkeHTML().
 					$this->getSlikeHTML(3);
+	}
+	
+	public function getSummaryHTML(){
+		$retrun="";
+		if(trim($this->slika)!="")
+			$retrun .= CHtml::image($this->slika, $this->title, array('style'=>'float:left;', 'class'=>'title-img'));
+		
+		$retrun.=$this->introtext;
+		return $retrun;
 	}
 	
 public function afterConstruct(){

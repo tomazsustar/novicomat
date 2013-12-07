@@ -75,8 +75,13 @@ class VsebineController extends Controller
 			$portal=Portali::model()->findByAttributes(array('domena'=>$_GET['portal']));
 			if(!isset($portal))
 				die("Portal ne obstaja");
-			$vsebine=Vsebine::model()->najdiZaPortal($portal->id);
+			$vsebine=array();
 			
+			if(isset($_GET['vs'])){
+				$vsebine=Vsebine::model()->najdiVsebinoNaPortalu($portal->id, $_GET['vs']);
+			}else{	
+				$vsebine=Vsebine::model()->najdiZaPortal($portal->id);
+			}
 			if(count($vsebine)){
 			
 			    Yii::import('ext.feed.*');
@@ -109,12 +114,13 @@ class VsebineController extends Controller
 					$item->link  = $this->createAbsoluteUrl('vsebine/view',array('id'=>$vsebina->id));
 					// we can also insert well formatted date strings
 					$item->date = $vsebina->publish_up;
-					$item->description = CHtml::image($vsebina->slika, $vsebina->title, array('style'=>'float:left;')). $vsebina->introtext;
-									
-					$item->addTag('content:encoded', $vsebina->FullContentHTML);
+					$item->description = $vsebina->SummaryHTML;
+					if(isset($_GET['vs']))				
+						$item->addTag('content:encoded', $vsebina->FullContentHTML);
 					 
 					$item->addTag('author', $vsebina->author_alias);
 					$item->addTag('guid', $this->createAbsoluteUrl('vsebine/view',array('id'=>$vsebina->id)),array('isPermaLink'=>'true'));
+					$item->addTag('id',$vsebina->id);
 					$feed->addItem($item);
 			    }		 
 				

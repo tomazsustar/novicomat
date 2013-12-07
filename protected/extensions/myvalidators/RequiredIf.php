@@ -13,7 +13,7 @@ class RequiredIf extends CValidator
 		if($this->onZelnikOnly){
 			if(Yii::app()->user->checkAccess('zelnik.net-objava')){
 				foreach($object->povs as $povs){
-					if($povs->portal->domena=='zelnik.net'){
+					if($povs->portal->domena=='zelnik.net' && $povs->status != 0){
 						if($this->isset){
 							$this->validateIsSet($object, $attribute);
 						}
