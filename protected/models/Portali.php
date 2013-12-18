@@ -8,6 +8,7 @@
  * @property string $domena
  * @property string $tag
  * @property integer $tip
+ * @property string $mejli
  */
 class Portali extends CActiveRecord
 {
@@ -39,10 +40,10 @@ class Portali extends CActiveRecord
 		return array(
 			array('domena, tag, tip', 'required'),
 			array('tip', 'numerical', 'integerOnly'=>true),
-			array('domena, tag', 'length', 'max'=>128),
+			array('domena, tag, mejli', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, domena, tag, tip', 'safe', 'on'=>'search'),
+			array('id, domena, tag, tip, mejli', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,6 +68,7 @@ class Portali extends CActiveRecord
 			'domena' => 'Domena',
 			'tag' => 'Tag',
 			'tip' => 'Tip',
+            'mejli' => 'Mejli',
 		);
 	}
 
@@ -85,6 +87,7 @@ class Portali extends CActiveRecord
 		$criteria->compare('domena',$this->domena,true);
 		$criteria->compare('tag',$this->tag,true);
 		$criteria->compare('tip',$this->tip);
+		$criteria->compare('mejli',$this->mejli);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
