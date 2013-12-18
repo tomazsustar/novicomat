@@ -22,5 +22,6 @@ $this->menu=array(
 		'domena',
 		'tag',
 		'tip',
+		'mejli',
 	),
 )); ?>
