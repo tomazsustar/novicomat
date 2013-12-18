@@ -1,5 +1,7 @@
 <?php
 
+Yii::import('application.extensions.phpmailer.JPhpMailer');
+
 class VsebineController extends Controller
 {
 	/**
@@ -216,7 +218,9 @@ class VsebineController extends Controller
 								}
 							}
 						}
-					}else{
+                    }
+                    
+                    else{
 						//če portal ni obkljukan
 						$povs->status=0;
 					}
@@ -272,12 +276,19 @@ class VsebineController extends Controller
 		    				$masterValues = array('id_vsebine'=>$model->id);
 		    				
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteItems,$masterValues)){
-							if(isset($_POST['joomla'])){ 
-								//če gre v joomlo
-								$this->izvoziVsebino($model);
-								if($next=$model->getNextID()) $this->redirect(array('update','id'=>$next));
-								else $this->redirect(array('index'));
-							}elseif(isset($_POST['objavi'])){
+							if(isset($_POST['objavi'])){
+                                    //$this->poslimejl($portal, $model);
+					$povss=PortaliVsebine::model()->findAllByAttributes(array('id_vsebine'=>$model->id));
+                    foreach ($povss as  $povs) {
+                    Yii::trace("Zacetek");
+                    Yii::trace(CVarDumper::dumpAsString($povs));
+					if(isset($_POST['Portali'][$povs->portal->id])){
+                                    if ($povs->portal->tip==3) {
+                                    ZMail::poslimejl($povs->portal, $model);
+                                    }
+                                    //die('<p>PAVZA</p><br />');
+                    }
+                    }
 								$this->redirect(array('index'));
 							}else{
 								//samo shrani
@@ -304,7 +315,7 @@ class VsebineController extends Controller
 			'validatedMembers' => $validatedMembers,
 		));
 	}	
-	
+
 	public function actionZavrzi($id)
 	{
 		$model=$this->loadModel($id);
