@@ -25,6 +25,11 @@
 		<?php echo $form->textField($model,'tip'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model,'mejli'); ?>
+		<?php echo $form->textField($model,'mejli',array('size'=>60,'maxlength'=>128)); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

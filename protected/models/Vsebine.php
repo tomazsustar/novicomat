@@ -117,11 +117,12 @@ class Vsebine extends CActiveRecord
 			array('publish_up, publish_down, start_date, end_date','ext.myvalidators.DateOrTime'),
 			array('publish_down','ext.myvalidators.Later', 'then'=>'publish_up'),
 			array('end_date','ext.myvalidators.Later', 'then'=>'start_date'),
-			array('title, fulltext, introtext, publish_up, tags, slika', 'required'),
+			array('title, fulltext, introtext, publish_up, tags', 'required'),
 //			array('sectionid, catid', 'requiredIf', 'isset'=>'publish_up'),
 //			array('event_cat', 'ext.myvalidators.RequiredIf', 'isset'=>'koledar', 'onZelnikOnly'=>true),
 //			array('sectionid, catid', 'ext.myvalidators.RequiredIf', 'onZelnikOnly'=>true),
 //			array('publish_up', 'requiredIf', 'notset'=>'start_date'),
+			array('slika', 'ext.myvalidators.RequiredIf', 'onZelnikOnly'=>true),
 			array('video,lokacija', 'safe'),
 			array('created', 'default', 'value'=>ZDate::dbNow(), 'setOnEmpty'=>false, 'on'=>'insert'),
 			array('created_by', 'default', 'value'=>Yii::app()->user->id, 'setOnEmpty'=>false, 'on'=>'insert'),
@@ -343,6 +344,97 @@ class Vsebine extends CActiveRecord
 			else $this->tags=implode(', ', $tags);
 		}
 		
+	}
+	
+	/**
+	 * 
+	 * Najde vse objavljene vsebine za določen portal
+	 * @param int $portal id portala
+	 * @param int $limit
+	 */
+	public function najdiZaPortal($portal, $start=0, $limit=50){
+		$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
+						ON pv.id_vsebine = t.id 
+						and pv.id_portala = :portal 
+						and pv.status=2';
+		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->params = array(':portal'=>$portal);
+		$criteria->limit=$limit;
+		$criteria->offset=$start;
+		$criteria->order="publish_up DESC";
+		return $this->findAll($criteria);
+	}
+	
+	public function najdiVsebinoNaPortalu($portal, $id){
+		$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
+						ON pv.id_vsebine = t.id 
+						and pv.id_portala = :portal 
+						and pv.status=2';
+		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->condition = "t.id=:id";
+		$criteria->params = array(':portal'=>$portal, 'id'=>$id);
+		
+		return $this->findAll($criteria);
+	}
+	
+	public function getSlikeHTML($mestoPrikaza){
+		switch ($mestoPrikaza){
+			case 2:	$return=CHtml::openTag('div', array('class'=>"prispevek-slike")); break;
+			case 3: $return=CHtml::openTag('div', array('class'=>"prispevek-galerija")); break;
+		}
+		foreach ($this->slvs as $slika){
+			if($mestoPrikaza==$slika->mesto_prikaza){
+				$return.=
+				CHtml::openTag('div').
+				CHtml::openTag('a', array('href'=>$slika->slika->url, 'rel'=>"boxplus-slike","target"=>"_blank")).
+				CHtml::image($slika->slika->url2, $slika->slika->url2).
+				CHtml::closeTag('a').
+				CHtml::closeTag('div');
+			}
+		}
+		$return.=CHtml::closeTag('div');
+		return $return;
+	}
+	
+	public function getVideoHTML(){
+		return ZVideoHelper::insertVideo($this->video);
+	}
+	
+	public function getPriponkeHTML(){
+		$return = CHtml::openTag('ul', array('class'=>"prispevek-priponke"));
+		foreach ($this->slvs as $priponka){
+			if($priponka->mesto_prikaza == 4){
+				$return.=
+				CHtml::openTag('li').
+				CHtml::link($priponka->slika->ime_slike, $priponka->slika->url, array('rel'=>"boxplus-priponke","target"=>"_blank")).				
+				CHtml::closeTag('li');
+			}
+		}
+		$return.=CHtml::closeTag('ul');
+		return $return;
+	}
+	
+	public function getFullContentHTML(){
+			return $this->getSlikeHTML(2).
+					$this->fulltext.
+					$this->getVideoHTML().
+					$this->getPriponkeHTML().
+					$this->getSlikeHTML(3);
+	}
+	
+	public function getSummaryHTML(){
+		$retrun="";
+		if(trim($this->slika)!="")
+			$retrun .= CHtml::image($this->slika, $this->title, array('style'=>'float:left;', 'class'=>'title-img'));
+		
+		$retrun.=$this->introtext;
+		return $retrun;
 	}
 	
 public function afterConstruct(){

@@ -65,6 +65,22 @@ class Slike extends CActiveRecord
 		);
 	}
 
+    /*
+     * Funkcija vrne pot do slike za trenutno vsebino
+     */
+    public function potDoSlike($idd_vsebine) {
+
+        $command = Yii::app()->db->createCommand()
+            ->selectDistinct('s.pot, s.ime_slike')
+            ->from('vs_slike s')
+            ->join('vs_slike_vsebine sv', 'sv.id_slike=s.id')
+            ->where("sv.id_vsebine = '$idd_vsebine'")
+            ->queryAll();
+
+         //print_r($command);
+        return $command;
+    }
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

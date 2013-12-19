@@ -23,13 +23,20 @@ class ICalParser extends Parser {
         } else{
 		     
             // Loop over each channel item and store relevant data
-            $ical = new ICal('basictest.ics');
+            $ical = new ICal('protected/runtime/basictest.ics');
+            if ($ical->events() != false) { // preverimo, ce je brez eventsov
+                $events = $ical->events();
+                foreach ($events as $event) {
+                        $this->loop($event);
+                }			   
+            } 
+            /*
             $events = $ical->events();
             foreach ($events as $event) {
                     $this->loop($event);
             }			   
+             */
         }
-			//print_r($channel);
 	           
         $this->after();
 
@@ -38,8 +45,8 @@ class ICalParser extends Parser {
     // preverjanje trenutnega hasha    
     public function after() {
         $this->afterProcess();
-        echo "<br />";
-        echo "Trenutni hash: " .$this->trenutni_hash;
+        //echo "<br />";
+        //echo "Trenutni hash: " .$this->trenutni_hash;
     }
 
     public function loop(& $event) {
@@ -55,7 +62,8 @@ class ICalParser extends Parser {
         // filanje koledarja in vsebine
         $vsebina->title=preg_replace('[\\\]', '', $event['SUMMARY']);
         $vsebina->global_id=$event['UID'];
-        $vsebina->introtext=preg_replace('[\\\]', '', preg_replace('/\v+|\\\[rn]/', '<br />', $event['DESCRIPTION']));
+        //$vsebina->introtext=preg_replace('[\\\]', '', preg_replace('/\v+|\\\[rn]/', '<br />', $event['DESCRIPTION']));
+        $vsebina->introtext=preg_replace('[\\\]', '', preg_replace('/\v+|\\\[rn]/', ' ', $event['DESCRIPTION']));
         $vsebina->created=date('d-m-Y G:i:s', strtotime($event['CREATED']));
         $koledar->naslov=preg_replace('[\\\]', '', $event['SUMMARY']);
         $koledar->zacetek=date('d-m-Y G:i:s', strtotime($event['DTSTART']));
@@ -81,8 +89,8 @@ class ICalParser extends Parser {
     public function readSource() {
         try { 
                 // ustvarimo datoteko datoteko in jo nafilamo z vsebino prebrano iz urlja za parsanje
-                file_put_contents("basictest.ics", file_get_contents($this->stran_model->url));
-                $icsfile = file_get_contents("basictest.ics");
+                file_put_contents("protected/runtime/basictest.ics", file_get_contents($this->stran_model->url));
+                $icsfile = file_get_contents("protected/runtime/basictest.ics");
 
                 //preveri, če se je stran spremenila
                 $this->trenutni_hash = md5($icsfile);

@@ -16,5 +16,7 @@
 	<?php echo CHtml::encode($data->tip); ?>
 	<br />
 
-
+	<b><?php echo CHtml::encode($data->getAttributeLabel('mejli')); ?>:</b>
+	<?php echo CHtml::encode($data->mejli); ?>
+	<br />
 </div>
