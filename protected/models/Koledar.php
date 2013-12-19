@@ -107,4 +107,34 @@ class Koledar extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+	
+	public function najdiDogodkeNaPortalu($portal, $offset=0, $limit=50, $od=false, $do=false){
+		Yii::trace("zacetek", 'models.Koledar.najdiDogodkeNaPortalu()');
+		$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+		$criteria->join='INNER JOIN {{vsebine}} as v ON t.id_vsebine = v.id'."\n";
+		$criteria->join.='INNER JOIN {{portali_vsebine}} as pv 
+						ON pv.id_vsebine = v.id 
+						and pv.id_portala = :portal 
+						and pv.status=2';		
+		$criteria->params = array(':portal'=>$portal);
+		$criteria->limit=$limit;
+		$criteria->offset=$offset;
+		$criteria->order="zacetek ASC";
+		if($od){
+			$criteria->addCondition("zacetek >= :od");
+			$criteria->params[':od']=$od;
+		}
+		else{
+			$criteria->addCondition("DATE(zacetek) >= CURDATE()");
+		}
+		
+		if($do){
+			$criteria->addCondition("zacetek <= :do");
+			$criteria->params[':do']=$do;
+		}
+		Yii::trace(CVarDumper::dumpAsString($criteria), 'models.Koledar.najdiDogodkeNaPortalu()');
+		return $this->findAll($criteria);
+	}
 }
