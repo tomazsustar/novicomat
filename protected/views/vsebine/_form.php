@@ -318,9 +318,19 @@ $this->widget('ext.jqrelcopy.JQRelcopy',
 					$i=1;
 					foreach ($model->portali as $portal){
 						$options=array();
-						if($portal->tip==2)
+                        // ce je portal tipa 2, prikazemo obkljukano in dodamo tag v kljucne besede
+						if($portal->tip==2) {
 							$options['onclick']='addTagFromCbx(document.getElementById("tags"), this, "'.$portal->tag.'")';
-						echo CHtml::checkBox("Portali[$portal->id]", $portal->checked, $options).$portal->domena;
+                            echo CHtml::checkBox("Portali[$portal->id]", $portal->checked, $options).$portal->domena;
+                        }
+                        // ce je portal tipa 3 odkljukamo portal
+                        elseif($portal->tip==3) {
+                            echo CHtml::checkBox("Portali[$portal->id]", false, $options).$portal->domena;
+                        }
+                        // za vse ostale prikazemo kljukico
+                        else { 
+                            echo CHtml::checkBox("Portali[$portal->id]", $portal->checked, $options).$portal->domena;
+                        }
 						if($i<count($model->portali))echo ', '; $i++;
 					}
 				}

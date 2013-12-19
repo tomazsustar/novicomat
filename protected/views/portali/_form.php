@@ -27,6 +27,12 @@
 		<?php echo $form->error($model,'tip'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'mejli'); ?>
+		<?php echo $form->textField($model,'mejli',array('size'=>60,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'mejli'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
