@@ -135,4 +135,5 @@ class ZDate{
 		$a=self::MESECI_KRATKO();
 		return $a[$stMeseca];
 	}
+	
 }

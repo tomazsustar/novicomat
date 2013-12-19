@@ -352,7 +352,7 @@ class Vsebine extends CActiveRecord
 	 * @param int $portal id portala
 	 * @param int $limit
 	 */
-	public function najdiZaPortal($portal, $start=0, $limit=50){
+	public function najdiZaPortal($portal, $offset=0, $limit=50){
 		$criteria = new CDbCriteria();
 		//$criteria->select = '*';
 		//$criteria->condition = 'email=:email AND pass=:pass';
@@ -363,9 +363,25 @@ class Vsebine extends CActiveRecord
 		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
 		$criteria->params = array(':portal'=>$portal);
 		$criteria->limit=$limit;
-		$criteria->offset=$start;
+		$criteria->offset=$offset;
 		$criteria->order="publish_up DESC";
 		return $this->findAll($criteria);
+	}
+	
+	public function prestejZaPortal($portal){
+		$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
+						ON pv.id_vsebine = t.id 
+						and pv.id_portala = :portal 
+						and pv.status=2';
+		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->params = array(':portal'=>$portal);
+		//$criteria->limit=$limit;
+		//$criteria->offset=$offset;
+		//$criteria->order="publish_up DESC";
+		return $this->count($criteria);
 	}
 	
 	public function najdiVsebinoNaPortalu($portal, $id){
@@ -382,6 +398,8 @@ class Vsebine extends CActiveRecord
 		
 		return $this->findAll($criteria);
 	}
+	
+	
 	
 	public function getSlikeHTML($mestoPrikaza){
 		switch ($mestoPrikaza){
@@ -412,7 +430,7 @@ class Vsebine extends CActiveRecord
 			if($priponka->mesto_prikaza == 4){
 				$return.=
 				CHtml::openTag('li').
-				CHtml::link($priponka->slika->ime_slike, $priponka->slika->url, array('rel'=>"boxplus-priponke","target"=>"_blank")).				
+				CHtml::link($priponka->slika->ime_slike, $priponka->slika->url, array('rel'=>"boxplus-priponke")).				
 				CHtml::closeTag('li');
 			}
 		}
