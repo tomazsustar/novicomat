@@ -87,8 +87,9 @@ class VsebineController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-		
-		if(Yii::app()->user->checkAccess('urejanjeNovic', $model)){
+        // da se resimo erroja, za urejanje uvozene vsebine:
+        $params = array('created_by'=>$model->created_by);
+		if(Yii::app()->user->checkAccess('urejanjeNovic', $params)){
 		
 			$this->layout='//layouts/column1';
 			$this->saveVsebine($model, 'update');
