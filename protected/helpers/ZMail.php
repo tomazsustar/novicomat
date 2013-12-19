@@ -4,7 +4,7 @@ Yii::import('application.extensions.phpmailer.JPhpMailer');
 
 class ZMail {
 
-    public function poslimejl($portal, $model) {
+    static public function poslimejl($portal, $model) {
         // vsak mejl se shrani v svoje polje
         $mejli = explode(",", str_replace(" ", "", $portal->mejli));
         $naslov = $model->title;
