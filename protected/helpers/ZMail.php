@@ -5,6 +5,7 @@ Yii::import('application.extensions.phpmailer.JPhpMailer');
 class ZMail {
 
     public function poslimejl($portal, $model) {
+    	Yii::trace("zacetekMejli");
         // vsak mejl se shrani v svoje polje
         $mejli = explode(",", str_replace(" ", "", $portal->mejli));
         $naslov = $model->title;
@@ -16,7 +17,7 @@ class ZMail {
         $mail->CharSet = "UTF-8";
         $mail->IsSMTP();
         $mail->SMTPAuth = true;
-        $mail->Host = Yii::app()->params['mailHost'];
+        list($mail->Host, $mail->Port) = explode(':',Yii::app()->params['mailHost']);
         $mail->Username = Yii::app()->params['mailUser'];
         $mail->Password = Yii::app()->params['mailPass'];
         $mail->SetFrom(Yii::app()->params['mailSetFrom'], 'Novicomat');
@@ -28,16 +29,19 @@ class ZMail {
 
         $mail->Subject = 'Naslov: '  . $naslov;
         $mail->MsgHTML('<p><strong>Naslov: </strong>' .$model->title . '</p><p><strong>Avtor: </strong>' . $model->author . '</p><br />' . '<strong>Vsebina: </strong>' . $model->fulltext . '<br /><br /><p>---<p><p>To vsebino je uredil uporabnik (email) v sistemu novicomat.si. Za morebitna vprašanja se obrnite na ekipa@zelnik.net</p> <br />' );
-
-
-        Yii::trace("zacetekMejli");
-        Yii::trace(CVarDumper::dumpAsString($mail));
+        
         // dodajanje vsakega mejla posebej
         foreach ($mejli as $mejll) {
             $mail->AddCC($mejll);
         }
 
-        $mail->Send();
+        if($mail->Send()){      
+       	 	Yii::trace("Poslano ... OK");
+       	 	Yii::trace(CVarDumper::dumpAsString($mejli));
+        }else{
+        	Yii::trace(CVarDumper::dumpAsString($portal));
+        	Yii::trace(CVarDumper::dumpAsString($mail));
+        }
     }
 }
 
