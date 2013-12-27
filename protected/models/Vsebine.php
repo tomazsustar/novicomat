@@ -271,15 +271,20 @@ class Vsebine extends CActiveRecord
 	public function onAfterSave($event){
 		// posodobi seznam ključnih besed
 		$tags_array = Tags::model()->str_to_array($this->tags);
+
 		
 		//shrani v bazo tiste značke, ki jih v bazi še ni
 		$non_existing_tags = Tags::model()->findNonExistingTags($tags_array);
+            Yii::trace("klicemoNeobstojece");
+            Yii::trace(CVarDumper::dumpAsString($non_existing_tags));
 		//die(print_r($non_existing_tags, true));
 		foreach ($non_existing_tags as $tag){
 			
 			$model= new Tags;
 			$model->tag=$tag;
 			$model->save(false);
+            Yii::trace("posamezna");
+            Yii::trace(CVarDumper::dumpAsString($model->tag));
 		}
 		
 		// poveži članek in značke
@@ -288,7 +293,10 @@ class Vsebine extends CActiveRecord
 		TagsVsebina::model()->deleteAllByAttributes(array('id_vsebine'=>$this->id));
 		
 		// poveži članek in značke
-		$tags=Tags::model()->findAll("tag IN ('".implode("','", $tags_array)."')"); // najde značke
+		$tags=Tags::model()->findAll("BINARY tag IN ('".implode("','", $tags_array)."')"); // najde značke - BINARY = case sensitive
+            Yii::trace("najdeneZnacke");
+            Yii::trace(CVarDumper::dumpAsString($model->tag));
+            //die('<p>pavz</p>');
 		
 		foreach ($tags as $tag){
 			
