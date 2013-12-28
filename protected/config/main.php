@@ -16,7 +16,7 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 
 	'name'=>'Novicomat',
-	//'theme'=>'twitter_fluid',	
+	'theme'=>'classic',	
 
 	// preloading 'log' component
 	'preload'=>array('log'),

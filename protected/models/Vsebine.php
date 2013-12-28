@@ -295,7 +295,7 @@ class Vsebine extends CActiveRecord
 		// poveži članek in značke
 		$tags=Tags::model()->findAll("BINARY tag IN ('".implode("','", $tags_array)."')"); // najde značke - BINARY = case sensitive
             Yii::trace("najdeneZnacke");
-            Yii::trace(CVarDumper::dumpAsString($model->tag));
+            //Yii::trace(CVarDumper::dumpAsString($model->tag)); // tole meče error
             //die('<p>pavz</p>');
 		
 		foreach ($tags as $tag){
@@ -369,6 +369,7 @@ class Vsebine extends CActiveRecord
 						and pv.id_portala = :portal 
 						and pv.status=2';
 		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->condition = 't.publish_up < current_timestamp';
 		$criteria->params = array(':portal'=>$portal);
 		$criteria->limit=$limit;
 		$criteria->offset=$offset;
@@ -385,6 +386,7 @@ class Vsebine extends CActiveRecord
 						and pv.id_portala = :portal 
 						and pv.status=2';
 		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->condition = 't.publish_up < current_timestamp';
 		$criteria->params = array(':portal'=>$portal);
 		//$criteria->limit=$limit;
 		//$criteria->offset=$offset;
@@ -409,7 +411,7 @@ class Vsebine extends CActiveRecord
 	
 	
 	
-	public function getSlikeHTML($mestoPrikaza){
+	public function getSlikeHTML($mestoPrikaza, $rel="boxplus-slike"){
 		switch ($mestoPrikaza){
 			case 2:	$return=CHtml::openTag('div', array('class'=>"prispevek-slike")); break;
 			case 3: $return=CHtml::openTag('div', array('class'=>"prispevek-galerija")); break;
@@ -418,7 +420,7 @@ class Vsebine extends CActiveRecord
 			if($mestoPrikaza==$slika->mesto_prikaza){
 				$return.=
 				CHtml::openTag('div').
-				CHtml::openTag('a', array('href'=>$slika->slika->url, 'rel'=>"boxplus-slike","target"=>"_blank")).
+				CHtml::openTag('a', array('href'=>$slika->slika->url, 'rel'=>$rel,"target"=>"_blank")).
 				CHtml::image($slika->slika->url2, $slika->slika->url2).
 				CHtml::closeTag('a').
 				CHtml::closeTag('div');
@@ -446,12 +448,12 @@ class Vsebine extends CActiveRecord
 		return $return;
 	}
 	
-	public function getFullContentHTML(){
-			return $this->getSlikeHTML(2).
+	public function getFullContentHTML($imgRel="boxplus-slike"){
+			return $this->getSlikeHTML(2, $imgRel).
 					$this->fulltext.
 					$this->getVideoHTML().
 					$this->getPriponkeHTML().
-					$this->getSlikeHTML(3);
+					$this->getSlikeHTML(3, $imgRel);
 	}
 	
 	public function getSummaryHTML(){

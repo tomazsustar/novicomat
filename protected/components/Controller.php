@@ -21,6 +21,16 @@ class Controller extends CController
 	 */
 	public $breadcrumbs=array();
 	
+	public function init(){
+		Yii::trace('zacetek', 'Controller.init()');
+		$portal=Yii::app()->request->getQuery('portal', false);
+		Yii::trace('portal='.$portal, 'Controller.init()');
+		if($portal) {
+				Yii::app()->theme=$portal;
+		}
+		Yii::trace('theme='.Yii::app()->theme->name, 'Controller.init()');
+	}
+	
 /**
 	 * 
 	 * Enter description here ...
