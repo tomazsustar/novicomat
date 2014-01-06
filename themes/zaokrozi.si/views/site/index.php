@@ -13,7 +13,7 @@ $this->layout='//layouts/firstpage';
 		<div class="clear"></div>
 			<?php 	$this->widget('ZVsebineListWidget', array(
 				'id'=>'zgodbe',
-				'itemView'=>'//vsebine/_view',
+				'itemView'=>'//vsebine/_zgodbe',
 				'template'=>'{items}',
 				'tag'=>'zgodbe',
 				'limit'=>6
