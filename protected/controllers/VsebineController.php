@@ -34,12 +34,18 @@ class VsebineController extends Controller
 			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
+				'users'=>array('*'),
+				//'users'=>array('@'),
+			),
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('adminIndex'),
 				//'users'=>array('*'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('update', 'create', 'loadCategories', 'aclist', 'izvoz',  ),
 				'roles'=>array('avtor'),
+				'users'=>array('@'),
 			),
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -219,7 +225,7 @@ class VsebineController extends Controller
                                     //die('<p>PAVZA</p><br />');
                     }
                     }
-								$this->redirect(array('index'));
+								$this->redirect(array('adminIndex'));
 							}else{
 								//samo shrani
 								$this->redirect(array('update','id'=>$model->id));
@@ -292,7 +298,7 @@ class VsebineController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionAdminIndex()
 	{
 		if (Yii::app()->user->checkAccess('admin')){
 			$dataProvider=new CActiveDataProvider('Vsebine', 
@@ -313,6 +319,27 @@ class VsebineController extends Controller
 			  )
 			);
 		}
+		
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	
+	public function actionIndex()
+	{
+		
+	$dataProvider=new CActiveDataProvider('Vsebine', array(
+	    	'criteria'=>Vsebine::getCriteriaZaPortal(Yii::app()->name))
+	    );
+//	    'countCriteria'=>array(
+//	        'condition'=>'status=1',
+//	        // 'order' and 'with' clauses have no meaning for the count query
+//	    ),
+//	    'pagination'=>array(
+//	        'pageSize'=>20,
+//	    ),
+		
+		//$dataProvider= new CActiveDataProvider(Vsebine::model()->najdiZaPortal(Yii::app()->name));
 		
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,

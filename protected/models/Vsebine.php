@@ -354,6 +354,39 @@ class Vsebine extends CActiveRecord
 		
 	}
 	
+	public static function getCriteriaZaPortal($portal, $offset=0, $limit=50, $tag=false){
+		Yii::trace('$portal='.$portal);
+		if (!is_int($portal)){
+			$portal=Portali::model()->findByAttributes(array('domena'=>$portal));
+			$portal=$portal->id;
+		}
+		Yii::trace('$portal='.$portal);
+		$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
+						ON pv.id_vsebine = t.id 
+						and pv.id_portala = :portal 
+						and pv.status=2 ';
+		$criteria->params = array(':portal'=>$portal);
+		if($tag){
+			$criteria->join.='
+				INNER JOIN {{tags_vsebina}} as tv
+				ON tv.id_vsebine = t.id 
+				INNER JOIN {{tags}} as ta
+				ON tv.id_tag = ta.id
+				AND ta.tag=:tag ';
+			$criteria->params[':tag'] = $tag;
+		}
+		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->condition = 't.publish_up < current_timestamp';
+		
+		$criteria->limit=$limit;
+		$criteria->offset=$offset;
+		$criteria->order="publish_up DESC";
+		return $criteria;
+	}
+	
 	/**
 	 * 
 	 * Najde vse objavljene vsebine za določen portal
@@ -361,19 +394,7 @@ class Vsebine extends CActiveRecord
 	 * @param int $limit
 	 */
 	public function najdiZaPortal($portal, $offset=0, $limit=50){
-		$criteria = new CDbCriteria();
-		//$criteria->select = '*';
-		//$criteria->condition = 'email=:email AND pass=:pass';
-		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
-						ON pv.id_vsebine = t.id 
-						and pv.id_portala = :portal 
-						and pv.status=2';
-		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
-		$criteria->condition = 't.publish_up < current_timestamp';
-		$criteria->params = array(':portal'=>$portal);
-		$criteria->limit=$limit;
-		$criteria->offset=$offset;
-		$criteria->order="publish_up DESC";
+		$criteria=self::getCriteriaZaPortal($portal, $offset=0, $limit=50);
 		return $this->findAll($criteria);
 	}
 	
