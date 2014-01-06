@@ -136,8 +136,8 @@ class Slike extends CActiveRecord
 			
 			//load
 			WideImage::load($this->pot.$this->ime_slike)
-				->resize(265, 177, 'outside')
-				->crop('center', 'center', 265, 177)
+				->resize(300, 200, 'outside')
+				->crop('center', 'center', 300, 200)
 				->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$this->ime_slike);
 			
 			//set url2

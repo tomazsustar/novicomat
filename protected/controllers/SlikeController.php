@@ -294,7 +294,7 @@ class SlikeController extends Controller
 			
 			WideImage::load(str_replace(' ', '_', Yii::app()->params['imgDir'].'tmp/'.$filename))
 				->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
-				->resize(265, 177, 'outside')				
+				->resize(300, 200, 'outside')				
 				->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$filename);
 				
 			unlink(Yii::app()->params['imgDir'].'tmp/'.$filename);

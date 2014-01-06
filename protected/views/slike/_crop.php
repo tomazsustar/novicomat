@@ -13,23 +13,23 @@ $width=$size[0]; $height = $size[1];
 	
 $scale=1;
 $style="";
-if($width/$height > 265/177){
+if($width/$height > 300/200){
 	if($width>600){
 		$style = 'width:600px';
 		
 	}
-	$initial_width = round(265*$height/177);
+	$initial_width = round(300*$height/200);
 	$initial_height = $height;
 	$canvas_width = $width;
-	$canvas_height = round($width*177/265);
+	$canvas_height = round($width*200/300);
 	
 }else{
 	if($height>401){
-		$style = 'height:401px';	}
+		$style = 'height:400px';	}
 	
 	$initial_width = $width;
-	$initial_height = round(177*$width/265);
-	$canvas_width = round($height*265/177);
+	$initial_height = round(200*$width/300);
+	$canvas_width = round($height*300/200);
 	$canvas_height = $height;
 }
 
@@ -63,7 +63,7 @@ $this->widget(
     		'imageHeight'=>$canvas_height,
     		'parent'=>'#popup',
             'handles' => 'true',
-    		'aspectRatio'=>'265:177',
+    		'aspectRatio'=>'300:200',
             'onSelectEnd' => "js: function (img, selection) {
 						            $('input[name=\"x1\"]').val(selection.x1);
 						            $('input[name=\"y1\"]').val(selection.y1);
