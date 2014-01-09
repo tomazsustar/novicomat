@@ -74,7 +74,7 @@ class Slike extends CActiveRecord
             ->selectDistinct('s.pot, s.ime_slike')
             ->from('vs_slike s')
             ->join('vs_slike_vsebine sv', 'sv.id_slike=s.id')
-            ->where("sv.id_vsebine = '$idd_vsebine'")
+            ->where("sv.id_vsebine = '$idd_vsebine' AND sv.mesto_prikaza != '3'") // slike, ki imajo mesto prikaza različno od 3
             ->queryAll();
 
          //print_r($command);
