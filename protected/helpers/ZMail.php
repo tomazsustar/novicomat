@@ -38,7 +38,7 @@ class ZMail extends CActiveRecord{
         }
 		
         $avtor= (trim($model->author_alias)=="")?Yii::app()->user->name:$model->author_alias;
-        $mail->Subject = 'Naslov: '  . $naslov;
+        $mail->Subject = 'Za objavo: '  . $naslov;
         $mail->MsgHTML('<p><strong>Naslov: </strong>' .$model->title . '</p>
         				<p><strong>Avtor: </strong>' . $avtor . '</p>' . 
         				'<p><strong>Uvodno besedilo: </strong></p><p>' . $model->introtext .'</p>'. 
@@ -69,7 +69,7 @@ class ZMail extends CActiveRecord{
             list($mail2->Host, $mail2->Port) = explode(':',Yii::app()->params['mailHost']);
             $mail2->Username = Yii::app()->params['mailUser'];
             $mail2->Password = Yii::app()->params['mailPass'];
-            $mail2->SetFrom(Yii::app()->params['mailSetFrom'], 'Novicomat - obvestilo');
+            $mail2->SetFrom(Yii::app()->params['mailSetFrom'], 'Novicomat');
             $mail2->Subject = 'Obvestilo o poslanem prispevku';
             $msg='<p>Vaš prispevek je bil uspešno poslan na naslednje naslove:</p>' . '<p>'.$listamejlov .'</p>'.'<br />' . 
             				'<p><strong>Naslov: </strong>' . $model->title . '</p>

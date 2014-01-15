@@ -280,16 +280,16 @@ class Vsebine extends CActiveRecord
 
         // seznam alasov
         $tagsClean = Tags::model()->str_to_array_alias($non_existing_tags);
-
-		foreach (array_combine($non_existing_tags, $tagsClean) as $tag=>$cleanTag) {
-			$model= new Tags;
-			$model->tag=$tag;
-            $model->alias=$cleanTag;
-			$model->save(false);
-            Yii::trace("posamezna");
-            Yii::trace(CVarDumper::dumpAsString($model->tag));
+		if (count($non_existing_tags)){
+			foreach (array_combine($non_existing_tags, $tagsClean) as $tag=>$cleanTag) {
+				$model= new Tags;
+				$model->tag=$tag;
+	            $model->alias=$cleanTag;
+				$model->save(false);
+	            Yii::trace("posamezna");
+	            Yii::trace(CVarDumper::dumpAsString($model->tag));
+			}
 		}
-
 		// poveži članek in značke
 		// izbriši obstoječe povezave za ta članek
 		TagsVsebina::model()->deleteAllByAttributes(array('id_vsebine'=>$this->id));
@@ -358,7 +358,7 @@ class Vsebine extends CActiveRecord
 	
 	public static function getCriteriaZaPortal($portal, $offset=0, $limit=50, $tag=false){
 		Yii::trace('$portal='.$portal);
-		if (!is_int($portal)){
+		if (!is_numeric($portal)){
 			$portal=Portali::model()->findByAttributes(array('domena'=>$portal));
 			$portal=$portal->id;
 		}

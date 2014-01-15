@@ -5,7 +5,7 @@
               <div class="text"><?php echo $data->introtext; ?></div>
         </a>
         <div id="readmore">
-			<a href="<?php echo Yii::app()->theme->baseUrl; ?>/novica1.html"><span class="readmore">VEČ</span></a>
+			<a href="<?php echo $this->createUrl("Vsebine/View", array('id'=>$data->id));?>"><span class="readmore">VEČ</span></a>
 		</div>
      </div>
 	

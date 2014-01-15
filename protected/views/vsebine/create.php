@@ -1,11 +1,11 @@
 <?php
 $this->breadcrumbs=array(
-	'Vsebine'=>array('index'),
+	'Vsebine'=>array('adminIndex'),
 	'Dodaj prispevek',
 );
 
 $this->menu=array(
-	array('label'=>'Prispevki', 'url'=>array('index')),
+	array('label'=>'Prispevki', 'url'=>array('adminIndex')),
 	array('label'=>'Urejanje vsebin', 'url'=>array('admin')),
 );
 ?>

@@ -19,7 +19,7 @@
 <!-- Slide 2 End -->
 
 <?php //TODO potrebujemo dodatne nastavitve pri članku za vsak portal 
-if($model->id == 583 || $model->id == 584){
+if(in_array($model->id, array(583, 584, 3558, 3560))){
 	Yii::import('ext.ZContactFormWidget.ZContactFormWidget');
 	$this->widget('ZContactFormWidget');
 	}

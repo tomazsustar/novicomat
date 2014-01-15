@@ -112,7 +112,7 @@ class VsebineController extends Controller
 	
 	private function saveVsebine(&$model, $action){
 		if(isset($_POST['preklici'])){
-			$this->redirect(array('index'));
+			$this->redirect(array('adminIndex'));
 		}
 		Yii::import('ext.multimodelform.MultiModelForm');
 

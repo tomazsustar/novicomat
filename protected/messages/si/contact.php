@@ -22,6 +22,6 @@ return array (
 	'Body'=>'Sporočilo',
 	'Email'=>'Email',
 	'Verification Code'=>'Koda za preverjanje',
-	'success'=>'Vaše sporočilo je bilo poslano. Zahvaljujemo se vam da ste nas kontaktirali. Odgovorili vam bomo takoj, ko bo to mogoče.',
+	'success'=>'Zahvaljujemo se vam za vaše sporočilo. Odgovorili bomo takoj, ko bo to mogoče.',
 	'error'=>'Prišlo je do napake. Za nastalo situacijo se vam iskreno opravičujemo.',
 );

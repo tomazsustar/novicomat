@@ -69,8 +69,8 @@ class ZString {
 	}
 	
 	public static function get_url_save_string($string){
-			$poisci = array('\"',"\'"," ","č","š","ž","Č","Š","Ž",".");
-            $zamenjaj = array("_","_","_","c","s","z","C","S","Z","_");
+			$poisci = array('\"',"\'"," ","č","š","ž","Č","Š","Ž");
+            $zamenjaj = array("_","_","_","c","s","z","C","S","Z");
             $return = str_replace($poisci, $zamenjaj, $string);
             return strtolower($return);
 	}
