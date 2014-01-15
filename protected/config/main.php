@@ -89,6 +89,9 @@ return array(
 				
 			),
 		),
+		'widgetFactory'=>array(
+            'enableSkin'=>true,
+        ),
 	),
 
 	// application-level parameters that can be accessed

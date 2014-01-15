@@ -13,3 +13,9 @@
     </div>
 </div>
 <!-- Slide 2 End -->
+
+<?php //TODO potrebujemo dodatne nastavitve pri članku za vsak portal 
+if($model->id == 583 || $model->id == 584){
+	Yii::import('ext.ZContactFormWidget.ZContactFormWidget');
+	$this->widget('ZContactFormWidget');
+	}?>

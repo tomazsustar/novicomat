@@ -21,7 +21,8 @@
 	
     <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
     
-	<script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.js"></script>
+	<!-- script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.js"></script -->
+	<?php Yii::app()->getClientScript()->registerCoreScript('jquery');?>
     <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.easing.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.prettyPhoto.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery.sticky.js"></script>

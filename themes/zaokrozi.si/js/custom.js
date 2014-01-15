@@ -1,28 +1,28 @@
 jQuery(document).ready(function ($) {
 
 /* Contact Form */
-var $contactform  = $('#contact-form'),
-    $success    = '<strong>Successfully!</strong> Your message has been sent. Thank you for using our contact form! We will contact you soon.';
-	$error      = '<strong>Error!</strong> Required fields are not filled or filled incorrectly, please send a check and try again.';
-   
-    $contactform.submit(function(){
-        $.ajax({
-            type: "POST",
-            url: "php/contact.php",
-            data: $(this).serialize(),
-            success: function(msg) {
-                if (msg == 'SEND') {
-                    response = '<div class="successfully">'+ $success +'</div>';
-                }
-                else {
-                    response = '<div class="error">'+ $error +'</div>';
-                }
-                $(".error,.successfully").remove();
-                $contactform.prepend(response);
-            }
-         });
-        return false;
-    });
+//var $contactform  = $('#contact-form'),
+//    $success    = '<strong>Successfully!</strong> Your message has been sent. Thank you for using our contact form! We will contact you soon.';
+//	$error      = '<strong>Error!</strong> Required fields are not filled or filled incorrectly, please send a check and try again.';
+//   
+//    $contactform.submit(function(){
+//        $.ajax({
+//            type: "POST",
+//            url: "php/contact.php",
+//            data: $(this).serialize(),
+//            success: function(msg) {
+//                if (msg == 'SEND') {
+//                    response = '<div class="successfully">'+ $success +'</div>';
+//                }
+//                else {
+//                    response = '<div class="error">'+ $error +'</div>';
+//                }
+//                $(".error,.successfully").remove();
+//                $contactform.prepend(response);
+//            }
+//         });
+//        return false;
+//    });
 
 $(window).stellar();
 

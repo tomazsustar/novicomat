@@ -19,7 +19,8 @@ class VsebineController extends Controller
 			'accessControl', // perform access control for CRUD operations
 		);
 	}
-
+	
+	
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -33,7 +34,7 @@ class VsebineController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'captcha', 'contact'),
 				'users'=>array('*'),
 				//'users'=>array('@'),
 			),
@@ -423,7 +424,15 @@ class VsebineController extends Controller
 				'class' => 'application.extensions.EAutoCompleteAction',
 				'model' => 'Tags',
 				'attribute' => 'tag'
-			)
+			),
+		
+			// captcha action renders the CAPTCHA image displayed on the contact page
+			'captcha'=>array(
+				'class'=>'CCaptchaAction',
+				'backColor'=>0xFFFFFF,
+			),
+			'contact' =>array('class' => 'ext.ZContactFormWidget.ZContactFormAction')
+		
 		);
 			
 	}

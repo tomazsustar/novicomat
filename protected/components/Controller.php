@@ -21,6 +21,16 @@ class Controller extends CController
 	 */
 	public $breadcrumbs=array();
 	
+//	public function actions()
+//		{ return array(
+//			// captcha action renders the CAPTCHA image displayed on the contact page
+//			'captcha'=>array(
+//				'class'=>'CCaptchaAction',
+//				'backColor'=>0xFFFFFF,
+//			),
+//		);
+//	}
+	
 //	public function init(){
 //		Yii::trace('zacetek', 'Controller.init()');
 //		$portal=Yii::app()->request->getQuery('portal', false);
