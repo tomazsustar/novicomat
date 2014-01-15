@@ -1,5 +1,5 @@
 <?php
-$devel_hosts = array('localhost', '127.0.0.1', 'local.zaokrozi.si');
+$devel_hosts = array('localhost', '127.0.0.1');
 
 
 if(in_array($_SERVER['HTTP_HOST'], $devel_hosts) || strpos($_SERVER['HTTP_HOST'], 'local')===0)

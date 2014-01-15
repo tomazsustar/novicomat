@@ -19,16 +19,6 @@ return array(
 	'theme'=>'zaokrozi.si',	
 	'language'=>'si',
 	
-	// autoloading model and component classes
-	'import'=>array(
-		'application.models.*',
-		'application.models.joomla15.*',
-		'application.components.*',
-		'application.components.parsers.*',
-		'application.vendors.*',
-		'application.helpers.*',
-	),	
-	
 	
 	// application components
 	'components'=>array(
@@ -67,6 +57,10 @@ return array(
 //            'connectionID'=>'db',
 //			'defaultRoles'=>array('zelnik.net-avtor'),
 //        ),
+	),
+	'params'=>array(
+			// this is used in contact page
+			'adminEmail'=>'info@zaokrozi.si',
 	),
 
 	// application-level parameters that can be accessed
