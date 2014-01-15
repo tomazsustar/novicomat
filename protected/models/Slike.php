@@ -68,10 +68,10 @@ class Slike extends CActiveRecord
     /*
      * Funkcija vrne pot do slike za trenutno vsebino
      */
-    public function potDoSlike($idd_vsebine) {
+    public function najdiSlike($idd_vsebine) {
 
         $command = Yii::app()->db->createCommand()
-            ->selectDistinct('s.pot, s.ime_slike')
+            ->selectDistinct('s.pot, s.ime_slike, s.url2')
             ->from('vs_slike s')
             ->join('vs_slike_vsebine sv', 'sv.id_slike=s.id')
             ->where("sv.id_vsebine = '$idd_vsebine' AND sv.mesto_prikaza != '3'") // slike, ki imajo mesto prikaza različno od 3

@@ -1,4 +1,8 @@
 <?php $this->layout='//layouts/defaultpage'; ?>
+<?php 
+	Yii::import('ext.ZBoxplusWidget.ZBoxplusWidget');
+	$this->widget('ZBoxplusWidget', array('theme'=>'prettyphoto'));
+?>
 <!-- Slide 2 Start -->
 <div class="slide" id="slide2" data-slide="1">
     <div class="container clearfix">
@@ -18,4 +22,5 @@
 if($model->id == 583 || $model->id == 584){
 	Yii::import('ext.ZContactFormWidget.ZContactFormWidget');
 	$this->widget('ZContactFormWidget');
-	}?>
+	}
+?>

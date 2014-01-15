@@ -96,7 +96,13 @@ class DateTimeDBBehavior  extends CActiveRecordBehavior
 				continue;
 			}
 			
-			$event->sender->$columnName = new ZDate($event->sender->$columnName);
+			//Yii::trace($columnName);
+			try {
+				$event->sender->$columnName = new ZDate($event->sender->$columnName);
+			} catch (Exception $e) {
+				//pustimo kot je...
+			}
+			
 			
 //			if ($column->dbType == 'date'){				
 //				//$event->sender->$columnName = Yii::app()->dateFormatter->formatDateTime(

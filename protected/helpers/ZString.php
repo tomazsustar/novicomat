@@ -69,9 +69,10 @@ class ZString {
 	}
 	
 	public static function get_url_save_string($string){
-		return str_replace(array(" "), 
-						   array('_'), 
-						   $string);
+			$poisci = array('\"',"\'"," ","č","š","ž","Č","Š","Ž",".");
+            $zamenjaj = array("_","_","_","c","s","z","C","S","Z","_");
+            $return = str_replace($poisci, $zamenjaj, $string);
+            return strtolower($return);
 	}
 	
 }

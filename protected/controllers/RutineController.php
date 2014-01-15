@@ -50,7 +50,10 @@ class RutineController extends Controller
 		
 			if(Yii::app()->user->checkAccess('admin')) echo "admin";
 			if(Yii::app()->user->checkAccess('avtor')) echo "avtor";
-			
+		
+		if(isset($_POST['tags']))
+			$this->tagAliases();
+		
 		$this->render('rutine');
 	}
 		
@@ -86,6 +89,15 @@ class RutineController extends Controller
 		$auth->assign('admin',Users::model()->getID('admin'));
 //		$auth->assign('admin',Users::model()->getID('Brozzy'));
 		
+		
+	}
+	
+	protected function tagAliases(){
+		$tags=Tags::model()->findAll();
+		foreach ($tags as $tag){
+			$tag->alias=ZString::get_url_save_string($tag->tag);
+			$tag->save(false);
+		}		
 		
 	}
 }

@@ -202,3 +202,6 @@ ALTER TABLE `vs_portali` ADD `mejli` VARCHAR( 127 ) NOT NULL AFTER `tip` ;
 
 -- Dodano novo polje v vs_tags z imenom 'alias'
 ALTER TABLE `vs_tags` ADD `alias` VARCHAR( 256 ) NOT NULL ;
+
+-- 15.1.2014 imported spremenjen v null 
+ALTER TABLE  `vs_vsebine` CHANGE  `imported`  `imported` DATETIME NULL ;

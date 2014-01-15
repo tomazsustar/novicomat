@@ -111,8 +111,30 @@
 	</div>
 </div>
 <!-- Slide 21 End -->
-
 <!-- Slide 10 Start -->
+
+<div class="slide" id="slide10" data-slide="10">
+<div class="container clearfix">
+        <div class="grid_12">
+            <h1>Kontakt</h1>
+            <div class="clear"></div>
+        </div>
+        <div class="grid_12">
+            <p>Zaokroži, zavod za pomoč in trajnostni razvoj</p>
+			<ul class="contact-info">
+				<li class="fontawesome-icon icon-map-marker"><span> Miličinskega ulica 68, Ljubljana</span></li>
+				<li class="fontawesome-icon icon-envelope"><span> info@zaokrozi.si</span></li>
+			</ul>
+        </div>
+<?php
+
+Yii::import('ext.ZContactFormWidget.ZContactFormWidget');
+	$this->widget('ZContactFormWidget');
+	?>
+</div>
+</div>
+<!-- Slide 10 End -->
+<!-- Slide 10 Start 
 <div class="slide" id="slide10" data-slide="10">
     <div class="container clearfix">
         <div class="grid_12">
@@ -127,7 +149,7 @@
 			</ul>
         </div>
 		
-		<!-- Contact Form Start -->
+		
 		<div class="grid_12">
 		<div class="contact-form">
 			<form method="post" id="contact-form">
@@ -145,7 +167,7 @@
 		</div>
 		</div>
 		<div class="clear"></div>
-		<!-- Contact Form End -->
+		 Contact Form End -->
 	</div>
 </div>
 <!-- Slide 10 End -->

@@ -214,18 +214,18 @@ class VsebineController extends Controller
 		    				
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteItems,$masterValues)){
 							if(isset($_POST['objavi'])){
-                                    //$this->poslimejl($portal, $model);
-					$povss=PortaliVsebine::model()->findAllByAttributes(array('id_vsebine'=>$model->id));
-                    foreach ($povss as  $povs) {
-                    Yii::trace("Zacetek");
-                    Yii::trace(CVarDumper::dumpAsString($povs));
-					if(isset($_POST['Portali'][$povs->portal->id])){
-                                    if ($povs->portal->tip==3) {
-                                    ZMail::poslimejl($povs->portal, $model);
-                                    }
-                                    //die('<p>PAVZA</p><br />');
-                    }
-                    }
+                                //$this->poslimejl($portal, $model);
+								$povss=PortaliVsebine::model()->findAllByAttributes(array('id_vsebine'=>$model->id));
+			                    foreach ($povss as  $povs) {
+				                    Yii::trace("Zacetek");
+				                    Yii::trace(CVarDumper::dumpAsString($povs));
+									if(isset($_POST['Portali'][$povs->portal->id])){
+	                                    if ($povs->portal->tip==3) {
+	                                    ZMail::poslimejl($povs->portal, $model);
+	                                    }
+			                            //die('<p>PAVZA</p><br />');
+			                    	}
+			                    }
 								$this->redirect(array('adminIndex'));
 							}else{
 								//samo shrani

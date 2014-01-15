@@ -444,7 +444,7 @@ class Vsebine extends CActiveRecord
 				$return.=
 				CHtml::openTag('div').
 				CHtml::openTag('a', array('href'=>$slika->slika->url, 'rel'=>$rel,"target"=>"_blank")).
-				CHtml::image($slika->slika->url2, $slika->slika->url2).
+				CHtml::image($slika->slika->url2, "").
 				CHtml::closeTag('a').
 				CHtml::closeTag('div');
 			}
