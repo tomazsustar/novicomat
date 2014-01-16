@@ -167,7 +167,9 @@ class ZDate extends DateTime{
 	}
 	
 	public function __toString(){
-		return $this->datum().' '.$this->ura();
+		$return=$this->datum();
+		if($this->ura())$return.=' '.$this->ura();
+		return $return;
 	}
 	
 }

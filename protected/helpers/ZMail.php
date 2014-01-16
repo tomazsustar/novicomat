@@ -45,7 +45,7 @@ class ZMail extends CActiveRecord{
         				'<p><strong>Vsebina: </strong></p>' . $model->fulltext . 
         				'<br /><br /><p>---<p><p>To sporočilo je bilo avtomatsko generirano v sistemu novicomat.si. 
         				Za morebitna vprašanja se obrnite na ekipa@zelnik.net</p> <br />' . 
-        				'<p>---</p><p>Uporabnik: ' . Yii::app()->user->name . '<p>Email: </p>'); 
+        				'<p>---</p><p>Uporabnik: ' . Yii::app()->user->name . '<p>Email: '.$userMejl.'</p>'); 
         
         // dodajanje vsakega mejla posebej
         foreach ($mejli as $mejll) {
@@ -69,6 +69,7 @@ class ZMail extends CActiveRecord{
             list($mail2->Host, $mail2->Port) = explode(':',Yii::app()->params['mailHost']);
             $mail2->Username = Yii::app()->params['mailUser'];
             $mail2->Password = Yii::app()->params['mailPass'];
+            $mail->AddReplyTo(Yii::app()->params['adminEmail']);
             $mail2->SetFrom(Yii::app()->params['mailSetFrom'], 'Novicomat');
             $mail2->Subject = 'Obvestilo o poslanem prispevku';
             $msg='<p>Vaš prispevek je bil uspešno poslan na naslednje naslove:</p>' . '<p>'.$listamejlov .'</p>'.'<br />' . 

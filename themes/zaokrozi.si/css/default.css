@@ -1644,6 +1644,20 @@ a.email:hover {
 .prispevek-slike {
 float: right;
 }
+.prispevek-slike img{
+	width: 266px;
+}
+
+.prispevek-galerija{
+	width:100%;
+	overflow: hidden;
+	}
+
+.prispevek-galerija div {
+	width: 200px;
+	float: left;
+	margin: 2px;
+}
 
 #yw0_button{
 		border: none;
@@ -1666,3 +1680,4 @@ padding-right: 14px;
 	color:red;
 	font-size:14px;
 }
+
