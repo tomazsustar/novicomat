@@ -295,7 +295,7 @@ class Vsebine extends CActiveRecord
 		// poveži članek in značke
 		$tags=Tags::model()->findAll("BINARY tag IN ('".implode("','", $tags_array)."')"); // najde značke - BINARY = case sensitive
             Yii::trace("najdeneZnacke");
-            Yii::trace(CVarDumper::dumpAsString($model->tag));
+        //  Yii::trace(CVarDumper::dumpAsString($model->tag));
             //die('<p>pavz</p>');
 		
 		foreach ($tags as $tag){
