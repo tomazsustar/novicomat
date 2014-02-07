@@ -156,6 +156,7 @@ class Vsebine extends CActiveRecord
 			'dogodki' => array(self::HAS_MANY, 'Koledar',   'id_vsebine'),      
 			'slvs' => array(self::HAS_MANY, 'SlikeVsebine', 'id_vsebine', 'order'=>'slvs.zp_st ASC', 'with'=>'slika'),
 			'povs' => array(self::HAS_MANY, 'PortaliVsebine', 'id_vsebine'),
+			'tagsvs' => array(self::HAS_MANY, 'TagsVsebina', 'id_vsebine'),
 //			'slike' =>array(self::MANY_MANY, 'Slike', '{{slike_vsebine}}(id_vsebine, id_slike)')
 		);
 	}
@@ -437,6 +438,28 @@ class Vsebine extends CActiveRecord
 		return $this->findAll($criteria);
 	}
 	
+	public function hasTag($tag){
+		//$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+//		$criteria->from='{{tags}}';
+//		$criteria->join='INNER JOIN {{tags_vsebina}} as tv 
+//						ON tv.id_tag = t.id 
+//						and tv.id_vsebine = :id_vsebine
+//						and t.tag = :tag';
+//		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+//		$criteria->params = array(':id_vsebine'=>$this->id, ':tag'=>$tag);
+//		return $this->count($criteria);
+		return $command = Yii::app()->db->createCommand()
+            ->select('COUNT(*)')
+            ->from('{{tags}} as t')
+            ->join('{{tags_vsebina}} as tv', 'tv.id_tag = t.id
+            								and tv.id_vsebine = :id_vsebine
+											and t.tag = :tag',
+            								array(':id_vsebine'=>$this->id, ':tag'=>$tag))
+            //->where("sv.id_vsebine = '$idd_vsebine' AND sv.mesto_prikaza != '3'") // slike, ki imajo mesto prikaza različno od 3
+            ->queryScalar();
+	}
 	
 	
 	public function getSlikeHTML($mestoPrikaza, $rel="boxplus-slike"){

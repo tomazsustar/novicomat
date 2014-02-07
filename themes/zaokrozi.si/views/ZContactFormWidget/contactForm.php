@@ -76,12 +76,14 @@
 
 </div><!-- form -->
 <div class="clear"></div>
-<div class="grid_12">
-	<ul class="contact-info">
-		<li class="fontawesome-icon icon-envelope"><span> info@zaokrozi.si</span></li>
-	</ul>
-</div>
-</div>
+	<?php if(Yii::app()->controller->id=='vsebine')://if ($this->)?>
+	<div class="grid_12">
+		<ul class="contact-info">
+			<li class="fontawesome-icon icon-envelope"><span> info@zaokrozi.si</span></li>
+		</ul>
+	</div>
+	</div>
+	<?php endif;?>
 <?php endif; ?>
 
 </div>
