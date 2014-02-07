@@ -271,32 +271,39 @@ class Vsebine extends CActiveRecord
 	public function onAfterSave($event){
 		// posodobi seznam ključnih besed
 		$tags_array = Tags::model()->str_to_array($this->tags);
-
 		
 		//shrani v bazo tiste značke, ki jih v bazi še ni
 		$non_existing_tags = Tags::model()->findNonExistingTags($tags_array);
             Yii::trace("klicemoNeobstojece");
             Yii::trace(CVarDumper::dumpAsString($non_existing_tags));
 		//die(print_r($non_existing_tags, true));
-		foreach ($non_existing_tags as $tag){
-			
-			$model= new Tags;
-			$model->tag=$tag;
-			$model->save(false);
-            Yii::trace("posamezna");
-            Yii::trace(CVarDumper::dumpAsString($model->tag));
+
+        // seznam alasov
+        $tagsClean = Tags::model()->str_to_array_alias($non_existing_tags);
+		if (count($non_existing_tags)){
+			foreach (array_combine($non_existing_tags, $tagsClean) as $tag=>$cleanTag) {
+				$model= new Tags;
+				$model->tag=$tag;
+	            $model->alias=$cleanTag;
+				$model->save(false);
+	            Yii::trace("posamezna");
+	            Yii::trace(CVarDumper::dumpAsString($model->tag));
+			}
 		}
-		
 		// poveži članek in značke
-		
 		// izbriši obstoječe povezave za ta članek
 		TagsVsebina::model()->deleteAllByAttributes(array('id_vsebine'=>$this->id));
 		
 		// poveži članek in značke
 		$tags=Tags::model()->findAll("BINARY tag IN ('".implode("','", $tags_array)."')"); // najde značke - BINARY = case sensitive
             Yii::trace("najdeneZnacke");
+
         //  Yii::trace(CVarDumper::dumpAsString($model->tag));
             //die('<p>pavz</p>');
+
+            Yii::trace(CVarDumper::dumpAsString($tags));
+            //Yii::trace(CVarDumper::dumpAsString($model->tag)); // tole meče error
+
 		
 		foreach ($tags as $tag){
 			
@@ -354,6 +361,39 @@ class Vsebine extends CActiveRecord
 		
 	}
 	
+	public static function getCriteriaZaPortal($portal, $offset=0, $limit=50, $tag=false){
+		Yii::trace('$portal='.$portal);
+		if (!is_numeric($portal)){
+			$portal=Portali::model()->findByAttributes(array('domena'=>$portal));
+			$portal=$portal->id;
+		}
+		Yii::trace('$portal='.$portal);
+		$criteria = new CDbCriteria();
+		//$criteria->select = '*';
+		//$criteria->condition = 'email=:email AND pass=:pass';
+		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
+						ON pv.id_vsebine = t.id 
+						and pv.id_portala = :portal 
+						and pv.status=2 ';
+		$criteria->params = array(':portal'=>$portal);
+		if($tag){
+			$criteria->join.='
+				INNER JOIN {{tags_vsebina}} as tv
+				ON tv.id_vsebine = t.id 
+				INNER JOIN {{tags}} as ta
+				ON tv.id_tag = ta.id
+				AND ta.tag=:tag ';
+			$criteria->params[':tag'] = $tag;
+		}
+		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->condition = 't.publish_up < current_timestamp';
+		
+		$criteria->limit=$limit;
+		$criteria->offset=$offset;
+		$criteria->order="publish_up DESC";
+		return $criteria;
+	}
+	
 	/**
 	 * 
 	 * Najde vse objavljene vsebine za določen portal
@@ -361,18 +401,7 @@ class Vsebine extends CActiveRecord
 	 * @param int $limit
 	 */
 	public function najdiZaPortal($portal, $offset=0, $limit=50){
-		$criteria = new CDbCriteria();
-		//$criteria->select = '*';
-		//$criteria->condition = 'email=:email AND pass=:pass';
-		$criteria->join='INNER JOIN {{portali_vsebine}} as pv 
-						ON pv.id_vsebine = t.id 
-						and pv.id_portala = :portal 
-						and pv.status=2';
-		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
-		$criteria->params = array(':portal'=>$portal);
-		$criteria->limit=$limit;
-		$criteria->offset=$offset;
-		$criteria->order="publish_up DESC";
+		$criteria=self::getCriteriaZaPortal($portal, $offset=0, $limit=50);
 		return $this->findAll($criteria);
 	}
 	
@@ -385,6 +414,7 @@ class Vsebine extends CActiveRecord
 						and pv.id_portala = :portal 
 						and pv.status=2';
 		//$criteria->join='INNER JOIN {{portali}} as p ON pv.id_portala = p.id';
+		$criteria->condition = 't.publish_up < current_timestamp';
 		$criteria->params = array(':portal'=>$portal);
 		//$criteria->limit=$limit;
 		//$criteria->offset=$offset;
@@ -409,7 +439,7 @@ class Vsebine extends CActiveRecord
 	
 	
 	
-	public function getSlikeHTML($mestoPrikaza){
+	public function getSlikeHTML($mestoPrikaza, $rel="boxplus-slike"){
 		switch ($mestoPrikaza){
 			case 2:	$return=CHtml::openTag('div', array('class'=>"prispevek-slike")); break;
 			case 3: $return=CHtml::openTag('div', array('class'=>"prispevek-galerija")); break;
@@ -418,8 +448,8 @@ class Vsebine extends CActiveRecord
 			if($mestoPrikaza==$slika->mesto_prikaza){
 				$return.=
 				CHtml::openTag('div').
-				CHtml::openTag('a', array('href'=>$slika->slika->url, 'rel'=>"boxplus-slike","target"=>"_blank")).
-				CHtml::image($slika->slika->url2, $slika->slika->url2).
+				CHtml::openTag('a', array('href'=>$slika->slika->url, 'rel'=>$rel,"target"=>"_blank")).
+				CHtml::image($slika->slika->url2, "").
 				CHtml::closeTag('a').
 				CHtml::closeTag('div');
 			}
@@ -446,12 +476,12 @@ class Vsebine extends CActiveRecord
 		return $return;
 	}
 	
-	public function getFullContentHTML(){
-			return $this->getSlikeHTML(2).
+	public function getFullContentHTML($imgRel="boxplus-slike"){
+			return $this->getSlikeHTML(2, $imgRel).
 					$this->fulltext.
 					$this->getVideoHTML().
 					$this->getPriponkeHTML().
-					$this->getSlikeHTML(3);
+					$this->getSlikeHTML(3, $imgRel);
 	}
 	
 	public function getSummaryHTML(){

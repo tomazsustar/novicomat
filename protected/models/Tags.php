@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $parent
  * @property string $tag
+ * @property string $alias
  */
 class Tags extends CActiveRecord
 {
@@ -41,6 +42,7 @@ class Tags extends CActiveRecord
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, parent, tag', 'safe'),
+			array('alias', 'length', 'max'=>256),
 		);
 	}
 
@@ -64,6 +66,7 @@ class Tags extends CActiveRecord
 			'id' => 'ID',
 			'parent' => 'Parent',
 			'tag' => 'Tag',
+			'alias' => 'Alias',
 		);
 	}
 
@@ -81,6 +84,7 @@ class Tags extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('parent',$this->parent);
 		$criteria->compare('tag',$this->tag,true);
+		$criteria->compare('alias',$this->tag,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -90,7 +94,6 @@ class Tags extends CActiveRecord
 	public function str_to_array($tags_string){
 		$all_tags = explode(',', addslashes($tags_string)); // v zbirko + addslashes
 		$trimed_tags=array();
-        $unikatni_tagi=array();
 
 		foreach ($all_tags as $tag){
 			if(($trimmed_tag = trim($tag)) != "" )
@@ -100,13 +103,30 @@ class Tags extends CActiveRecord
         return array_unique($trimed_tags); // podvojene vrednosti ignoriramo
 	}
 
+    public function str_to_array_alias($tags_alias) {
+		//$all_tags = explode(',', addslashes($tags_alias)); // v zbirko + addslashes
+        $trimed_tags=array();
+
+		foreach ($tags_alias as $tag){
+			if(($trimmed_tag = trim($tag)) != "" )
+            $poisci = array('\"',"\'"," ","č","š","ž","Č","Š","Ž");
+            $zamenjaj = array("_","_","_","c","s","z","C","S","Z");
+            $tagsReplace = str_replace($poisci, $zamenjaj, $trimmed_tag);
+            $cleanTags = strtolower($tagsReplace);
+
+			$trimed_tags[] = $cleanTags; 
+		}
+
+        return array_unique($trimed_tags); // podvojene vrednosti ignoriramo
+    }
+
 	/**
 	 * 
 	 * Najde ključne besede, ki jih še ni v databazi
 	 * @param array $allTags
 	 */
 	public function findNonExistingTags($trimed_tags){
-		$existing_tags=Tags::model()->findAll("BINARY tag IN ('".implode("','", $trimed_tags)."')"); // najde vse besede, ki že obstajajo - BINARY poskrbi da isce z case sensitive
+		$existing_tags=Tags::model()->findAll("BINARY tag IN ('".implode("','", $trimed_tags)."')"); // najde vse tage, ki že obstajajo - BINARY poskrbi da isce z case sensitive
 
 		$existing_tags_simple_array = array();
         foreach ($existing_tags as $tag) {

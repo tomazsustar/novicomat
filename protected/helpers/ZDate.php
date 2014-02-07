@@ -1,6 +1,6 @@
 <?php
 
-class ZDate{
+class ZDate extends DateTime{
 	
 	const FORM_DATE_FORMAT_PHP = 'd.m.Y';
 	const FORM_DATETIME_FORMAT_PHP = 'd.m.Y H:i';
@@ -15,6 +15,9 @@ class ZDate{
 	const DATETIME_REGEX ="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d.\d\d:\d\d^"; // [- /\.](0[1-9]|1[012])[- /\.](19|20)\d\d/";
 	const DATE_REGEX ="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d^";
 	
+	public function __construct($datetime){
+		parent::__construct($datetime);
+	}
 	
 	public static function translateFormat_php($strdate, $format){	
 		if (!(trim($strdate))) return null; //vrne null če je prazen string
@@ -40,9 +43,9 @@ class ZDate{
 	 * @param string $strdate Y-m-d H:i:s
 	 * @param string $strtime H:i:s
 	 */
-	public static function setTime($strdate, $strtime){
-		return substr($strdate, 0, 11).$strtime;
-	}
+//	public static function setTime($strdate, $strtime){
+//		return substr($strdate, 0, 11).$strtime;
+//	}
 	
 	/**
 	 * 
@@ -50,9 +53,9 @@ class ZDate{
 	 * @param string $strdate Y-m-d H:i:s
 	 * @return string $strtime
 	 */
-	public static function getTime($strdate){
-		return substr($strdate, 11);
-	}
+//	public static function getTime($strdate){
+//		return substr($strdate, 11);
+//	}
 	
 	public static function dbNow(){
 		return date(self::DB_DATETIME_FORMAT_PHP, time());
@@ -88,7 +91,7 @@ class ZDate{
 						 '05'=>'maj',
 						 '06'=>'junij',
 						 '07'=>'julij',
-						 '08'=>'august',
+						 '08'=>'avgust',
 						 '09'=>'september',
 						 '10'=>'oktober',
 						 '11'=>'november',
@@ -103,7 +106,7 @@ class ZDate{
 						 '05'=>'maja',
 						 '06'=>'junija',
 						 '07'=>'julija',
-						 '08'=>'augusta',
+						 '08'=>'avgusta',
 						 '09'=>'septembra',
 						 '10'=>'oktobra',
 						 '11'=>'novembra',
@@ -118,7 +121,7 @@ class ZDate{
 						 '05'=>'maj',
 						 '06'=>'jun',
 						 '07'=>'jul',
-						 '08'=>'aug',
+						 '08'=>'avg',
 						 '09'=>'sep',
 						 '10'=>'okt',
 						 '11'=>'nov',
@@ -131,9 +134,42 @@ class ZDate{
 		if($mesec=array_search($imeMeseca, self::MESECI_KRATKO())) return $mesec;
 	}
 	
-	public static function imeMeseca($stMeseca){
+	public function imeMesecaKratko(){
+		$a=self::MESECI_KRATKO();
+		return $a[$this->format('m')];
+	}
+	
+	public static function imeMesecaKtatkoSt($stMeseca){
 		$a=self::MESECI_KRATKO();
 		return $a[$stMeseca];
+	}
+	public function imeMeseca(){
+		$a=self::MESECI();
+		return $a[$this->format('m')];
+	}
+	
+	public static function imeMesecaSt($stMeseca){
+		$a=self::MESECI();
+		return $a[$stMeseca];
+	}
+	public function datumDB(){
+		return $this->format(self::DB_DATE_FORMAT_PHP);
+	}
+	
+	public function datum(){
+		return $this->format(self::FORM_DATE_FORMAT_PHP);
+	}
+	
+	public function ura(){
+		$ura = $this->format('H:i');
+		if($ura=="00:00") return false;
+		else return $ura;
+	}
+	
+	public function __toString(){
+		$return=$this->datum();
+		if($this->ura())$return.=' '.$this->ura();
+		return $return;
 	}
 	
 }

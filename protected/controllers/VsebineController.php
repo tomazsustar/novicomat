@@ -19,7 +19,8 @@ class VsebineController extends Controller
 			'accessControl', // perform access control for CRUD operations
 		);
 	}
-
+	
+	
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -33,13 +34,19 @@ class VsebineController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'captcha', 'contact'),
+				'users'=>array('*'),
+				//'users'=>array('@'),
+			),
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('adminIndex'),
 				//'users'=>array('*'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('update', 'create', 'loadCategories', 'aclist', 'izvoz',  ),
 				'roles'=>array('avtor'),
+				'users'=>array('@'),
 			),
 			
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -105,7 +112,7 @@ class VsebineController extends Controller
 	
 	private function saveVsebine(&$model, $action){
 		if(isset($_POST['preklici'])){
-			$this->redirect(array('index'));
+			$this->redirect(array('adminIndex'));
 		}
 		Yii::import('ext.multimodelform.MultiModelForm');
 
@@ -207,19 +214,19 @@ class VsebineController extends Controller
 		    				
 						 if (MultiModelForm::save($member,$validatedMembers,$deleteItems,$masterValues)){
 							if(isset($_POST['objavi'])){
-                                    //$this->poslimejl($portal, $model);
-					$povss=PortaliVsebine::model()->findAllByAttributes(array('id_vsebine'=>$model->id));
-                    foreach ($povss as  $povs) {
-                    Yii::trace("Zacetek");
-                    Yii::trace(CVarDumper::dumpAsString($povs));
-					if(isset($_POST['Portali'][$povs->portal->id])){
-                                    if ($povs->portal->tip==3) {
-                                    ZMail::poslimejl($povs->portal, $model);
-                                    }
-                                    //die('<p>PAVZA</p><br />');
-                    }
-                    }
-								$this->redirect(array('index'));
+                                //$this->poslimejl($portal, $model);
+								$povss=PortaliVsebine::model()->findAllByAttributes(array('id_vsebine'=>$model->id));
+			                    foreach ($povss as  $povs) {
+				                    Yii::trace("Zacetek");
+				                    Yii::trace(CVarDumper::dumpAsString($povs));
+									if(isset($_POST['Portali'][$povs->portal->id])){
+	                                    if ($povs->portal->tip==3) {
+	                                    ZMail::poslimejl($povs->portal, $model);
+	                                    }
+			                            //die('<p>PAVZA</p><br />');
+			                    	}
+			                    }
+								$this->redirect(array('adminIndex'));
 							}else{
 								//samo shrani
 								$this->redirect(array('update','id'=>$model->id));
@@ -292,7 +299,7 @@ class VsebineController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionAdminIndex()
 	{
 		if (Yii::app()->user->checkAccess('admin')){
 			$dataProvider=new CActiveDataProvider('Vsebine', 
@@ -313,6 +320,27 @@ class VsebineController extends Controller
 			  )
 			);
 		}
+		
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	
+	public function actionIndex()
+	{
+		
+	$dataProvider=new CActiveDataProvider('Vsebine', array(
+	    	'criteria'=>Vsebine::getCriteriaZaPortal(Yii::app()->name))
+	    );
+//	    'countCriteria'=>array(
+//	        'condition'=>'status=1',
+//	        // 'order' and 'with' clauses have no meaning for the count query
+//	    ),
+//	    'pagination'=>array(
+//	        'pageSize'=>20,
+//	    ),
+		
+		//$dataProvider= new CActiveDataProvider(Vsebine::model()->najdiZaPortal(Yii::app()->name));
 		
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
@@ -396,7 +424,15 @@ class VsebineController extends Controller
 				'class' => 'application.extensions.EAutoCompleteAction',
 				'model' => 'Tags',
 				'attribute' => 'tag'
-			)
+			),
+		
+			// captcha action renders the CAPTCHA image displayed on the contact page
+			'captcha'=>array(
+				'class'=>'CCaptchaAction',
+				'backColor'=>0xFFFFFF,
+			),
+			'contact' =>array('class' => 'ext.ZContactFormWidget.ZContactFormAction')
+		
 		);
 			
 	}

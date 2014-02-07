@@ -1,12 +1,12 @@
 <?php
 $this->breadcrumbs=array(
-	'Vsebine'=>array('index'),
+	'Vsebine'=>array('adminIndex'),
 	$model->title=>array('view','id'=>$model->id),
 	'Uredi',
 );
 
 $this->menu=array(
-	array('label'=>'Vsebine', 'url'=>array('index')),
+	array('label'=>'Vsebine', 'url'=>array('adminIndex')),
 	array('label'=>'Dodaj prispevek', 'url'=>array('create')),
 	array('label'=>'Pregled pispevka', 'url'=>array('view', 'id'=>$model->id)),
 	array('label'=>'Urejanje vsebin', 'url'=>array('admin')),

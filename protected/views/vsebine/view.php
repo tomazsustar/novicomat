@@ -1,11 +1,11 @@
 <?php
 $this->breadcrumbs=array(
-	'Vsebine'=>array('index'),
+	'Vsebine'=>array('adminIndex'),
 	$model->title,
 );
 
 $this->menu=array(
-	array('label'=>'Vsebine', 'url'=>array('index')),
+	array('label'=>'Vsebine', 'url'=>array('adminIndex')),
 	array('label'=>'Dodaj prispevek', 'url'=>array('create')),
 	array('label'=>'Uredi prispevek', 'url'=>array('update', 'id'=>$model->id)),
 	array('label'=>'Izbriši pispevek', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Ali ste prepričani, da želite izbrisati to vsebino?')),

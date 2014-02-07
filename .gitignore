@@ -1,0 +1,8 @@
+.buildpath
+.project
+.settings/*
+yii
+protected/runtime/*
+server.development.php
+server.production.php
+*~

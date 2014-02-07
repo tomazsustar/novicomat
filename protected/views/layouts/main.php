@@ -29,8 +29,9 @@
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
 				//array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'Vsebine', 'url'=>array('/vsebine/index')),
+				//array('label'=>'Vsebine', 'url'=>array('/vsebine/index')),
 				//array('label'=>'Izvoz', 'url'=>array('/vsebine/izvoz')),
+				array('label'=>'Vsebine', 'url'=>array('/vsebine/adminIndex'), 'visible'=>Yii::app()->user->checkAccess('avtor')),
 				array('label'=>'Lokacije', 'url'=>array('/lokacije/index'), 'visible'=>Yii::app()->user->checkAccess('admin')),
 				array('label'=>'Uvoz', 'url'=>array('/strani/index'), 'visible'=>Yii::app()->user->checkAccess('admin')),
 				array('label'=>'Portali', 'url'=>array('/portali/admin'), 'visible'=>Yii::app()->user->checkAccess('admin')),

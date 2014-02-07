@@ -1,0 +1,560 @@
+/*
+  960 Grid System ~ Core CSS.
+  Learn more ~ http://960.gs/
+
+  Licensed under GPL and MIT.
+*/
+
+/*
+  Forces backgrounds to span full width,
+  even if there is horizontal scrolling.
+  Increase this if your layout is wider.
+
+  Note: IE6 works fine without this fix.
+*/
+
+.grid_1 {
+	width: 6.5%;
+} 
+.grid_2 {
+	width: 15%;
+} 
+.grid_3 {
+	width: 23.5%;
+} 
+.grid_4 {
+	width: 32%;
+} 
+.grid_5 {
+	width: 40.5%;
+}
+.grid_6 {
+	width: 49%;
+} 
+.grid_7 {
+	width: 57.5%;
+} 
+.grid_9 {
+	width: 74.5%;
+} 
+.grid_10 {
+	width: 83%;
+} 
+.grid_11 {
+	width: 91.5%;
+} 
+.grid_12 {
+	width: 100%;
+} 
+
+.grid_1,
+.grid_2,
+.grid_3,
+.grid_4,
+.grid_5,
+.grid_6,
+.grid_7,
+.grid_8,
+.grid_9,
+.grid_10,
+.grid_11,
+.grid_12 {
+	margin: 0 20px 20px 0;
+	float: left;
+	display: block;
+}
+.alpha {
+	margin-left: 0;
+}
+.omega {
+	margin-right: 0;
+}
+.projects-list {
+	margin: 0;
+	padding: 0;
+}
+
+.container{
+	width: 1000px;
+	max-width: 1000px;
+	margin: auto;
+}
+.clear {
+	clear: both;
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+.clearfix:after{
+	position: relative;
+	z-index: 99;
+	clear: both;
+	content: ' ';
+	display: block;
+	font-size: 0;
+	line-height: 0;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+* html .clearfix,*:first-child+html .clearfix {
+	zoom: 1;
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1024px) {
+.slide {
+	background-attachment: scroll;
+	background-position: 0 0 !important;
+	overflow-x: hidden;
+}
+.left-border,
+.right-border {
+	display: none;
+}
+
+#slide1 h2 {
+	font-size: 20px;
+	line-height: 55px;
+	margin-left: 0px;
+}	
+.home-text {
+	text-align:center;
+	margin-left: 0px;
+}
+
+}
+
+@media only screen and (min-width: 767px) and (max-width: 1023px) {
+	
+#nav {
+	width:85% !important;
+}
+
+#logo {
+	width:15%;
+	height:76px;
+	margin-bottom: 0;
+}
+
+.sep-shadow {
+	display:none;
+}
+.projects-list {
+    margin-left: 40px;
+}
+#slide1 h1 {
+	font-size: 105px;
+	line-height: 70px;
+}
+#slide1 h2 {
+	font-size: 22px;
+	line-height: 27px;
+	padding: 0px 50px 50px 50px;
+}	
+.home-text {
+	text-align:center;
+}
+.header-description {
+	line-height: 30px;
+}	
+.home-padding {
+	padding: 70px 0 80px;
+}		
+#slide3 p,
+#slide5 p,
+#slide7 p {
+	font-size: 40px;
+	line-height: 25px;
+}
+.foot_block_intouch li {
+	margin-right: 12px;
+}
+.navigation li {
+	margin-left: 0px;
+}
+.container .alpha {
+	margin-left: 0;
+	margin-right: 5px;
+}
+.container .omega {
+	margin-right: 0;
+}
+.grid_3 {
+	width: 266px;
+}
+.grid_4 {
+	width: 228px;
+}
+.grid_5 {
+	width: 290px;
+}
+.grid_6 {
+	width: 352px;
+}
+.grid_7 {
+	width: 414px;
+}
+
+.grid_9 {
+	width: 538px;
+}
+.grid_12,
+.container {
+	width: 724px;
+}
+.left-border,
+.right-border {
+	display: none;
+}
+}
+
+@media only screen and (min-width: 980px) and (max-width: 980px) {
+
+#slide1 h1 {
+	font-size: 145px;
+	line-height: 80px;
+}
+#slide1 h2 {
+	font-size: 20px;
+	line-height: 55px;
+}	
+.home-text {
+	text-align:center;
+}
+}
+
+@media only screen and (max-width: 766px) {
+
+#slide1 h1 {
+	font-size: 77px;
+	line-height: 40px;
+	margin-top: 0px;
+}
+.home-text {
+	text-align: center;
+	margin-top: -40px;
+}
+#slide1 h2 {
+	font-size: 12px;
+	line-height: 28px;
+}
+.left-border,
+.right-border {
+	display:none;
+}
+#slide1 .button-bottom {
+	display: inline-block;
+	margin: 0 10px;
+	z-index: 10000;
+	margin-top: 10px;
+}
+}
+
+@media only screen and (min-width: 480px) and (max-width: 766px) {
+.menu {
+	width:100%;
+	height:76px;
+	text-align:center;
+}
+
+.navigation {
+	text-align:center;
+}
+#nav {
+	height:76px;
+	width:100% !important;
+}
+
+
+#logo {
+	width:0%;
+	height:76px;
+	margin-bottom: 0;
+}
+
+.sep-shadow {
+	display:none;
+}
+
+
+#slide1 h1 {
+	font-size: 72px;
+	line-height: 49px;
+	text-align: center;
+}
+.home-text {
+	font-size: 16px;
+	text-align: center;
+}
+#slide1 h2 {
+	font-size: 20px;
+	line-height: 25px;
+	padding: 20px 0;
+}
+
+.navigation li {
+	padding: 8px 8px;
+	font-size: 14px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	border-radius: 2px;
+	margin: 5px;
+}
+
+ul.navigation {
+	margin: 0;
+	padding-right:10px;
+	float:none;
+}
+#logo {
+	text-align: center;
+}
+.left-border,
+.right-border {
+	display: none;
+}
+.home-padding {
+	padding: 50px 0 80px;
+}
+h1 {
+	float: none;
+	font-size: 36px;
+	border-right: none;
+	margin: 40px 0 5px;
+	line-height:48px;
+}
+.header-description {
+	line-height: 30px;
+}
+.heading-arrow {
+	float: none;
+	margin: 0 0px 10px 20px;
+	font-size: 58px;
+}
+#slide3 p,
+#slide5 p,
+#slide7 p {
+	font-size: 26px;
+	line-height: 22px;
+}
+
+#slide14 p {
+	font-size: 40px;
+	line-height: 50px;
+}
+
+#slide3 h1,
+#slide5 h1,
+#slide7 h1 {
+	font-size: 40px;
+	line-height: 50px;
+	margin-bottom: 10px;
+}
+.grid_1,
+.grid_2,
+.grid_3,
+.grid_4,
+.grid_5,
+.grid_6,
+.grid_7,
+.grid_8,
+.grid_9,
+.grid_10,
+.grid_11,
+.grid_12,
+.container {
+	width: 420px;
+}
+}
+
+@media only screen and (min-width: 640px) and (max-width: 640px) {
+#slide1 h1 {
+	margin-top: 10px;
+	margin-left: 0px;
+}
+
+}
+@media screen and (max-width : 479px) {	
+#nav {
+	width:100% !important;
+	height: 76px;
+}
+
+#logo {
+	width:100%;
+	height:0px;
+	margin-bottom: 0;
+}
+.menu {
+	height: 76px;
+}
+.left-border,
+.right-border {
+	display: none;
+}
+.home-padding {
+	padding: 40px 0 70px;
+}
+#slide1 h1 {
+	font-size: 40px;
+	line-height: 40px;
+}
+.home-text {
+	text-align:center;
+}
+#slide1 h2 {
+	font-size: 18px;
+	line-height: 18px;
+	padding:0;
+}
+h1 {
+	float: none;
+	border-right: none;
+	margin-top: 30px;
+	margin-bottom: 5px;
+	font-size: 36px;
+	line-height: 42px;
+}
+.header-description {
+	line-height: 20px;
+}
+h4 {
+	font-size: 24px;
+}
+#slide1 .button-bottom {
+	display: inline-block;
+	margin: 0 10px;
+	z-index: 10000;
+	margin-top: 60px;
+}
+#slide3 p,
+#slide5 p,
+#slide7 p {
+	font-size: 30px;
+	line-height: 30px;
+}	
+.projects-list .grid_3 {
+	margin-left: 32px;
+}
+.contact-form input[type="text"],
+.contact-form textarea {
+	width: 88%;
+}
+#nav {
+	text-align:center;
+}
+
+.navigation li {
+	padding: 6px 5px;
+	margin: 3px;
+	font-size: 14px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.navigation {
+	text-align:center;
+	float:none;
+}
+
+
+.grid_1,
+.grid_2,
+.grid_3,
+.grid_4,
+.grid_5,
+.grid_6,
+.grid_7,
+.grid_8,
+.grid_9,
+.grid_10,
+.grid_11,
+.grid_12,
+.container {
+	width: 300px;
+}
+
+#slide14 p {
+	font-size: 40px;
+	line-height: 50px;
+}
+
+}
+
+@media screen and (max-width : 399px) {
+
+.projects-list {
+	width: 300px;
+}
+.image-hover {
+	width: 285px;
+	height: 183px;
+}
+.zoom {
+	left: 90px;
+}
+.link {
+	right: 90px;
+}
+.heading-arrow {
+	float: none;
+	margin: 0 0px 10px 20px;
+	font-size: 38px;
+	line-height: 50px;
+}
+#slide3 h1,
+#slide5 h1,
+#slide7 h1 {
+	font-size: 30px;
+	margin-bottom: 15px;
+	line-height: 30px;
+}
+#slide3 p,
+#slide5 p,
+#slide7 p {
+	font-size: 24px;
+	line-height: 18px;
+}
+.copyright {
+	font-size: 14px;
+}
+.grid_1,
+.grid_2,
+.grid_3,
+.grid_4,
+.grid_5,
+.grid_6,
+.grid_7,
+.grid_8,
+.grid_9,
+.grid_10,
+.grid_11,
+.grid_12,
+.container {
+	width: 295px;
+}
+
+#nav {
+	text-align:center;
+}
+
+.navigation li {
+	padding: 6px 5px;
+	margin: 3px;
+	font-size: 14px;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	border-radius: 2px;
+}
+
+.navigation {
+	text-align:center;
+	float:none;
+}
+}
