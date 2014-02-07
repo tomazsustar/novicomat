@@ -1,0 +1,129 @@
+.index_footer div
+{
+float: left;
+width: 50%;
+}
+#index_footer_l
+{
+font-style: italic;
+}
+.uvodne_vsebine
+{
+
+}
+.uvodne_vsebine div
+{
+float: left;
+width: 50%;
+margin-bottom: 20px;
+}
+.uvodne_vsebine p
+{
+margin-top: 5px;
+margin-bottom: 5px;
+font-size: 12pt;
+line-height:1.5;
+}
+.uvodne_vsebine h3 
+{
+font-size:12pt;
+line-height:1;
+margin-bottom:0;
+font-weight:bold;
+}
+.video
+{
+float: left;
+margin: 30px 0 30px 30px;
+}
+.video iframe
+{
+width: 470px;
+height: 265px;
+}
+.kontakti
+{
+margin: 20px 10px;
+width: 190px;
+float: left;
+}
+.kontakti div
+{
+display:table;
+margin: 10px;
+*border: 1px solid grey;
+background-color: #f0f0f0;
+height: 57px;
+width: 190px;
+text-align: center;
+}
+.kontakti div span
+{
+display: table-cell;
+  vertical-align: middle;
+}
+.pred_list
+{
+margin: 20px 10px;
+width: 190px;
+float: left;
+}
+.pred_list div
+{
+display:table;
+margin: 10px;
+border: 1px solid grey;
+height: 265px;
+width: 190px;
+text-align: left;
+font-size:12pt;
+line-height: 1.5;
+}
+.pred_list div span
+{
+display: table-cell;
+  vertical-align: middle;
+}
+.pred_list #cena
+{
+font-size:14pt;
+font-weight: bold;
+text-align: center;
+line-height: 1;
+margin: 0;
+}
+#narocilo
+{
+float:right;
+}
+#narocilo ul
+{
+padding:6px 20px 5px 20px;
+margin:-25px 0 20px 0;
+}
+
+#narocilo ul li
+{
+display: inline;
+padding: 1px;
+}
+#narocilo ul li a
+{
+background-color:transparent;
+font-size:12px;
+font-weight:bold;
+text-decoration:none;
+border: 5px outset #fafafa;
+padding:5px 3px;
+}
+#narocilo ul li.active a
+{
+background-color:#fefefe;
+text-decoration:none;
+border: 1px solid grey;
+padding: 9px 7px;
+}
+.predlog_cene
+{
+border: 1px solid grey;
+}
