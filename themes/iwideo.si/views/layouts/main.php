@@ -14,6 +14,9 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/form.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/default.css" />
+	
+	<?php Yii::app()->getClientScript()->registerCoreScript('jquery');?>
+	
 	<title>iWideo</title>
 </head>
 
