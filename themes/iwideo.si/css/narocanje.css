@@ -1,0 +1,33 @@
+.Table { display:table; width:100%; }
+		.Cell { display:table-cell; padding:1%; width:45%; }
+		.Default { border:2px solid #666; }
+		.Option { border:2px dashed #999; }
+		.Izracuni { border:thin solid #888; padding:5px 15px 5px 15px; vertical-align:middle; margin-left:20px;  }
+		.IndentInput { margin-left:30px; }
+		input { margin:5px 0px 10px 0px; }
+		textarea { margin:5px 0px 10px 0px; }
+		fieldset { margin-bottom:30px; margin-top:20px; }
+		fieldset legend { margin-bottom:10px; }
+		fieldset input { margin-left:30px; }
+		small { margin-left:20px; }
+		
+		#InformativniIzracunTable { padding:10px; border:thin solid #888; width:400px; margin-left:3%; }
+			#InformativniIzracunTable td { padding-left:10px; padding-right:10px; text-align:left; border-bottom:thin solid #999;}
+			#InformativniIzracunTable tfoot td { font-weight: bold; border-bottom: none; }
+		#SubmitForm { 
+			float:right; margin:10px 40px 10px 0px; padding:10px; 
+			border:thin solid #777; 
+			-moz-transition:background-color 0.3s; 
+			-webkit-transition:background-color 0.3s;
+			transition:background-color 0.3s;
+			background-color:transparent; 
+			font-size:1.1em;
+			text-transform:uppercase;
+			cursor:pointer;
+		}
+		#SubmitForm:hover { 
+			-moz-transition:background-color 0.3s; 
+			-webkit-transition:background-color 0.3s;
+			transition:background-color 0.3s;
+			background-color:#6CF; 
+		}
