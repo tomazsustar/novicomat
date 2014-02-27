@@ -13,6 +13,12 @@
 
 <?php 
 
+$this->widget('application.forms.LokacijeWidget'); 
+
+?>
+
+<?php 
+
 $form=$this->beginWidget('ZActiveForm', array(
 	'id'=>'vsebine-form',
 	'enableAjaxValidation'=>false,

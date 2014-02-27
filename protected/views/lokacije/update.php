@@ -1,4 +1,7 @@
 <?php
+/* @var $this LokacijeController */
+/* @var $model Lokacije */
+
 $this->breadcrumbs=array(
 	'Lokacijes'=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
@@ -15,4 +18,4 @@ $this->menu=array(
 
 <h1>Update Lokacije <?php echo $model->id; ?></h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

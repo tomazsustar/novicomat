@@ -15,8 +15,16 @@ class LokacijeController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
+			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
+	
+	public function actions()
+    {
+        return array(
+            'edit'=>'application.controllers.lokacije.createAction',
+        );
+    }
 
 	/**
 	 * Specifies the access control rules.
@@ -27,16 +35,16 @@ class LokacijeController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'roles'=>array('admin'),
+				'actions'=>array('index','view','search'),
+				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'roles'=>array('admin'),
+				'actions'=>array('create','update','edit'),
+				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete'),
-				'roles'=>array('admin'),
+				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -62,12 +70,11 @@ class LokacijeController extends Controller
 	public function actionCreate()
 	{
 		$model=new Lokacije;
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		
+		$this->performAjaxValidation($model);
 
 		if(isset($_POST['Lokacije']))
-		{
+		{			
 			$model->attributes=$_POST['Lokacije'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
@@ -109,17 +116,11 @@ class LokacijeController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		$this->loadModel($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
 	/**
@@ -140,6 +141,7 @@ class LokacijeController extends Controller
 	{
 		$model=new Lokacije('search');
 		$model->unsetAttributes();  // clear any default values
+		
 		if(isset($_GET['Lokacije']))
 			$model->attributes=$_GET['Lokacije'];
 
@@ -147,11 +149,38 @@ class LokacijeController extends Controller
 			'model'=>$model,
 		));
 	}
+	
+	public function actionSearch() {
+		if(isset($_GET['Lokacija'])) {
+			$Input = $_GET['Lokacija'];
+			$Lok = array();
+			if($Input != '0') {
+				$Lokacije = Lokacije::model()->findAllBySql("SELECT * FROM vs_lokacije 
+					WHERE kraj LIKE '".$Input."%'
+					OR ime_lokacije LIKE '".$Input."%'
+					OR ime_stavbe LIKE '".$Input."%'
+					OR ulica_vas LIKE '".$Input."%'
+					OR obcina LIKE '".$Input."%'
+					OR drzava LIKE '".$Input."%'
+					GROUP BY id
+					ORDER BY obcina DESC, kraj DESC, ulica_vas ASC, ime_lokacije DESC
+					LIMIT 7;");
+					
+				foreach($Lokacije as $Lokacija) {
+					array_push($Lok,Lokacije::model()->AssembleSimple($Lokacija));
+				}
+			}
+			
+			echo json_encode($Lok);
+		}
+	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
+	 * @param integer $id the ID of the model to be loaded
+	 * @return Lokacije the loaded model
+	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
@@ -163,7 +192,7 @@ class LokacijeController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
+	 * @param Lokacije $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{

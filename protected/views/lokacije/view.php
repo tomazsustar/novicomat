@@ -1,4 +1,7 @@
 <?php
+/* @var $this LokacijeController */
+/* @var $model Lokacije */
+
 $this->breadcrumbs=array(
 	'Lokacijes'=>array('index'),
 	$model->id,
@@ -19,18 +22,23 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'naziv',
-		'ulica',
+		'ime_lokacije',
+		'ime_prostora',
+		'ime_stavbe',
+		'ulica_vas',
 		'h_st',
 		'postna_st',
-		'posta',
-		'dod_naslov',
+		'kraj',
+		'obcina',
 		'drzava',
-		'id_vsebine',
-		'kontakt',
-		'location',
-		'id_stars',
-		'rezervacije',
-		'izbira',
+		'level',
+		'parent',
+		'geolat',
+		'geolng',
+		'vsebina_id',
+		'uporabnik_id',
+		'gln',
+		'created',
+		'updated',
 	),
 )); ?>

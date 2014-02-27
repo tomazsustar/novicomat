@@ -1,4 +1,7 @@
 <?php
+/* @var $this LokacijeController */
+/* @var $dataProvider CActiveDataProvider */
+
 $this->breadcrumbs=array(
 	'Lokacijes',
 );

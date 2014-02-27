@@ -1,15 +1,18 @@
 <?php
+/* @var $this LokacijeController */
+/* @var $model Lokacije */
+
 $this->breadcrumbs=array(
 	'Lokacijes'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List Lokacije', 'url'=>array('index')),
-	array('label'=>'Manage Lokacije', 'url'=>array('admin')),
+	array('label'=>'Prebrskaj Lokacije', 'url'=>array('index')),
+	array('label'=>'Uredi Lokacije', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Lokacije</h1>
+<h1>Ustvari Lokacijo</h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

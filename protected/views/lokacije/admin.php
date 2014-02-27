@@ -1,4 +1,7 @@
 <?php
+/* @var $this LokacijeController */
+/* @var $model Lokacije */
+
 $this->breadcrumbs=array(
 	'Lokacijes'=>array('index'),
 	'Manage',
@@ -15,7 +18,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('lokacije-grid', {
+	$('#lokacije-grid').yiiGridView('update', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -43,20 +46,25 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'naziv',
-		'ulica',
+		'ime_lokacije',
+		'ime_prostora',
+		'ime_stavbe',
+		'ulica_vas',
 		'h_st',
-		'postna_st',
-		'posta',
 		/*
-		'dod_naslov',
+		'postna_st',
+		'kraj',
+		'obcina',
 		'drzava',
-		'id_vsebine',
-		'kontakt',
-		'location',
-		'id_stars',
-		'rezervacije',
-		'izbira',
+		'level',
+		'parent',
+		'geolat',
+		'geolng',
+		'vsebina_id',
+		'uporabnik_id',
+		'gln',
+		'created',
+		'updated',
 		*/
 		array(
 			'class'=>'CButtonColumn',
