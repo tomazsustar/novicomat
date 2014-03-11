@@ -3,7 +3,7 @@ body
 	margin: 0;
 	padding: 0;
 	color: #555;
-	font: normal 10pt Arial,Helvetica,sans-serif;
+	font: 12px/18px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
 	*background: #EFEFEF;
 }
 
@@ -22,7 +22,7 @@ body
 	*background-image: url( 'logo.png' );
 	background-repeat: no-repeat;
 	height: 70px;
-	border: 10px outset #fafafa;
+	*border: 10px outset #fafafa;
 }
 #logo
 {
@@ -57,20 +57,24 @@ body
 {
 	/* background:white url(bg.gif) repeat-x left top; */
 	*background-color: #000;
-	margin: 20px 0 0 0;
+	margin: 20px 0;
 	float: left;
+	width: 100%;
+	text-align: center;
+	
 }
 
 #mainmenu ul
 {
-	padding:6px 20px 5px 20px;
+	padding:5px;
 	margin:0px;
+	font: 12px/12px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
 }
 
 #mainmenu ul li
 {
 	display: inline;
-	padding: 1px;
+	*padding: 1px;
 }
 
 /* dark superman blue: #121c28 */
@@ -79,22 +83,26 @@ body
 
 #mainmenu ul li a
 {
-	*color:#caf1b0;
-	background-color:transparent;
+	color:white;
+	background-color:#999999;
 	font-size:12px;
-	font-weight:bold;
+	*font-weight:bold;
 	text-decoration:none;
-	border: 1px solid grey;
-	padding:9px 7px;
+	*border-right: 1px solid white;
+	padding:5px;
+	margin-left: -3px;
 }
 
 #mainmenu ul li.active a
 {
-	*color: #caf1b0;
-	background-color:#fefefe;
+	color:white;
+	background-color:#777777;
+	font-size:12px;
+	*font-weight:bold;
 	text-decoration:none;
-	border: 5px inset #fafafa;
-	padding: 5px 3px;
+	*border-right: 1px solid white;
+	padding:5px;
+	margin-left: -3px;
 }
 
 div.flash-error, div.flash-notice, div.flash-success
