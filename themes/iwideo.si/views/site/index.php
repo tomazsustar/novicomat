@@ -14,12 +14,12 @@
 		<div class="kontakti">
                     <a href="mailto:iwideo.info@gmail.com
 					?subject=Povpraševanje na spletni strani iwideo.si">
-					<div><span><center><img src="../themes/iwideo.si/css/mail-grey.png" height="20px"; /><br />
+					<div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/mail-grey.png" height="20px"; /><br />
                     iwideo.info@gmail.com</center></span></div>
                     </a>
-					<div><span><center><img src="../themes/iwideo.si/css/icon_phone_grey.png" height="20px"; /><br />+386 040 69 12 12</strong></center></span></div>
-					<a href="http://www.facebook.com/iwideo"><div><span><center><img src="../themes/iwideo.si/css/fb-grey-icon.png" height="40px"; /></center></span></div></a>
-					<a href="http://www.youtube.com/channel/UCQtu6-5MMHE3BmGB4hKzsqA"><div><span><center><img src="../themes/iwideo.si/css/youtube-grey-icon.png" height="40px"; /></center></span></div></a>
+					<div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/icon_phone_grey.png" height="20px"; /><br />+386 040 69 12 12</strong></center></span></div>
+					<a href="http://www.facebook.com/iwideo"><div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/fb-grey-icon.png" height="40px"; /></center></span></div></a>
+					<a href="http://www.youtube.com/channel/UCQtu6-5MMHE3BmGB4hKzsqA"><div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/youtube-grey-icon.png" height="40px"; /></center></span></div></a>
 		</div>
 <hr />
 <div class="intro">

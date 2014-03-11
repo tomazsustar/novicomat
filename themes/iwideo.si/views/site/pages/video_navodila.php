@@ -28,21 +28,33 @@ $this->breadcrumbs=array(
 			?>
 	<div class="pred_list">
         <div><span>
+			<p id="cena">VKLJUČUJE</p>
+			<br />
 			<ol>
-				<li>scenarij</li>
 				<li>režija</li>
 				<li>snemanje</li>
 				<li>montaža</li>
 				<li>grafika</li>
 				<li>licenčna glasba</li>
 			</ol>
-			<p id="cena">od 340 €</p>
+			<p id="cena">od 360 €</p>
 		</span>
 			
 		</div>
 	</div>
 <hr />
-<center><h2>Ko enkrat vidiš, je tako preprosto.<h2></center>
+<div class="intro">
+<h2><span style="color:#111; font-weight:bold;">Ko enkrat vidiš,</span> je veliko lažje.<h2>
+</div>
+<div id="narocilo">
+			<?php $this->widget('zii.widgets.CMenu',array(
+				'items'=>array(
+				
+					array('label'=>'INFORMATIVNI IZRAČUN', 'url'=>array('/site/page', 'view'=>'pred_narocilo')),
+					
+					),
+			)); ?>
+		</div>
 <hr />
 <!-- uvodne vsebine -->
 			<?php 	$this->widget('ZVsebineListWidget', array(
