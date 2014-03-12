@@ -1,4 +1,4 @@
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
 
 -- --------------------------------------------------------
 

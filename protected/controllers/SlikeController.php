@@ -279,8 +279,32 @@ class SlikeController extends Controller
 	public function actionObrezi($id){
 		$model=$this->loadModel($id);
 		if(!class_exists('WideImage', false)) 
-				require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
-				//shrani na disk
+			require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
+
+		$filename=basename($model->url);
+
+		$slika = WideImage::load(str_replace(' ', '_', Yii::app()->params['imgDir'].'tmp/'.$filename));
+		
+		$tslika = $slika;
+		$tslika
+			->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
+			->resize(300, 200, 'outside')				
+			->saveToFile(Yii::app()->params['imgDir'].'slikce/300x200/'.$filename);
+
+		$tslika = $slika;
+		$tslika
+			->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
+			->resize(150, 100, 'outside')				
+			->saveToFile(Yii::app()->params['imgDir'].'slikce/150x100/'.$filename);
+			
+		unlink(Yii::app()->params['imgDir'].'tmp/'.$filename);
+	}
+
+	public function actionObreziNew($id){
+		$model=$this->loadModel($id);
+		if(!class_exists('WideImage', false)) 
+			require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
+			//shrani na disk
 		
 //		$url=$_POST['image_url'];
 //		$filename=basename($url);
@@ -290,14 +314,23 @@ class SlikeController extends Controller
 //			echo CJSON::encode(array($slika, $msg));
 //		}else{
 //			//load
-			$filename=basename($model->url);
+		$filename=basename($model->url);
+
+		$slika = WideImage::load(str_replace(' ', '_', Yii::app()->params['imgDir'].'tmp/'.$filename));
+		
+		$tslika = $slika;
+		$tslika
+			->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
+			->resize(300, 200, 'outside')				
+			->saveToFile(Yii::app()->params['imgDir'].'slikce/300x200/'.$filename);
+
+		$tslika = $slika;
+		$tslika
+			->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
+			->resize(150, 100, 'outside')				
+			->saveToFile(Yii::app()->params['imgDir'].'slikce/150x100/'.$filename);
 			
-			WideImage::load(str_replace(' ', '_', Yii::app()->params['imgDir'].'tmp/'.$filename))
-				->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
-				->resize(300, 200, 'outside')				
-				->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$filename);
-				
-			unlink(Yii::app()->params['imgDir'].'tmp/'.$filename);
+		unlink(Yii::app()->params['imgDir'].'tmp/'.$filename);
 // $img=WideImage::load($model->url)->saveToFile((Yii::app()->params['imgDir'].$filename));
 //			
 //			//shrani v bazo
@@ -315,5 +348,4 @@ class SlikeController extends Controller
 //		}
 		//print_r($_POST);
 	}
-	
 }

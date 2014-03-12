@@ -6,7 +6,9 @@
  * The followings are the available columns in table '{{slike}}':
  * @property integer $id
  * @property string $url
+ * @property string $url1
  * @property string $url2
+ * @property string $url3
  * @property string $opis
  * @property string $title
  * @property string $avtor
@@ -44,11 +46,11 @@ class Slike extends CActiveRecord
 		return array(
 			array('url', 'required'),
 			array('title, avtor', 'length', 'max'=>256),
-			array('datum, url2, opis, title, avtor, tags, pot', 'safe'),
+			array('datum, url1, url2, url3, opis, title, avtor, tags, pot', 'safe'),
 			array('ime_slike','unique', 'message'=>'Slika s tem imenom že obstaja'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, url, url2, opis, title, avtor, datum, tags', 'safe', 'on'=>'search'),
+			array('id, url, url1, url2, url3, opis, title, avtor, datum, tags', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -89,7 +91,9 @@ class Slike extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'url' => 'Url',
+			'url1' => 'Url1',
 			'url2' => 'Url2',
+			'url3' => 'Url3',
 			'opis' => 'Opis',
 			'title' => 'Title',
 			'avtor' => 'Avtor',
@@ -113,7 +117,9 @@ class Slike extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('url',$this->url,true);
+		$criteria->compare('url1',$this->url1,true);
 		$criteria->compare('url2',$this->url2,true);
+		$criteria->compare('url3',$this->url3,true);
 		$criteria->compare('opis',$this->opis,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('avtor',$this->avtor,true);
@@ -131,17 +137,46 @@ class Slike extends CActiveRecord
 	 * @param Slike $slika_mdl
 	 */
 	public function slikca(){
-			if(!class_exists('WideImage', false)) 
-				require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
-			
-			//load
-			WideImage::load($this->pot.$this->ime_slike)
-				->resize(300, 200, 'outside')
-				->crop('center', 'center', 300, 200)
-				->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$this->ime_slike);
-			
-			//set url2
-			$this->url2=Yii::app()->params['imgUrl'].'slikce/'.$this->ime_slike;
+		if(!class_exists('WideImage', false)) 
+			require_once Yii::app()->basePath.'/vendors/wideimage/WideImage.php';
 		
+		//load
+		$img = WideImage::load($this->pot.$this->ime_slike);
+		$sx = $img->getWidth();
+		$sy = $img->getHeight();
+		$raz = $sx/$sy;
+		$nm = sqrt(1228800/$raz);
+		$sxn = intval($raz*$nm);
+		$syn = intval($nm);
+
+		if($sx * $sy > 1228800) {
+			$imgt = $img;
+			$imgt
+				->resize($sxn, $syn, 'outside')
+				->saveToFile(Yii::app()->params['imgDir'].'slikce/1280x960/'.$this->ime_slike);
+		} else {
+			$imgt = $img;
+			$imgt
+				->saveToFile(Yii::app()->params['imgDir'].'slikce/1280x960/'.$this->ime_slike);
+		}
+		
+
+		$imgt = $img;
+		$imgt
+			->resize(300, 200, 'outside')
+			->crop('center', 'center', 300, 200)
+			->saveToFile(Yii::app()->params['imgDir'].'slikce/300x200/'.$this->ime_slike);
+
+		$imgt = $img;
+		$imgt
+			->resize(150, 100, 'outside')
+			->crop('center', 'center', 150, 100)
+			->saveToFile(Yii::app()->params['imgDir'].'slikce/150x100/'.$this->ime_slike);
+		
+		//set url2
+		$this->url=Yii::app()->params['imgUrl'].'slikce/1280x960/'.$this->ime_slike;
+		$this->url1=Yii::app()->params['imgUrl'].$this->ime_slike;
+		$this->url2=Yii::app()->params['imgUrl'].'slikce/300x200/'.$this->ime_slike;
+		$this->url3=Yii::app()->params['imgUrl'].'slikce/150x100/'.$this->ime_slike;
 	}
 }
