@@ -28,6 +28,8 @@ $this->breadcrumbs=array(
 			?>
 	<div class="pred_list">
         <div><span>
+			<p id="cena">VKLJUČUJE</p>
+			<br />
 			<ol>
 				<li>scenarij</li>
 				<li>režija</li>
@@ -42,7 +44,18 @@ $this->breadcrumbs=array(
 		</div>
 	</div>
 <hr />
-<center><h2>Preprosto. Hitro. Ugodno.<h2></center>
+<div class="intro">
+<h2><span style="color:#111; font-weight:bold;">Preprosto.</span> Hitro. Ugodno.<h2>
+</div>
+<div id="narocilo">
+			<?php $this->widget('zii.widgets.CMenu',array(
+				'items'=>array(
+				
+					array('label'=>'INFORMATIVNI IZRAČUN', 'url'=>array('/site/page', 'view'=>'pred_narocilo')),
+					
+					),
+			)); ?>
+		</div>
 <hr />
 <!-- uvodne vsebine -->
 			<?php 	$this->widget('ZVsebineListWidget', array(

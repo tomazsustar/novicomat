@@ -43,16 +43,23 @@ height: 265px;
 }
 .kontakti
 {
+font-size: 12pt;
+line-height: 24pt;
 margin: 20px 10px;
 width: 190px;
 float: left;
 }
+.kontakti a
+{
+color: #555;
+}
 .kontakti div
 {
+border-top: 1px solid #ddd;
 display:table;
 margin: 10px;
-*border: 1px solid grey;
-background-color: #f0f0f0;
+border-bottom: 1px solid #ddd;
+background-color: #f7f7f7;
 height: 57px;
 width: 190px;
 text-align: center;
@@ -62,21 +69,31 @@ text-align: center;
 display: table-cell;
   vertical-align: middle;
 }
+.cena_prva_stran
+{
+float:right;
+margin: -34px 34px 0 0;
+font-size: 18pt;
+font-weight: bold;
+}
 .pred_list
 {
+
 margin: 20px 10px;
 width: 190px;
 float: left;
 }
 .pred_list div
 {
+border-top: 1px solid #ddd;
 display:table;
 margin: 10px;
-border: 1px solid grey;
-height: 265px;
+border-bottom: 1px solid #ddd;
+background-color: #f7f7f7;
+height: 264px;
 width: 190px;
 text-align: left;
-font-size:12pt;
+font-size:11pt;
 line-height: 1.5;
 }
 .pred_list div span
@@ -98,10 +115,9 @@ float:right;
 }
 #narocilo ul
 {
-padding:6px 20px 5px 20px;
-margin:-25px 0 20px 0;
+*padding:6px 20px 5px 20px;
+margin:-34px 6px 0 0;
 }
-
 #narocilo ul li
 {
 display: inline;
@@ -109,12 +125,13 @@ padding: 1px;
 }
 #narocilo ul li a
 {
-background-color:transparent;
-font-size:12px;
-font-weight:bold;
-text-decoration:none;
-border: 5px outset #fafafa;
-padding:5px 3px;
+background-color: #000176;
+font-size: 12px;
+font-weight: bold;
+text-decoration: none;
+/* border: 5px outset #fafafa; */
+padding: 8px 9px;
+color: white;
 }
 #narocilo ul li.active a
 {
@@ -126,4 +143,10 @@ padding: 9px 7px;
 .predlog_cene
 {
 border: 1px solid grey;
+}
+.intro
+{
+width: 470px;
+margin-left: 30px;
+text-align: center;
 }

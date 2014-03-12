@@ -14,15 +14,18 @@
 		<div class="kontakti">
                     <a href="mailto:iwideo.info@gmail.com
 					?subject=Povpraševanje na spletni strani iwideo.si">
-					<div><span><center><strong>PIŠITE NAM</strong><br />
+					<div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/mail-grey.png" height="20px"; /><br />
                     iwideo.info@gmail.com</center></span></div>
                     </a>
-					<div><span><center><strong>POKLIČITE NAS</strong><br />+386 31 395 038</strong></center></span></div>
-					<a href="http://www.facebook.com/iwideo"><div><span><center><strong>OGLEJTE SI NAŠ FB</strong><br />www.facebook.com/iwideo</center></span></div></a>
-					<a href="http://www.youtube.com/channel/UCQtu6-5MMHE3BmGB4hKzsqA"><div><span><center><strong>NAŠ YOUTUBE KANAL</strong><br />www.youtube.com</center></span></div></a>
+					<div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/icon_phone_grey.png" height="20px"; /><br />+386 040 69 12 12</strong></center></span></div>
+					<a href="http://www.facebook.com/iwideo"><div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/fb-grey-icon.png" height="40px"; /></center></span></div></a>
+					<a href="http://www.youtube.com/channel/UCQtu6-5MMHE3BmGB4hKzsqA"><div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/youtube-grey-icon.png" height="40px"; /></center></span></div></a>
 		</div>
 <hr />
-<center><h2>iwideo. Najbolj donosna naložba.<h2></center>
+<div class="intro">
+<h2><span style="color:#111; font-weight:bold;">iwideo.</span> Najbolj donosna naložba.<h2>
+</div>
+<span class="cena_prva_stran">od 290 €</span>
 <hr />
 <!-- uvodne vsebine -->
 			<?php 	$this->widget('ZVsebineListWidget', array(
