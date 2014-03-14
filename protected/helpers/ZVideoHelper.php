@@ -6,7 +6,7 @@ abstract class ZVideoHelper{
 		if($url!=""){
 			$split=explode('=', $url);
 			if(count($split)>1)
-				$embed='<iframe style="display: block; margin: auto;" width="420" height="315" src="http://www.youtube.com/embed/'.$split[1].'" frameborder="0" allowfullscreen></iframe>';
+				$embed='<iframe style="display: block; margin: auto;" width="420" height="315" src="http://www.youtube.com/embed/'.$split[1].'?rel=0&showinfo=0" frameborder="0" allowfullscreen></iframe>';
 			else $embed="";
 		}else{
 			$embed="";
