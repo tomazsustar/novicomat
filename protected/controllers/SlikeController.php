@@ -185,11 +185,11 @@ class SlikeController extends Controller
 						$msg="Datoteka z imenom $filename že obstaja na strežniku";
 						echo CJSON::encode(array($slika, $msg));
 					}else{
-						move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir'].$newname);
+						move_uploaded_file( $_FILES["images"]["tmp_name"][$key], Yii::app()->params['imgDir']."original/".$newname);
 					//shrani v bazo
 						$model=new Slike;
-						$model->url=Yii::app()->params['imgUrl'].$newname;
-						$model->pot=Yii::app()->params['imgDir'];
+						$model->url=Yii::app()->params['imgUrl']."original/".$newname;
+						$model->pot=Yii::app()->params['imgDir']."original/";
 						$model->ime_slike=$newname;
 						
 						// naredi slicico
@@ -230,12 +230,12 @@ class SlikeController extends Controller
 			echo CJSON::encode(array($slika, $msg));
 		}else{
 			//load
-			$img=WideImage::load($url)->saveToFile((Yii::app()->params['imgDir'].$newname));
+			$img=WideImage::load($url)->saveToFile((Yii::app()->params['imgDir']."original/".$newname));
 			
 			//shrani v bazo
 			$model=new Slike;
-			$model->url=Yii::app()->params['imgUrl'].$newname;
-			$model->pot=Yii::app()->params['imgDir'];
+			$model->url=Yii::app()->params['imgUrl']."original/".$newname;
+			$model->pot=Yii::app()->params['imgDir']."original/";
 			$model->ime_slike=$newname;
 			
 			// naredi slicico
@@ -289,13 +289,13 @@ class SlikeController extends Controller
 		$tslika
 			->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
 			->resize(300, 200, 'outside')				
-			->saveToFile(Yii::app()->params['imgDir'].'slikce/300x200/'.$filename);
+			->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$filename);
 
 		$tslika = $slika;
 		$tslika
 			->crop($_POST['x1'], $_POST['y1'], $_POST['width'], $_POST['height'])
 			->resize(150, 100, 'outside')				
-			->saveToFile(Yii::app()->params['imgDir'].'slikce/150x100/'.$filename);
+			->saveToFile(Yii::app()->params['imgDir'].'150x100/'.$filename);
 			
 		unlink(Yii::app()->params['imgDir'].'tmp/'.$filename);
 	}

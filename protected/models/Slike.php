@@ -142,6 +142,7 @@ class Slike extends CActiveRecord
 		
 		//load
 		$img = WideImage::load($this->pot.$this->ime_slike);
+
 		$sx = $img->getWidth();
 		$sy = $img->getHeight();
 		$raz = $sx/$sy;
@@ -153,11 +154,11 @@ class Slike extends CActiveRecord
 			$imgt = $img;
 			$imgt
 				->resize($sxn, $syn, 'outside')
-				->saveToFile(Yii::app()->params['imgDir'].'slikce/1280x960/'.$this->ime_slike);
+				->saveToFile(Yii::app()->params['imgDir'].$this->ime_slike);
+
+			$this->url=Yii::app()->params['imgUrl'].$this->ime_slike;
 		} else {
-			$imgt = $img;
-			$imgt
-				->saveToFile(Yii::app()->params['imgDir'].'slikce/1280x960/'.$this->ime_slike);
+			$this->url=Yii::app()->params['imgUrl'].'original/'.$this->ime_slike;
 		}
 		
 
@@ -165,18 +166,18 @@ class Slike extends CActiveRecord
 		$imgt
 			->resize(300, 200, 'outside')
 			->crop('center', 'center', 300, 200)
-			->saveToFile(Yii::app()->params['imgDir'].'slikce/300x200/'.$this->ime_slike);
+			->saveToFile(Yii::app()->params['imgDir'].'slikce/'.$this->ime_slike);
 
 		$imgt = $img;
 		$imgt
 			->resize(150, 100, 'outside')
 			->crop('center', 'center', 150, 100)
-			->saveToFile(Yii::app()->params['imgDir'].'slikce/150x100/'.$this->ime_slike);
+			->saveToFile(Yii::app()->params['imgDir'].'150x100/'.$this->ime_slike);
 		
 		//set url2
-		$this->url=Yii::app()->params['imgUrl'].'slikce/1280x960/'.$this->ime_slike;
-		$this->url1=Yii::app()->params['imgUrl'].$this->ime_slike;
-		$this->url2=Yii::app()->params['imgUrl'].'slikce/300x200/'.$this->ime_slike;
-		$this->url3=Yii::app()->params['imgUrl'].'slikce/150x100/'.$this->ime_slike;
+		//$this->url=Yii::app()->params['imgUrl'].$this->ime_slike;
+		$this->url1=Yii::app()->params['imgUrl'].'original/'.$this->ime_slike;
+		$this->url2=Yii::app()->params['imgUrl'].'slikce/'.$this->ime_slike;
+		$this->url3=Yii::app()->params['imgUrl'].'150x100/'.$this->ime_slike;
 	}
 }
