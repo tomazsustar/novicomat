@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 				
-					array('label'=>'NAROČILO', 'url'=>array('/site/page', 'view'=>'vide_narocilo')),
+					array('label'=>'NAROČILO', 'url'=>array('/site/page', 'view'=>'video_navo_narocilo')),
 					
 					),
 			)); ?>
@@ -17,6 +17,7 @@ $this->breadcrumbs=array(
 <center><h1>VIDEO NAVODILA</h1>
 <h2>Velikanska dodana vrednost. Majhna cena.<h2></center>
 <!-- uvodni video -->
+<div id="player"></div>
 			<?php 	$this->widget('ZVsebineListWidget', array(
 				'id'=>'video_navodila_video',
 				'itemView'=>'//vsebine/_video',
@@ -50,7 +51,7 @@ $this->breadcrumbs=array(
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 				
-					array('label'=>'INFORMATIVNI IZRAČUN', 'url'=>array('/site/page', 'view'=>'pred_narocilo')),
+					array('label'=>'INFORMATIVNI IZRAČUN', 'url'=>array('/site/page', 'view'=>'video_navo_narocilo')),
 					
 					),
 			)); ?>

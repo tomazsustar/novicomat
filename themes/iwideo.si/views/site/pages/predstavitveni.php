@@ -38,7 +38,7 @@ $this->breadcrumbs=array(
 				<li>grafika</li>
 				<li>licenčna glasba</li>
 			</ol>
-			<p id="cena">od 380 €</p>
+			<p id="cena">od 410 €</p>
 		</span>
 			
 		</div>
