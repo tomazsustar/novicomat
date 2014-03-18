@@ -17,7 +17,6 @@ $this->breadcrumbs=array(
 <center><h1>VIDEO NAVODILA</h1>
 <h2>Velikanska dodana vrednost. Majhna cena.<h2></center>
 <!-- uvodni video -->
-<div id="player"></div>
 			<?php 	$this->widget('ZVsebineListWidget', array(
 				'id'=>'video_navodila_video',
 				'itemView'=>'//vsebine/_video',
@@ -27,6 +26,7 @@ $this->breadcrumbs=array(
 			
 			)); 
 			?>
+	<div id="player"></div>
 	<div class="pred_list">
         <div><span>
 			<p id="cena">VKLJUČUJE</p>

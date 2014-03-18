@@ -32,11 +32,11 @@
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 					//array('label'=>'Home', 'url'=>array('/site/index')),
-					array('label'=>'OGLASNI', 'url'=>array('/site/index', 'view'=>'video_navodila')), 
+					array('label'=>'OGLASNI', 'url'=>array('/site/page', 'view'=>'oglasni')), 
 					array('label'=>'PREDSTAVITVENI', 'url'=>array('/site/page', 'view'=>'predstavitveni')),
-					array('label'=>'IZOBRAŽEVALNI', 'url'=>array('/site/index', 'view'=>'izobrazevalni')),					
+					array('label'=>'IZOBRAŽEVALNI', 'url'=>array('/site/page', 'view'=>'izobrazevalni')),					
 					array('label'=>'VIDEO NAVODILA', 'url'=>array('/site/page', 'view'=>'video_navodila')),
-					array('label'=>'POROČNI', 'url'=>array('/site/index', 'view'=>'video_navodila')),
+					array('label'=>'POROČNI', 'url'=>array('/site/page', 'view'=>'porocni')),
 					array('label'=>'FILM', 'url'=>array('/site/index', 'view'=>'video_navodila')),
 					array('label'=>'PO NAROČILU', 'url'=>array('/site/index', 'view'=>'video_navodila')),
 					array('label'=>'NAJEM PRODUKCIJE', 'url'=>array('/site/index', 'view'=>'video_navodila')),
