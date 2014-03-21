@@ -2,8 +2,7 @@
 <center><h1>iwideo</h1>
 <h2>Najboljši video. Najboljša cena.<h2></center>
 <!-- uvodni video -->
-			<?php 	
-			
+			<?php	
 			$this->widget('ZVsebineListWidget', array(
 				'id'=>'uvodni_video',
 				'itemView'=>'//vsebine/_video',
@@ -13,14 +12,13 @@
 			//tole bi se dalo zoptimizirati in spisati drugo kodo za prodobivanje url od videa.
 			)); 
 			?> 
-		<div id="player"></div>
 		<div class="kontakti">
                     <a href="mailto:iwideo.info@gmail.com
 					?subject=Povpraševanje na spletni strani iwideo.si">
 					<div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/mail-grey.png" height="20px"; /><br />
                     iwideo.info@gmail.com</center></span></div>
                     </a>
-					<div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/icon_phone_grey.png" height="20px"; /><br />+386(0)40 69 12 12</strong></center></span></div>
+					<div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/icon_phone_grey.png" height="20px"; /><br />040 69 12 12</strong></center></span></div>
 					<a href="http://www.facebook.com/iwideo"><div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/fb-grey-icon.png" height="40px"; /></center></span></div></a>
 					<a href="http://www.youtube.com/channel/UCQtu6-5MMHE3BmGB4hKzsqA"><div><span><center><img src="<?php '.Yii::app()->request->baseUrl.'?>/themes/iwideo.si/css/youtube-grey-icon.png" height="40px"; /></center></span></div></a>
 		</div>
@@ -42,5 +40,5 @@
 			)); ?>
 <div class="index_footer">
 <div id="index_footer_l"><center>iwideo - video produkcija<br />Rok Borštnik s.p., Prilesje 3a, 1315 Velike Lašče<br />ID DDV: 73560863<br />IBAN SI56 1920 0501 0027 112 (DBS d.d.)</center></div>
-<div id="index_footer_d"><center>iwideo.info@gmail.com<br />+386 31 395 038<br />www.facebook.com/iwideo</center></div>
+<div id="index_footer_d"><center>iwideo.info@gmail.com<br />+386(0)40 69 12 12<br />www.facebook.com/iwideo</center></div>
 </div>

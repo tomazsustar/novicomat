@@ -26,7 +26,6 @@ $this->breadcrumbs=array(
 			
 			)); 
 			?>
-	<div id="player"></div>
 	<div class="pred_list">
         <div><span>
 			<p id="cena">VKLJUČUJE</p>

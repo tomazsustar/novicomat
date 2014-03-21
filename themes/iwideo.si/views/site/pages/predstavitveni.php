@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 				
-					array('label'=>'NAROČILO', 'url'=>array('/site/page', 'view'=>'pred_narocilo')),
+					array('label'=>'NAROČILO', 'url'=>array('/site/page', 'view'=>'narocilo.predstavitveni')),
 					
 					),
 			)); ?>
@@ -26,7 +26,6 @@ $this->breadcrumbs=array(
 			
 			)); 
 			?>
-	<div id="player"></div>
 	<div class="pred_list">
         <div><span>
 			<p id="cena">VKLJUČUJE</p>
