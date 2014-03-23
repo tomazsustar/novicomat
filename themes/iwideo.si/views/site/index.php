@@ -42,3 +42,4 @@
 <div id="index_footer_l"><center>iwideo - video produkcija<br />Rok Borštnik s.p., Prilesje 3a, 1315 Velike Lašče<br />ID DDV: 73560863<br />IBAN SI56 1920 0501 0027 112 (DBS d.d.)</center></div>
 <div id="index_footer_d"><center>iwideo.info@gmail.com<br />+386(0)40 69 12 12<br />www.facebook.com/iwideo</center></div>
 </div>
+</div>

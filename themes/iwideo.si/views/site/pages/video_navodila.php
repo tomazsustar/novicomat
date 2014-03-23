@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 				
-					array('label'=>'NAROČILO', 'url'=>array('/site/page', 'view'=>'video_navo_narocilo')),
+					array('label'=>'NAROČILO', 'url'=>array('/site/page', 'view'=>'narocilo.video_navodila')),
 					
 					),
 			)); ?>
