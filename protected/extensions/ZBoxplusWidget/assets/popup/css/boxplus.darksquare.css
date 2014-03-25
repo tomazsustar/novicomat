@@ -9,27 +9,17 @@
 */
 
 #boxplus .boxplus-dialog {
-background-color:black;
-background-color:rgba(0,0,0,0.8);
+padding:0 !important;
 color:white;
+background:transparent url(darkrounded/pattern.png) repeat scroll 0 0;
 }
 
-#boxplus .boxplus-thumbs > ul {
-/*background-color:rgba(0,0,0,0.3);*/
+#boxplus .boxplus-dialog .boxplus-main {
+margin:20px;
 }
 
-#boxplus .boxplus-dialog a:link {
-color:red
-}
-
-#boxplus .boxplus-dialog a:visited {
-color:red
-}
-
-#boxplus .boxplus-dialog a:hover {
-color:red
-}
-
-#boxplus .boxplus-dialog a:active {
-color:red
+#boxplus .boxplus-dialog .boxplus-sideways {
+right:20px;
+top:20px;
+bottom:20px;
 }

@@ -9,11 +9,22 @@
 */
 
 #boxplus .boxplus-dialog {
-background-color:white;
-background-color:rgba(255,255,255,0.8);
-color:black;
+padding:0 !important;
+background:white none repeat scroll 0 0;
 }
 
-#boxplus .boxplus-thumbs > ul {
-/*background-color:rgba(255,255,255,0.3);*/
+#boxplus .boxplus-dialog .boxplus-main {  /* increase precedence with multiple qualifiers */
+margin:20px;
+}
+
+#boxplus .boxplus-dialog .boxplus-sideways {
+right:20px;
+top:20px;
+bottom:20px;
+}
+#boxplus .boxplus-background {
+
+background-color:transparent !important;  
+
+
 }

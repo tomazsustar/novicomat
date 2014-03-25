@@ -1,8 +1,4 @@
 <?php
-/**
- * viđet ki potegne novice za trenutni portal, lahko mu določimo tudi tag
- */
-//Yii::import('zii.widgets.CPortlet');
 
 class ZBoxplusWidget extends CWidget{
 	public $theme = 'darksquare'; 
