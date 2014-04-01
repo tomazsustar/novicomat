@@ -51,7 +51,7 @@ $this->breadcrumbs=array(
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 				
-					array('label'=>'INFORMATIVNI IZRAČUN', 'url'=>array('/site/page', 'view'=>'pred_narocilo')),
+					array('label'=>'INFORMATIVNI IZRAČUN', 'url'=>array('/site/page', 'view'=>'narocilo.predstavitveni')),
 					
 					),
 			)); ?>

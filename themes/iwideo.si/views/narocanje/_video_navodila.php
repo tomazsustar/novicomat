@@ -3,33 +3,27 @@
  <!-- 1. IDEJA IN DOLŽINA -->
     <section>
     	<header>
- 			<h2>1. IDEJA in DOLŽINA</h2>
+ 			<h2>1. DOLŽINA</h2>
 			<h3><!--opis odseka--></h3>
         </header>
         
         <section class='Table'>   
         	<div class='Cell Default' id='NjihovaIdejaCell'>
                 <input type="radio" id="VasaIdeja" name='Ideja' value="0" checked>
-                <strong>Obstoječ program
+                <strong>Imate navodila v pisni obliki
                     <label for='VasaIdeja' id='VasaIdejaIzracun' class='Izracuni'>+ 0 EUR</label></strong>
                 <br>  
-				        	<label for='Priponka'>Izvajate uspešen izobraževalni program, ki ga želite samo prenesti v video obliko. Tukaj lahko priložite vaš izobraževalni program v dokumentu (.doc, .docx, .pdf)</label><br>
+				        	<label for='Priponka'>Pošljite nam navodila korak za korakom v dokumentu (.doc, .docx, .pdf)</label><br>
                 <input type="file" name='Priponka' id='Priponka' accept="text/plain,text/html,application/pdf,application/msword,application/rtf">
                 
 			</div>     
             <div class='Cell Option' id='NasaIdejaCell'>
                 <input type="radio" id="NasaIdeja" name='Ideja' value="190">
-                <strong>Izdelamo scenarij
-                    <label for='NasaIdeja' id='NasaIdejaIzracun' class='Izracuni'>+ 190 EUR</label><br /><br />
+                <strong>Nimate navodil
+                    <label for='NasaIdeja' id='NasaIdejaIzracun' class='Izracuni'>+ 190 EUR</label><br />
                  </strong>
-                <label for='Priponka'>Posredujte nam strokovno vsebino, ki jo želite posredovati slušateljem v dokumentu (.doc, .docx, .pdf)</label><br>
-                <input type="file" name='Priponka' id='Priponka' accept="text/plain,text/html,application/pdf,application/msword,application/rtf">
-                <br>
-
-                <ul>
-                	<li>ogled lokacij in vsebin 
-                    <li>sestanek z naročnikom
-                </ul>           
+                <small>Preučimo izdelek in pripravimo navodila.</small><br>
+       
                 
                 
                 
@@ -41,7 +35,7 @@
         <section>
     
         	<fieldset class="sivina">
-            	<strong>Dolžina oglasa - osnovna cena do 1 minute je 385 eur</strong>
+            	<strong>Dolžina oglasa - osnovna cena do 1 minute je 360 eur</strong>
                 <br />
                     <input type="radio" value='0' name='Dolzina' id='Do1Min' class='IndentInput' checked>
                     	<label for='Do1Min'>Do 1 minute</label>
@@ -82,19 +76,21 @@
         	<div class='Cell Default' id='NjihoviProstoriCell'>
             	<input type="radio" id="VasiProstori" name='Prostori' value="0" required checked>
                 <strong>Vaši prostori
-                    <label for='VasiProstori' id='VasaoProstoriIzracun' class='Izracuni'>+ 0 EUR</label><br>
-                </strong>
+                    <label for='VasiProstori' id='VasiProstoriIzracun' class='Izracuni'>+ 0 EUR</label>
+                </strong><br>
                 <small>
-                	Prostori vašega delovanja. 
+                	Ob ustrezni ideji prostor vašega poslovanja postane prizorišče snemanja. 
                 </small>
             </div>
             
             <div class='Cell Option' id='NajemProstoraCell'>
-            	<input type="radio" id="NajemProstora" name='Prostori' value="1" >
-                <strong>Najem prostora - Po dogovoru</strong><br>
-                    
+            	<input type="radio" id="NajemProstora" name='Prostori' value="40" >
+                <strong>Naš studio
+                     <label for='NasiProstori' id='NasiProstoriIzracun' class='Izracuni'>+ 40 EUR</label>
+                 </strong><br>
                 <small>
-                	Glede na scenarij Izvedemo ogled ustreznih lokacij in uredimo najem. Ceno najema postavi lastnik prostorov.
+                	Pri vas prevzamemo izdelek. Prikažemo ga na nevtralnem belem studijskem ozadju.
+                   
                 </small>
             </div>
         </section>
@@ -195,12 +191,12 @@
                 </thead>
                 <tbody>
                 	<tr>
-                    	<td style="text-align:left; border-bottom:thin solid #999;">Osnovna cena
-                        <td id='PostavkaOsnovna'>385
+                    	<td style="text-align:left; border-bottom:thin solid #999;">Video navodila
+                        <td id='PostavkaOsnovna'>360
                         <td>EUR
                     </tr>
                 	<tr>
-                    	<td style="text-align:left; border-bottom:thin solid #999;">Ideja
+                    	<td style="text-align:left; border-bottom:thin solid #999;">Priprava navodil
                         <td id='PostavkaIdeja'>0
                         <td>EUR
                     </tr>
@@ -312,13 +308,12 @@
 		/* Izračun števila prostorov */
 		$("input[name=Prostori]").on("click",function() {
 			Prostori = $('input[name=Prostori]:checked').val();
-			if(Prostori == 1) {
-				$("#PostavkaLastnistvo").text("Po dogovoru")
+            $("#PostavkaLastnistvo").text($('input[name=Prostori]:checked').val())
+			if(Prostori == 40) {
 				$("#NjihoviProstoriCell").removeClass("Default").addClass("Option");
 				$("#NajemProstoraCell").removeClass("Option").addClass("Default");
 			}
 			else {
-				$("#PostavkaLastnistvo").text(0);
 				$("#NajemProstoraCell").removeClass("Default").addClass("Option");
 				$("#NjihoviProstoriCell").removeClass("Option").addClass("Default");
 			}
@@ -397,18 +392,19 @@
 			var Izracun = "";
 			var PostavkaOsnovna = parseInt($("#PostavkaOsnovna").text());
 			var PostavkaIdeja = parseInt($("#PostavkaIdeja").text());
+            var PostavkaLastnistvo = parseInt($("#PostavkaLastnistvo").text());
 			var PostavkaLokacija = parseInt($("#PostavkaLokacija").text());
 			var PostavkaMinute = parseInt($("#PostavkaMinute").text());
 			var PostavkaIgralci = parseInt($("#PostavkaIgralci").text());
 			
-			if(($("#PostavkaLastnistvo").text() == "Po dogovoru")||($("#PostavkaLokacija").text() == "Po dogovoru")||
+			if(($("#PostavkaLokacija").text() == "Po dogovoru")||
 				($("#PostavkaMinute").text() == "Po dogovoru")||($("#PostavkaEfekti").text() == "Po dogovoru"))
 				{
 				//PostavkaLastnistvo = 0;
 				Izracun = "Pošljemo predračun";
 				}
 			else {
-			Izracun = (PostavkaOsnovna + PostavkaLokacija + PostavkaIdeja + PostavkaMinute + PostavkaIgralci);
+			Izracun = (PostavkaOsnovna + PostavkaLokacija + PostavkaLastnistvo + PostavkaIdeja + PostavkaMinute + PostavkaIgralci);
 			}
 			
 				

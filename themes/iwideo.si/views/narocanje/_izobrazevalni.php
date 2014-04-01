@@ -3,7 +3,7 @@
  <!-- 1. IDEJA IN DOLŽINA -->
     <section>
     	<header>
- 			<h2>1. IDEJA in DOLŽINA</h2>
+ 			<h2>1. PROGRAM in DOLŽINA</h2>
 			<h3><!--opis odseka--></h3>
         </header>
         
@@ -20,8 +20,9 @@
             <div class='Cell Option' id='NasaIdejaCell'>
                 <input type="radio" id="NasaIdeja" name='Ideja' value="190">
                 <strong>Izdelamo scenarij
-                    <label for='NasaIdeja' id='NasaIdejaIzracun' class='Izracuni'>+ 190 EUR</label><br /><br />
+                    <label for='NasaIdeja' id='NasaIdejaIzracun' class='Izracuni'>+ 190 EUR</label>
                  </strong>
+                 <br>
                 <label for='Priponka'>Posredujte nam strokovno vsebino, ki jo želite posredovati slušateljem v dokumentu (.doc, .docx, .pdf)</label><br>
                 <input type="file" name='Priponka' id='Priponka' accept="text/plain,text/html,application/pdf,application/msword,application/rtf">
                 <br>
