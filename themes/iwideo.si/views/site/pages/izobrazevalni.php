@@ -45,7 +45,7 @@ $this->breadcrumbs=array(
 	</div>
 <hr />
 <div class="intro">
-<h2><span style="color:#111; font-weight:bold;">Kar slišimo si zapomnimo 20 %.</span><br />Kar vidimo si zapomnimo 30 %.<br />Kar vidimo in slišimo si zapomnimo 70 %.<!--neboldano besedilo--><h2>
+<h2>Kar slišimo si zapomnimo 20 %.<br>Kar vidimo si zapomnimo 30 %.<br><span style="color:#111; font-weight:bold;">Kar vidimo in slišimo si zapomnimo 70 %.</span><h2>
 </div>
 <div id="narocilo">
 			<?php $this->widget('zii.widgets.CMenu',array(

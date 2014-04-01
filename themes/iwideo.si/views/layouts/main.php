@@ -37,9 +37,9 @@
 					array('label'=>'IZOBRAŽEVALNI', 'url'=>array('/site/page', 'view'=>'izobrazevalni')),					
 					array('label'=>'VIDEO NAVODILA', 'url'=>array('/site/page', 'view'=>'video_navodila')),
 					array('label'=>'POROČNI', 'url'=>array('/site/page', 'view'=>'porocni')),
-					array('label'=>'FILM', 'url'=>array('/site/index', 'view'=>'video_navodila')),
-					array('label'=>'PO NAROČILU', 'url'=>array('/site/index', 'view'=>'video_navodila')),
-					array('label'=>'NAJEM PRODUKCIJE', 'url'=>array('/site/index', 'view'=>'video_navodila')),
+					array('label'=>'FILM', 'url'=>array('/site/page', 'view'=>'produkcija')),
+					array('label'=>'PO NAROČILU', 'url'=>array('/site/page', 'view'=>'produkcija')),
+					array('label'=>'NAJEM PRODUKCIJE', 'url'=>array('/site/page', 'view'=>'produkcija')),
 					array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 				),
 			)); ?>

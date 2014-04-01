@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 				
-					array('label'=>'NAROČILO', 'url'=>array('/site/page', 'view'=>'porocni_narocilo')),
+					array('label'=>'NAROČILO', 'url'=>array('/site/page', 'view'=>'narocilo.porocni')),
 					
 					),
 			)); ?>
@@ -44,13 +44,13 @@ $this->breadcrumbs=array(
 	</div>
 <hr />
 <div class="intro">
-<h2><span style="color:#111; font-weight:bold;">Preprosto.</span>Večno. Filmsko.<!--neboldano besedilo--><h2>
+<h2><span style="color:#111; font-weight:bold;">Preprosto.</span> Večno. Filmsko.<!--neboldano besedilo--><h2>
 </div>
 <div id="narocilo">
 			<?php $this->widget('zii.widgets.CMenu',array(
 				'items'=>array(
 				
-					array('label'=>'INFORMATIVNI IZRAČUN', 'url'=>array('/site/page', 'view'=>'porocni_narocilo')),
+					array('label'=>'INFORMATIVNI IZRAČUN', 'url'=>array('/site/page', 'view'=>'narocilo.porocni')),
 					
 					),
 			)); ?>
