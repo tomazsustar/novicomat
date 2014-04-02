@@ -16,8 +16,12 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/default.css" />
 	<!-- <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/youtube-player/styles.css" /> -->
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/youtube-player/youTubeEmbed/youTubeEmbed-jquery-1.0.css" />
-		
-	<?php Yii::app()->getClientScript()->registerCoreScript('jquery');?>
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/jquery-ui.css" />	
+
+	<?php Yii::app()->getClientScript()->registerCoreScript('jquery');
+	Yii::app()->clientScript->registerCoreScript('jquery.ui'); 
+	?>
+
 	
 	<title>iWideo</title>
 </head>
@@ -59,7 +63,8 @@
 	</div><!-- footer -->
 
 </div><!-- page -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/youtube-player/jquery.swfobject.1-1-1.min.js"></script>
 	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/youtube-player/youTubeEmbed/youTubeEmbed-jquery-1.0.js"></script>
 	<script src="<?php echo Yii::app()->theme->baseUrl; ?>/youtube-player/script.js"></script>
